@@ -30,6 +30,7 @@
                     echo "Erreur dans l'exécution de la requête.";
                 } else {
 
+                    //coucou test git
                     // Récupération du résultat
                     $nbContacts = $reqExisteDeja->fetchColumn();
 
