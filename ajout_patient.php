@@ -131,7 +131,7 @@
                     $nbPatients = $reqExisteDeja->fetchColumn();
 
                     // Vérification si le patient existe déjà
-                    if ($nbContacts > 0) {
+                    if ($nbPatients > 0) {
                         echo "Ce patient existe déjà dans la base de données.";
                     } else {
                         // Préparation de la requête d'insertion
