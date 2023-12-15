@@ -3,70 +3,119 @@
     <head>
         <meta charset="utf-8" />
         <title>Ajout d'un patient</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+       
+       <style>
+
+        .heading{font-size: 40px;margin-top: 35px;margin-bottom: 30px;padding-left: 20px}
+        .card{border-radius: 10px !important;margin-top: 60px;margin-bottom: 60px}
+        .form-card{margin-left: 20px;margin-right: 20px}
+        .form-card input, .form-card textarea{padding: 10px 15px 5px 15px;border: none;border: 1px solid lightgrey;border-radius: 6px;margin-bottom: 25px;margin-top: 2px;width: 100%;box-sizing: border-box;font-family: arial;color: #2C3E50;font-size: 14px;letter-spacing: 1px}
+        .form-card input:focus, .form-card textarea:focus{-moz-box-shadow: 0px 0px 0px 1.5px skyblue !important;-webkit-box-shadow: 0px 0px 0px 1.5px skyblue !important;box-shadow: 0px 0px 0px 1.5px skyblue !important;font-weight: bold;border: 1px solid #304FFE;outline-width: 0}
+        .input-group{position:relative;width:100%;overflow:hidden}
+        .input-group input{position:relative;height:80px;margin-left: 1px;margin-right: 1px;border-radius:6px;padding-top: 30px;padding-left: 25px}
+        .input-group label{position:absolute;height: 24px;background: none;border-radius: 6px;line-height: 48px;font-size: 15px;color: gray;width:100%;font-weight:100;padding-left: 25px}
+        input:focus + label{color: #304FFE}.btn-pay{background-color: #304FFE;height: 60px;color: #ffffff !important;font-weight: bold}
+        .btn-pay:hover{background-color: #3F51B5}
+        .btn-ajouter {
+            background-color: #2c75ff;
+            position:relative;
+            width:100%;;
+            overflow:hidden;
+            position:relative;
+            height:80px;
+            margin-left: 1px;
+            margin-right: 1px;
+            border-radius:6px;
+            padding-top: 30px;
+            padding-left: 25px
+        }
+        .fit-image{width: 100%;object-fit: cover}
+        img{border-radius: 5px}
+        .radio-group{position: relative;margin-bottom: 25px}
+        .radio{display:inline-block;border-radius: 6px;box-sizing: border-box;border: 2px solid lightgrey;cursor:pointer;margin: 12px 25px 12px 0px}
+        .radio:hover{box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2)}
+        .radio.selected{box-shadow: 0px 0px 0px 1px rgba(0, 0, 155, 0.4);border: 2px solid blue}
+        .label-radio{font-weight: bold;color: #000000}
+
+        </style>
     </head>
     <body>
 
-        <!--A vérifier-->
-        <form method="POST" action="ajout_patient.php">
-            <!--Squellette html de la page-->
-			<fieldset>
-				<legend>Saisir les informations d'un patient</legend>
-                <!--Civilité-->
-                <fieldset>
-                    <legend>Civilité</legend>
-                    <div>
-                        <label for="monsieur">Monsieur</label>
-                        <input type="radio" id ="monsieur" name= "civilite" value="" checked /> 
+        <?php require('header.php');?>
+
+<div>
+    <div class="row justify-content-center">
+        <div class=" col-lg-7 col-md-8">
+            <div class="card p-9">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <h2 class="heading text-center">Ajouter un patient</h2>
                     </div>
-
-                    <div>
-                        <label for="madame">Madame</label>
-                        <input type="radio" id ="madame" name= "civilite" value="" checked /> 
+                </div>
+                <form onsubmit="event.preventDefault()" class="form-card" method="POST" action="ajout_patient.php">
+                    <div class="row justify-content-center form-group">
+                        <div class="col-12 px-auto">
+                            <div class="custom-control custom-radio custom-control-inline"> <input type="radio" name="radioMadame" class="custom-control-input" checked="true"> <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> </div>
+                            <div class="custom-control custom-radio custom-control-inline"> <input id="customRadioInline2" type="radio" name="radioMonsieur" class="custom-control-input"> <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> </div>
+                        </div>
                     </div>
-                </fieldset>
-
-				<!--Nom-->
-                <label for="nom">Nom : </label>
-				<input type="text" maxlength="50" id="non" name="nom" value="" required><br>
-
-                <!--Prénom-->
-				<label for="prenom">Prenom : </label>
-				<input type="text" maxlength="50" id="prenom" name="prenom" value="" required><br>
-
-                <!--Adresse-->
-				<label for="adresse">Adresse : </label>
-				<input type="text" maxlength="100" id="adresse" name="adresse" value="" required><br>
-                
-                <!--Ville-->
-				<label for="ville">Ville : </label>
-				<input type="text" maxlength="50" id="ville" name="ville" value="" required><br>
-
-                <!--Cp-->
-				<label for="cp">Code Postal : </label>
-				<input type="text" minlength="5" maxlength="5" id="cp" name="cp" value="" required><br>
-
-                <!--Date de naissance-->
-				<label for="date_naissance">Date de naissance : </label>
-				<input type="date" id="date_naissance" name="date_naissance" value="" required><br>
-
-                <!--Lieu de naissance-->
-				<label for="lieu_naissance ">Lieu de naissance : </label>
-				<input type="text" maxlength="50" id="lieu_naissance " name="lieu_naissance" value="" required><br>
-
-                <!--Numéro de sécurité sociale-->
-				<label for="num_secu_sociale">Numéro de sécurité sociale : </label>
-				<input type="text" minlength="13" maxlength="13" id="num_secu_sociale" name="num_secu_sociale" value="" required><br>
-
-                <!--
-                    Bouton valider (insère les données saisies dans le formulaire dans la base de données) 
-                    Bouton effacer (efface le contenu du formulaire remplie par l'utilisateur si erreur)
-                    Bonton Annuler (ferme la page ajout_patient sans enregistrer les données possiblement saisies)
-                -->
-				<input type="submit" value="Valider" name="">
-                <input type="reset" value="Effacer" name="">
-                <input type="submit" value="Annuler" name=""> 
-            </fieldset>	
-		</form>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="input-group"> <input type="text" name="nom" required> <label>Nom</label> </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="input-group"> <input type="text" name="prenom" required> <label>Prénom</label> </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="input-group"> <input type="text" name="adresse" required> <label>Adresse</label> </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="input-group"> <input type="text" minlength="5" maxlength="5"  name="cp" required> <label>Code Postal</label> </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="input-group"> <input type="text" name="ville" required> <label>Ville</label> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="input-group"> <input type="date"  name="date_naissance" required> <label>Date de naissance</label> </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group"> <input type="text" name="lieu_naissance" required> <label>Lieu de naissance</label> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="input-group"> <input type="text" name="num_secu_sociale" minlength="13" maxlength="13" required> <label>Numéro de sécurité sociale </label> </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="col-12"> <input type="submit" name="ajouter_patient" class="btn-ajouter"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <!--Serveur-->
         <?php
@@ -136,4 +185,63 @@
             }       
         ?>
     </body>
+
+    <script>
+        $(document).ready(function(){
+
+//For Card Number formatted input
+var cardNum = document.getElementById('cr_no');
+cardNum.onkeyup = function (e) {
+    if (this.value == this.lastValue) return;
+    var caretPosition = this.selectionStart;
+    var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+    var parts = [];
+    
+    for (var i = 0, len = sanitizedValue.length; i < len; i += 4) {
+        parts.push(sanitizedValue.substring(i, i + 4));
+    }
+    
+    for (var i = caretPosition - 1; i >= 0; i--) {
+        var c = this.value[i];
+        if (c < '0' || c > '9') {
+            caretPosition--;
+        }
+    }
+    caretPosition += Math.floor(caretPosition / 4);
+    
+    this.value = this.lastValue = parts.join('-');
+    this.selectionStart = this.selectionEnd = caretPosition;
+}
+
+//For Date formatted input
+var expDate = document.getElementById('exp');
+expDate.onkeyup = function (e) {
+    if (this.value == this.lastValue) return;
+    var caretPosition = this.selectionStart;
+    var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+    var parts = [];
+    
+    for (var i = 0, len = sanitizedValue.length; i < len; i += 2) {
+        parts.push(sanitizedValue.substring(i, i + 2));
+    }
+    
+    for (var i = caretPosition - 1; i >= 0; i--) {
+        var c = this.value[i];
+        if (c < '0' || c > '9') {
+            caretPosition--;
+        }
+    }
+    caretPosition += Math.floor(caretPosition / 2);
+    
+    this.value = this.lastValue = parts.join('/');
+    this.selectionStart = this.selectionEnd = caretPosition;
+}
+	
+	// Radio button
+	$('.radio-group .radio').click(function(){
+	    $(this).parent().parent().find('.radio').removeClass('selected');
+	    $(this).addClass('selected');
+	});
+})
+</script>
 </html>
