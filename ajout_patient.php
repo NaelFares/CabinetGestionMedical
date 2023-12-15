@@ -27,11 +27,11 @@
                         <div class="col-12 px-auto">
                             <fieldset>
                                 <div class="custom-control custom-radio custom-control-inline"> 
-                                    <input id="customRadioInline1" type="radio" name="genre" value="Madame" class="custom-control-input" checked="true"> 
+                                    <input id="customRadioInline1" type="radio" name="civilite" value="Madame" class="custom-control-input" checked="true"> 
                                     <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> 
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline"> 
-                                    <input id="customRadioInline2" type="radio" name="genre" value="Monsieur" class="custom-control-input"> 
+                                    <input id="customRadioInline2" type="radio" name="civilite" value="Monsieur" class="custom-control-input"> 
                                     <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> 
                                 </div>
                              </fieldset>
@@ -135,7 +135,7 @@
                         echo "Ce patient existe déjà dans la base de données.";
                     } else {
                         // Préparation de la requête d'insertion
-                        $req = $linkpdo->prepare('INSERT INTO patient(nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
+                        $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
 
                         // Vérification du fonctionnement de la requete d'insertion
                         if($req == false) {
@@ -146,6 +146,7 @@
 
                         // Exécution de la requête d'insertion
                         $req->execute(array(
+                            'civilite' => $_POST['civilite'],
                             'nom' => $_POST['nom'],
                             'prenom' => $_POST['prenom'],
                             'adresse' => $_POST['adresse'],
@@ -153,7 +154,7 @@
                             'cp' => $_POST['cp'],
                             'date_naissance' => $_POST['date_naissance'],
                             'lieu_naissance' => $_POST['lieu_naissance'],
-                            'num_secu_sociale' => $_POST['num_secu_sociale'],
+                            'num_secu_sociale' => $_POST['num_secu_sociale']
                         ));
                             //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
                             $req->debugDumpParams();
