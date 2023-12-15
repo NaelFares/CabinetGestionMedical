@@ -9,8 +9,19 @@
        
        <style>
 
-        .heading{font-size: 40px;margin-top: 35px;margin-bottom: 30px;padding-left: 20px}
-        .card{border-radius: 10px !important;margin-top: 60px;margin-bottom: 60px}
+        .heading{
+            font-size: 40px;
+            margin-top: 35px;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+
+        .card{
+            border-radius: 10px !important;
+            margin-top: 60px;
+            margin-bottom: 60px;
+        }
+        
         .form-card{margin-left: 20px;margin-right: 20px}
         .form-card input, .form-card textarea{padding: 10px 15px 5px 15px;border: none;border: 1px solid lightgrey;border-radius: 6px;margin-bottom: 25px;margin-top: 2px;width: 100%;box-sizing: border-box;font-family: arial;color: #2C3E50;font-size: 14px;letter-spacing: 1px}
         .form-card input:focus, .form-card textarea:focus{-moz-box-shadow: 0px 0px 0px 1.5px skyblue !important;-webkit-box-shadow: 0px 0px 0px 1.5px skyblue !important;box-shadow: 0px 0px 0px 1.5px skyblue !important;font-weight: bold;border: 1px solid #304FFE;outline-width: 0}
@@ -58,23 +69,23 @@
                 <form onsubmit="event.preventDefault()" class="form-card" method="POST" action="ajout_patient.php">
                     <div class="row justify-content-center form-group">
                         <div class="col-12 px-auto">
-                            <div class="custom-control custom-radio custom-control-inline"> <input type="radio" name="radioMadame" class="custom-control-input" checked="true"> <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> </div>
+                            <div class="custom-control custom-radio custom-control-inline"> <input id="customRadioInline1" type="radio" name="radioMadame" class="custom-control-input" checked="true"> <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> </div>
                             <div class="custom-control custom-radio custom-control-inline"> <input id="customRadioInline2" type="radio" name="radioMonsieur" class="custom-control-input"> <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="input-group"> <input type="text" name="nom" required> <label>Nom</label> </div>
+                            <div class="input-group"> <input type="text" name="medecin_nom" required> <label>Nom</label> </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="input-group"> <input type="text" name="prenom" required> <label>Prénom</label> </div>
+                            <div class="input-group"> <input type="text" name="medecin_prenom" required> <label>Prénom</label> </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="col-12"> <input type="submit" name="ajouter_medecin" class="btn-ajouter"></div>
+                            <div class="col-12"> <input type="submit" name="btn_ajouter_medecin" class="btn-ajouter"></div>
                         </div>
                     </div>
                 </form>
