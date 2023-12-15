@@ -95,54 +95,53 @@
 </div>
 
 
+<!--Serveur-->
+<?php
+    print_r($_POST);
 
-        <!--Serveur-->
-        <?php
-            print_r($_POST);
+    require('bd_connexion.php');
 
-            require('bd_connexion.php');
+    // Préparation de la requête de test de présence d'un contact
+    $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
 
-            // Préparation de la requête de test de présence d'un contact
-            $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
+    //Test de la requete de présence d'un contact => die si erreur
+    if($reqExisteDeja == false) {
+        die("Erreur de préparation de la requête de test de présence d'un patient.");
+    } else {
 
-            //Test de la requete de présence d'un contact => die si erreur
-            if($reqExisteDeja == false) {
-                die("Erreur de préparation de la requête de test de présence d'un patient.");
+        // Liaison des paramètres
+        //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
+        //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
+        //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
+        $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+        $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+
+        // Exécution de la requête
+        $reqExisteDeja->execute();
+
+        //Vérification de la bonne exécution de la requete ExisteDéja
+        //Si oui on arrete et on affiche une erreur
+        //Si non on execute la requete
+        if($reqExisteDeja == false) {
+            die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
+        } else {
+
+            // Récupération du résultat
+            $nbPatients = $reqExisteDeja->fetchColumn();
+
+            // Vérification si le patient existe déjà
+            if ($nbContacts > 0) {
+                echo "Ce patient existe déjà dans la base de données.";
             } else {
+                // Préparation de la requête d'insertion
+                $req = $linkpdo->prepare('INSERT INTO patient(nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
 
-                // Liaison des paramètres
-                //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
-                //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
-                //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-
-                // Exécution de la requête
-                $reqExisteDeja->execute();
-
-                //Vérification de la bonne exécution de la requete ExisteDéja
-                //Si oui on arrete et on affiche une erreur
-                //Si non on execute la requete
-                if($reqExisteDeja == false) {
-                    die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
+                // Vérification du fonctionnement de la requete d'insertion
+                if($req == false) {
+                    die('Probleme de la préparation de la requete d\'insertion');
                 } else {
-
-                    // Récupération du résultat
-                    $nbPatients = $reqExisteDeja->fetchColumn();
-
-                    // Vérification si le patient existe déjà
-                    if ($nbPatients > 0) {
-                        echo "Ce patient existe déjà dans la base de données.";
-                    } else {
-                        // Préparation de la requête d'insertion
-                        $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
-
-                        // Vérification du fonctionnement de la requete d'insertion
-                        if($req == false) {
-                            die('Probleme de la préparation de la requete d\'insertion');
-                        } else {
-                            echo ('Ok');
-                        }
+                    echo ('Ok');
+                }
 
                         // Exécution de la requête d'insertion
                         $req->execute(array(
@@ -164,34 +163,15 @@
                 }   
             }       
         ?>
+                
     </body>
 
-    <script>
+</html>
+
+
+<script>
         $(document).ready(function(){
 
-//For Card Number formatted input
-var cardNum = document.getElementById('cr_no');
-cardNum.onkeyup = function (e) {
-    if (this.value == this.lastValue) return;
-    var caretPosition = this.selectionStart;
-    var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
-    var parts = [];
-    
-    for (var i = 0, len = sanitizedValue.length; i < len; i += 4) {
-        parts.push(sanitizedValue.substring(i, i + 4));
-    }
-    
-    for (var i = caretPosition - 1; i >= 0; i--) {
-        var c = this.value[i];
-        if (c < '0' || c > '9') {
-            caretPosition--;
-        }
-    }
-    caretPosition += Math.floor(caretPosition / 4);
-    
-    this.value = this.lastValue = parts.join('-');
-    this.selectionStart = this.selectionEnd = caretPosition;
-}
 
 //For Date formatted input
 var expDate = document.getElementById('exp');
@@ -224,4 +204,3 @@ expDate.onkeyup = function (e) {
 	});
 })
 </script>
-</html>
