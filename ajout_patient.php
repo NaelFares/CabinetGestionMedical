@@ -25,8 +25,16 @@
                 <form onsubmit="event.preventDefault()" class="form-card" method="POST" action="ajout_patient.php">
                     <div class="row justify-content-center form-group">
                         <div class="col-12 px-auto">
-                            <div class="custom-control custom-radio custom-control-inline"> <input id="customRadioInline1" type="radio" name="radioMadame" class="custom-control-input" > <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> </div>
-                            <div class="custom-control custom-radio custom-control-inline"> <input id="customRadioInline2" type="radio" name="radioMonsieur" class="custom-control-input"> <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> </div>
+                            <fieldset>
+                                <div class="custom-control custom-radio custom-control-inline"> 
+                                    <input id="customRadioInline1" type="radio" name="genre" value="Madame" class="custom-control-input" checked="true"> 
+                                    <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> 
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline"> 
+                                    <input id="customRadioInline2" type="radio" name="genre" value="Monsieur" class="custom-control-input"> 
+                                    <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> 
+                                </div>
+                             </fieldset>
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -75,7 +83,9 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="col-12"> <input type="submit" name="ajouter_patient" class="btn-ajouter"></div>
+                            <div class="col-12">
+                                 <input type="submit" name="ajouter_patient" class="btn-ajouter">
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -83,6 +93,8 @@
         </div>
     </div>
 </div>
+
+
 
         <!--Serveur-->
         <?php
