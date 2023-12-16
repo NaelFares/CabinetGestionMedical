@@ -71,7 +71,7 @@
                                         echo "Champs manquants.";
                                     } else {
 
-                                            // Exécution de la requête d'insertion
+                                           // Attribution des paramètres
                                             $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
                                             $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
                                             $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
@@ -81,6 +81,7 @@
                                             $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
                                             $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
                                             $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
+                                             // Exécution de la requête d'insertion
                                             $req->execute();
 
                                                 //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
