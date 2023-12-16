@@ -40,7 +40,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="col-12"> <input type="submit" name="ajouter_patient" class="btn-ajouter"></div>
+                            <div class="col-12"> <input type="submit" name="ajouter_patient" value="Ajouter" class="btn-ajouter"></div>
                         </div>
                     </div>
                 </form>
