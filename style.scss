@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+// Styles
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: rgba(0,0,0,.87);
+}
+
+a {
+  color: #2c75ff;
+  
+  &:hover,
+  &:focus {
+    color: #2c75ff; 
+  }
+}
+
+
+
+
+.container {
+  margin: 5% 3%;
+  
+  @media (min-width: 48em) {
+    margin: 2%; 
+  }
+  
+  @media (min-width: 75em) {
+    margin: 2em auto;
+    max-width: 75em;
+  }
+}
+
+.responsive-table {
+  width: 100%;
+  margin-bottom: 1.5em;
+  margin-left: 1px;
+  margin-right: 1px;
+  border-spacing: 0;
+  table-layout: fixed; // Ajout de cette ligne pour fixer la largeur des colonnes
+
+  
+  @media (min-width: 48em) {
+    font-size: .9em; 
+  }
+  
+  @media (min-width: 62em) {
+    font-size: 1em; 
+  }
+}
+  
+.responsive-table thead {
+    // Accessibly hide <thead> on narrow viewports
+    position: absolute;
+    padding: 0;
+    border: 0;
+    height: 1px; 
+    width: 1px; 
+    overflow: hidden;
+    
+    @media (min-width: 48em) {
+      // Unhide <thead> on wide viewports
+      position: relative;
+      clip: auto;
+      height: auto;
+      width: auto;
+      overflow: auto;
+    }
+}
+    
+.responsive-table thead th {
+      background-color: #2c75ff;
+      height: 10px;
+      border-width: 2px solid color #2c75ff ;
+      font-family: 'Lato', sans-serif;
+      font-weight: normal;
+      text-align: center;
+      color: white;
+      flex-basis: 20%;
+      
+}
+  
+  
+  // Set these items to display: block for narrow viewports
+.responsive-table tbody, tr, th, td {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    white-space: normal;
+}
+  
+.responsive-table tr {   
+    @media (min-width: 48em) {
+      // Undo display: block 
+      display: table-row; 
+    }
+}
+  
+.responsive-table th , td {
+    padding: 15em;
+    vertical-align: middle;
+    
+    @media (min-width: 30em) {
+      padding: .75em .5em; 
+    }
+    
+    @media (min-width: 48em) {
+      // Undo display: block 
+      display: table-cell;
+      padding: .5em;
+    }
+    
+    @media (min-width: 62em) {
+      padding: .75em .5em; 
+    }
+    
+    @media (min-width: 75em) {
+      padding: .75em; 
+    }
+}
+  
+.responsive-table tbody {
+    @media (min-width: 48em) {
+      // Undo display: block 
+      display: table-row-group; 
+    }
+}  
+.responsive-table tbody tr {
+      margin-bottom: 1em;
+      
+      @media (min-width: 48em) {
+        // Undo display: block 
+        display: table-row;
+        border-width: 2px;
+      }
+      
+      &:last-of-type {
+        margin-bottom: 0; 
+      }
+      
+      &:nth-of-type(even) {
+        @media (min-width: 48em) {
+          background-color: rgba(0,0,0,.12);
+        }
+      }
+}
+    
+    
+.responsive-table tbody td {
+      text-align: center;
+      
+      @media (min-width: 48em) {
+        border-bottom: 1px solid;
+        text-align: center; 
+      }
+      
+      &:last-of-type {
+        @media (min-width: 48em) {
+          border-right: 1px solid;
+        } 
+      }
+}
