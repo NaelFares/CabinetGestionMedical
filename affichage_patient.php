@@ -14,17 +14,17 @@
      require('bd_connexion.php');
      ?>
 
-    <!-- modifier le css des tableaux dans style.scss -->
+    <!-- modifier le css du tableau dans style.scss -->
     <div class="container">
         <table class="responsive-table">
             <thead>
             <tr>
-                <th>Civilité</th>
+                <th class="col-civilite">Civilité</th>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Adresse</th>
                 <th>Code Postal</th>
-                <th>Ville</th>
+                <th class="col-adresse">Ville</th>
                 <th>Date de naissance</th>
                 <th>Lieu de naissance</th>
                 <th>N° sécurité sociale</th>
@@ -62,12 +62,16 @@
             }
         }    ?>
         
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+    <!-- modifier le css des boutons dans style.scss -->
     <a href="ajout_patient.php"><button>Ajouter un patient</button></a>
 
-</div>
+    </div>
 </body>
+
+
 </html>
 
 

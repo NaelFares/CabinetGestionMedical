@@ -55,6 +55,8 @@
 
     </tbody>
   </table>
+
+    <!-- modifier le css des boutons dans style.scss -->
   <a href="ajout_medecin.php"><button>Ajouter un medecin</button></a>
 
 </div>
