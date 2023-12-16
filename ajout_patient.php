@@ -4,9 +4,9 @@
         <meta charset="utf-8" />
         <title>Ajout d'un patient</title>
         <link href="style.css" rel="stylesheet">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
        
     </head>
     <body>
@@ -14,15 +14,87 @@
         <?php require('header.php');?>
 
 <div>
+    <!--Debut du formulaire-->
     <div class="row justify-content-center">
         <div class=" col-lg-7 col-md-8">
             <div class="card p-9">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <h2 class="heading text-center">Ajouter un patient</h2>
+                        <h4 class="errormessage text-center">
+                        <?php
+
+                        //print_r($_POST);
+
+                        require('bd_connexion.php');
+                        // Préparation de la requête de test de présence d'un contact
+                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
+
+                        //Test de la requete de présence d'un contact => die si erreur
+                        if($reqExisteDeja == false) {
+                            die("Erreur de préparation de la requête de test de présence d'un patient.");
+                        } else {
+
+                            // Liaison des paramètres
+                            //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
+                            //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
+                            //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
+                            $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+                            $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+
+                            // Exécution de la requête
+                            $reqExisteDeja->execute();
+
+                            //Vérification de la bonne exécution de la requete ExisteDéja
+                            //Si oui on arrete et on affiche une erreur
+                            //Si non on execute la requete
+                            if($reqExisteDeja == false) {
+                                die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
+                            } else {
+
+                                // Récupération du résultat
+                                $nbPatients = $reqExisteDeja->fetchColumn();
+
+                                // Vérification si le patient existe déjà
+                                if ($nbPatients > 0) {
+                                    echo "Ce patient existe déjà dans la base de données.";
+                                } else {
+                                    // Préparation de la requête d'insertion
+                                    $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
+
+                                    // Vérification du fonctionnement de la requete d'insertion
+                                    if($req == false) {
+                                        die('Probleme de la préparation de la requete d\'insertion');
+                                    }
+
+                                    if (empty($_POST['civilite']) || empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['adresse']) || empty($_POST['ville']) || empty($_POST['cp']) || empty($_POST['date_naissance']) || empty($_POST['lieu_naissance']) || empty($_POST['num_secu_sociale'])) {
+                                        echo "Champs manquants.";
+                                    } else {
+
+                                            // Exécution de la requête d'insertion
+                                            $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
+                                            $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+                                            $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+                                            $req->bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
+                                            $req->bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
+                                            $req->bindParam(':cp', $_POST['cp'], PDO::PARAM_STR);
+                                            $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
+                                            $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
+                                            $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
+                                            $req->execute();
+
+                                                //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                                //$req->debugDumpParams();
+
+                                                echo "Le patient a été ajouté avec succès.";
+                                        }
+                                    }   
+                                } }      
+                            ?></h4>
+
                     </div>
                 </div>
-                <form onsubmit="event.preventDefault()" class="form-card" method="POST" action="ajout_patient.php">
+                <form class="form-card" method="post" action="ajout_patient.php">
                     <div class="row justify-content-center form-group">
                         <div class="col-12 px-auto">
                             <fieldset>
@@ -92,77 +164,13 @@
             </div>
         </div>
     </div>
+    <!--Fin du formulaire-->
+
 </div>
 
 
 <!--Serveur-->
-<?php
-    print_r($_POST);
 
-    require('bd_connexion.php');
-
-    // Préparation de la requête de test de présence d'un contact
-    $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
-
-    //Test de la requete de présence d'un contact => die si erreur
-    if($reqExisteDeja == false) {
-        die("Erreur de préparation de la requête de test de présence d'un patient.");
-    } else {
-
-        // Liaison des paramètres
-        //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
-        //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
-        //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-        $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-        $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-
-        // Exécution de la requête
-        $reqExisteDeja->execute();
-
-        //Vérification de la bonne exécution de la requete ExisteDéja
-        //Si oui on arrete et on affiche une erreur
-        //Si non on execute la requete
-        if($reqExisteDeja == false) {
-            die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
-        } else {
-
-            // Récupération du résultat
-            $nbPatients = $reqExisteDeja->fetchColumn();
-
-            // Vérification si le patient existe déjà
-            if ($nbContacts > 0) {
-                echo "Ce patient existe déjà dans la base de données.";
-            } else {
-                // Préparation de la requête d'insertion
-                $req = $linkpdo->prepare('INSERT INTO patient(nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
-
-                // Vérification du fonctionnement de la requete d'insertion
-                if($req == false) {
-                    die('Probleme de la préparation de la requete d\'insertion');
-                } else {
-                    echo ('Ok');
-                }
-
-                        // Exécution de la requête d'insertion
-                        $req->execute(array(
-                            'civilite' => $_POST['civilite'],
-                            'nom' => $_POST['nom'],
-                            'prenom' => $_POST['prenom'],
-                            'adresse' => $_POST['adresse'],
-                            'ville' => $_POST['ville'],
-                            'cp' => $_POST['cp'],
-                            'date_naissance' => $_POST['date_naissance'],
-                            'lieu_naissance' => $_POST['lieu_naissance'],
-                            'num_secu_sociale' => $_POST['num_secu_sociale']
-                        ));
-                            //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                            $req->debugDumpParams();
-
-                            echo "Le patient a été ajouté avec succès.";
-                    }
-                }   
-            }       
-        ?>
                 
     </body>
 
