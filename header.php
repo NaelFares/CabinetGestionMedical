@@ -24,7 +24,7 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Usagers</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Voir la liste</a></li>
-                    <li><a class="dropdown-item" href="#">Ajouter un usager</a></li>
+                    <li><a class="dropdown-item" href="ajout_patient.php">Ajouter un usager</a></li>
                </ul>
                </li>
 
@@ -32,7 +32,7 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Médecins</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Voir la liste</a></li>
-                    <li><a class="dropdown-item" href="#">Ajouter un médecin</a></li>
+                    <li><a class="dropdown-item" href="ajout_medecin.php">Ajouter un médecin</a></li>
                </ul>
                </li>
 
