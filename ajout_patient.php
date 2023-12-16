@@ -87,6 +87,9 @@
                                                 //$req->debugDumpParams();
 
                                                 echo "Le patient a été ajouté avec succès.";
+                                                //pour rediriger vers le tableau d'affichage des l'insertion
+                                                //header("Location: affichage_patient.php?success=1");
+                                                //exit;
                                         }
                                     }   
                                 } }      
