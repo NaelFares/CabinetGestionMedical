@@ -67,6 +67,9 @@
 
     <!-- modifier le css des boutons dans style.scss -->
     <a href="ajout_patient.php"><button>Ajouter un patient</button></a>
+    <a href="modification_patient.php"><button>Modifier un patient</button></a>
+    <a href="suppression_patient.php"><button>Supprimer un patient</button></a>
+
 
     </div>
 </body>
