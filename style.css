@@ -22,7 +22,8 @@ i {
 }
 
 .bg-bluenav {
-	background-color: #2c75ff;
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(44,117,255,1) 0%, rgba(55,218,252,1) 100%);
+
 }
 
 /*lettres du menu*/

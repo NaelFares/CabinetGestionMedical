@@ -11,7 +11,7 @@
     <body>
         <!--Mise en place de l'entête de la page avec un menu horizontal -->
         <header>
-          <nav class="navbar navbar-expand-lg bg-bluenav border-bottom border-body navletters" data-bs-theme="dark">
+          <nav class="navbar navbar-expand-lg bg-bluenav border-body navletters" data-bs-theme="dark">
             <div class="container-fluid" >
                 <a class="navbar-brand" href="#">MedicoGest</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
