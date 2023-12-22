@@ -39,7 +39,7 @@
                <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Consultations</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Voir la liste</a></li>
+                    <li><a class="dropdown-item" href="affichage_consultation.php">Voir la liste</a></li>
                     <li><a class="dropdown-item" href="ajout_consultation.php">Ajouter une consultation</a></li>
                </ul>
                </li>
