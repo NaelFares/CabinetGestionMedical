@@ -77,7 +77,7 @@
             }
 
             // Mettre en surbrillance la ligne sélectionnée
-            ligne.style.backgroundColor = "#2c75ff";
+            ligne.style.backgroundColor = "#83AEFF";
 
             // Activer le bouton de modification
             var boutonModification = document.getElementById("boutonModification");
@@ -129,7 +129,7 @@
                 var lieu_naissance = encodeURIComponent(cells[7].innerText);
                 var num_secu_sociale = encodeURIComponent(cells[8].innerText);
 
-                // Rediriger vers la page de modification avec les informations de la ligne
+                // Rediriger vers la page de suppression avec les informations de la ligne
                 window.location.href = 'suppression_patient.php?id=' +
                     '&civilite=' + civilite +
                     '&nom=' + nom +
