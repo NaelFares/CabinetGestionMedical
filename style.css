@@ -204,6 +204,23 @@ img{
 	color: #000000
 }
 
+.button-n{
+    color: #ffffff;
+    background-color:#2c75ff;;
+    padding:10px 10px;
+    border:unset;
+    cursor:pointer;
+    margin-right: 5px;
+    border-radius: 10px;
+}
+
+.button-n:hover{
+    background: #495ed4;
+    transition: all 0.5s;
+    border-radius: 10px;
+    box-shadow: 0px 1px 1px #414141cc;
+}
+
         
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////

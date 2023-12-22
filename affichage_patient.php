@@ -62,7 +62,7 @@
             </tbody>
         </table>
 
-        <a href="ajout_patient.php"><button>Ajouter un patient</button></a>
+        <a href="ajout_patient.php"><button class="button-n">Ajouter un patient</button></a>
         <a href="modification_patient.php" id="boutonModification" onclick="envoyerVersPageModification()" disabled>Modifier un patient</a>
         <a href="suppression_patient.php" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled>Supprimer un patient</a>
 
