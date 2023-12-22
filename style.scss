@@ -143,6 +143,7 @@ a {
         display: table-row;
         border-width: 2px;
         border-color: white;
+        background-color: white;
       }
       
       &:last-of-type {
@@ -151,7 +152,7 @@ a {
       
       &:nth-of-type(even) {
         @media (min-width: 48em) {
-          background-color: rgba(0,0,0,.12);
+          background-color: rgb(234, 232, 232);
         }
       }
 }

@@ -8,7 +8,8 @@
 
 body{
 	font-family: 'Lato', sans-serif;
-	background: rgb(238, 238, 238);
+	background-image: url('image/fond.jpg');
+	background-size: 25%
 }
 
 * {
