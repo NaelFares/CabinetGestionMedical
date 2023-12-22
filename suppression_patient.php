@@ -90,7 +90,7 @@
                     echo "Erreur dans l'exécution de la requête de suppression.";
                 } else {
                     // Redirigez l'utilisateur vers la page recherche.php
-                    header("Location: recherche.php");
+                    header("Location: affichage_patient.php");
                     exit;
                 }
             }
