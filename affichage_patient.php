@@ -53,6 +53,8 @@
                             echo "<td>{$patient['lieu_naissance']}</td>";
                             echo "<td>{$patient['num_secu_sociale']}</td>";
                             echo "</tr>";
+
+                            
                         }
                     }
                 }
@@ -77,7 +79,7 @@
             }
 
             // Mettre en surbrillance la ligne sélectionnée
-            ligne.style.backgroundColor = "#83AEFF";
+            ligne.style.backgroundColor = "#32aafe";
 
             // Activer le bouton de modification
             var boutonModification = document.getElementById("boutonModification");

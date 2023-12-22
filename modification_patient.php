@@ -111,15 +111,13 @@
     <!--Fin du formulaire-->
 
     <?php
-    if (isset($_POST['modifier_patient']) && $_POST['modifier_patient'] == 'Valider les modifications' ) {
+    if (isset($_POST['boutonModification']) && $_POST['boutonModification'] == 'Valider les modifications' ) {
         // Préparation de la requête d'insertion
         // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
         $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale WHERE nom = :nom AND prenom = :prenom');
 
         if ($reqModification === false) {
-            echo "
-
-Erreur de préparation de la requête.";
+            echo "Erreur de préparation de la requête.";
         } else {
             $reqModification->bindParam(':nouvelleCivilite', $_POST['civilite'], PDO::PARAM_STR);
             $reqModification->bindParam(':nouveauNom', $_POST['nom'], PDO::PARAM_STR);
