@@ -159,6 +159,26 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
+                        <label> Choisissez un medecin traitant</label>
+                            <div class="input-group">
+                                <select name="combo_idM" required>
+                                    <option> </option>
+                                <?php
+                                $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
+                                $reqMedecins->execute();
+                                while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
+                                    $idMedecin = $medecin['id'];
+                                    $civiliteMedecin = $medecin['civilite'];
+                                    $nomMedecin = $medecin['nom'];
+                                    $prenomMedecin = $medecin['prenom'];
+                                    echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
+                                 ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
                             <div class="col-12">
                                  <input type="submit" name="ajouter_patient" value="Ajouter" class="btn-ajouter">
                             </div>

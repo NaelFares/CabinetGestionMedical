@@ -53,8 +53,6 @@
                             echo "<td>{$patient['lieu_naissance']}</td>";
                             echo "<td>{$patient['num_secu_sociale']}</td>";
                             echo "</tr>";
-
-                            
                         }
                     }
                 }
