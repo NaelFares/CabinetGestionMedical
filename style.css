@@ -205,7 +205,7 @@ img{
 	color: #000000
 }
 
-.button-n{
+.button-ajout{
     color: #ffffff;
     background-color:#2c75ff;;
     padding:10px 10px;
@@ -215,8 +215,25 @@ img{
     border-radius: 10px;
 }
 
-.button-n:hover{
-    background: #495ed4;
+.button-ajout:hover{
+    background: rgb(33, 74, 149);
+    transition: all 0.5s;
+    border-radius: 10px;
+    box-shadow: 0px 1px 1px #414141cc;
+}
+
+.button-autre{
+    color: #ffffff;
+    background-color:#777777;;
+    padding:10px 10px;
+    border:unset;
+    cursor:pointer;
+    margin-right: 5px;
+    border-radius: 10px;
+}
+
+.button-autre:hover{
+    background: #5c5c5c;
     transition: all 0.5s;
     border-radius: 10px;
     box-shadow: 0px 1px 1px #414141cc;

@@ -53,8 +53,6 @@
                             echo "<td>{$patient['lieu_naissance']}</td>";
                             echo "<td>{$patient['num_secu_sociale']}</td>";
                             echo "</tr>";
-
-                            
                         }
                     }
                 }
@@ -62,12 +60,14 @@
             </tbody>
         </table>
 
-        <a href="ajout_patient.php"><button class="button-n">Ajouter un patient</button></a>
-        <a href="modification_patient.php" id="boutonModification" onclick="envoyerVersPageModification()" disabled>Modifier un patient</a>
-        <a href="suppression_patient.php" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled>Supprimer un patient</a>
+        <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
+        <a href="modification_patient.php" id="boutonModification" onclick="envoyerVersPageModification()" disabled><button class="button-autre">Modifier un patient</button></a>
+        <a href="suppression_patient.php" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled><button class="button-autre">Supprimer un patient</button></a>
 
     </div>
 
+    
+     <!--JavaScript permettant de selectionner une ligne visuellement et d'ajouter ses informations dans le lien pour modification -->
     <script>
         var ligneSelectionnee = null;
 
