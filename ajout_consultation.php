@@ -27,22 +27,23 @@
                         //print_r($_POST);
 
                         require('bd_connexion.php');
-                        // Préparation de la requête de test de présence d'un medecin
-                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE date_heure = :date_heure AND idP = :idP AND idM = :idM');
 
-                        //Test de la requete de présence d'un medecin => die si erreur
+                        // Préparation de la requête de test de présence d'une consultation
+                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE datee = :datee AND heure = :heure AND idP = :idP AND idM = :idM');
+
+                        //Test de la requete de présence d'une consultation => die si erreur
                         if($reqExisteDeja == false) {
                             die("Erreur de préparation de la requête de test de présence d'une consultation.");
                         } else {
-
+                            
                             // Liaison des paramètres
                             //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
                             //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
                             //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                            $reqExisteDeja->bindParam(':date_heure', $_POST['date_heure'], PDO::PARAM_STR);
+                            $reqExisteDeja->bindParam(':datee', $_POST['datee'], PDO::PARAM_STR);
+                            $reqExisteDeja->bindParam(':heure', $_POST['heure'], PDO::PARAM_STR);
                             $reqExisteDeja->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                             $reqExisteDeja->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
-
 
                             // Exécution de la requête
                             $reqExisteDeja->execute();
@@ -62,19 +63,20 @@
                                     echo "Cette consultation existe déjà dans la base de données.";
                                 } else {
                                     // Préparation de la requête d'insertion
-                                    $req = $linkpdo->prepare('INSERT INTO consultation(date_heure, idP, idM) VALUES(:date_heure, :idP, :idM)');
+                                    $req = $linkpdo->prepare('INSERT INTO consultation(datee, heure, idP, idM) VALUES(:datee, heure, :idP, :idM)');
 
                                     // Vérification du fonctionnement de la requete d'insertion
                                     if($req == false) {
                                         die('Probleme de la préparation de la requete d\'insertion');
                                     }
 
-                                    if (empty($_POST['date_heure']) || empty($_POST['idP']) || empty($_POST['idM'])) {
+                                    if (empty($_POST['datee']) || empty($_POST['heure']) || empty($_POST['idP']) || empty($_POST['idM'])) {
                                         echo "Champs manquants.";
                                     } else {
 
                                             // Exécution de la requête d'insertion
-                                            $req->bindParam(':date_heure', $_POST['date_heure'], PDO::PARAM_STR);
+                                            $req->bindParam(':datee', $_POST['datee'] , PDO::PARAM_STR);
+                                            $req->bindParam(':heure', $_POST['heure'] , PDO::PARAM_STR);
                                             $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                                             $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
                                             $req->execute();
@@ -86,8 +88,8 @@
                                         }
                                     }   
                                 } }      
-                            ?></h4>
-
+                            ?>
+                        </h4>
                     </div>
                 </div>
                 <form class="form-card" method="post" action="ajout_consultation.php">
@@ -98,24 +100,52 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"> <input type="time" name="heure" required> <label>Heure</label> </div>
-                        </div>
+                        <label> Choisissez un creneau </label>
+                            <div class="input-group">
+                                <select name="heure" required>
+                                    <?php
+                                        $interval = new DateInterval('PT30M');
+                                        $start_time = new DateTime('08:00');
+                                        $end_time = new DateTime('17:00');
+
+                                        while ($start_time <= $end_time) {
+                                            $formatted_time = $start_time->format('H:i');
+
+                                            // Exclure les créneaux entre 12h30 et 14h00
+                                            if ($formatted_time !== '12:30' && $formatted_time !== '13:00' && $formatted_time !== '13:30') {
+                                                echo "<option value=\"$formatted_time\">$formatted_time</option>";
+                                            }
+
+                                            $start_time->add($interval);
+                                        }
+                                    ?>
+                                </select>
+                            </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
                         <label> Choisissez un patient</label>
                             <div class="input-group">
-                                <select name="combo_idP" required>
+                                <select name="idP" required>
                                     <?php
                                     $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom FROM patient');
-                                    $reqPatients->execute();
-                                    while ($patient = $reqPatients->fetch(PDO::FETCH_ASSOC)) {
-                                        $idPatient = $patient['id'];
-                                        $civilitePatient = $patient['civilite'];
-                                        $nomPatient = $patient['nom'];
-                                        $prenomPatient = $patient['prenom'];
-                                        echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";}
+                                                        
+                                    if ($reqPatients == false) {
+                                        echo "Erreur dans la préparation de la requête d'affichage.";
+                                    } else {
+                                        $reqPatients->execute();
+                                        if ($reqPatients == false) {
+                                            echo "Erreur dans l'exécution de la requête d'affichage.";
+                                        } else {
+                                                while ($patient = $reqPatients->fetch(PDO::FETCH_ASSOC)) {
+                                                    $idPatient = $patient['idP'];
+                                                    $civilitePatient = $patient['civilite'];
+                                                    $nomPatient = $patient['nom'];
+                                                    $prenomPatient = $patient['prenom'];
+                                                    echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";
+                                                }
+                                        }
+                                    }
                                     ?>
                                 </select>
                             </div>
@@ -125,16 +155,25 @@
                         <div class="col-12">
                         <label> Choisissez un medecin</label>
                             <div class="input-group">
-                                <select name="combo_idM" required>
+                                <select name="idM" required>
                                 <?php
-                                $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
-                                $reqMedecins->execute();
-                                while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
-                                    $idMedecin = $medecin['id'];
-                                    $civiliteMedecin = $medecin['civilite'];
-                                    $nomMedecin = $medecin['nom'];
-                                    $prenomMedecin = $medecin['prenom'];
-                                    echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
+                                $reqMedecins = $linkpdo->prepare('SELECT idM, civilite, nom, prenom FROM medecin');
+                                if ($reqMedecins == false) {
+                                    echo "Erreur dans la préparation de la requête d'affichage.";
+                                } else {
+                                    $reqMedecins->execute();
+                                    if ($reqMedecins == false) {
+                                        echo "Erreur dans l'exécution de la requête d'affichage.";
+                                    } else {
+                                        while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
+                                            $idMedecin = $medecin['idM'];
+                                            $civiliteMedecin = $medecin['civilite'];
+                                            $nomMedecin = $medecin['nom'];
+                                            $prenomMedecin = $medecin['prenom'];
+                                            echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";
+                                        }
+                                    }
+                                }
                                  ?>
                                 </select>
                             </div>

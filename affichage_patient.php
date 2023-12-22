@@ -34,7 +34,7 @@
                 $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale FROM patient');
 
                 if ($reqAffichage == false) {
-                    echo "Erreur dans la préparation de la requête de recherche.";
+                    echo "Erreur dans la préparation de la requête d'affichage.";
                 } else {
                     $reqAffichage->execute();
 
