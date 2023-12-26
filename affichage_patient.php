@@ -61,13 +61,13 @@
         </table>
 
         <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
-        <a href="modification_patient.php" id="boutonModification" onclick="envoyerVersPageModification()" disabled><button class="button-autre">Modifier un patient</button></a>
-        <a href="suppression_patient.php" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled><button class="button-autre">Supprimer un patient</button></a>
+        <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
+        <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
 
     </div>
 
     
-     <!--JavaScript permettant de selectionner une ligne visuellement et d'ajouter ses informations dans le lien pour modification -->
+     <!--Script permettant de selectionner une ligne visuellement et d'ajouter ses informations dans le lien pour modification -->
     <script>
         var ligneSelectionnee = null;
 
@@ -90,6 +90,17 @@
         }
 
         function envoyerVersPageModification() {
+
+                        if (typeof civilite === 'undefined' || typeof nom === 'undefined') {
+                    console.error('Erreur : civilite ou nom non défini');
+                    return;
+                }
+
+                console.log("civilite:", civilite);
+                console.log("nom:", nom);
+
+                //ENLEVER DESSU
+
             if (ligneSelectionnee != null ) {
                 // Récupérer les données de la ligne sélectionnée
                 var cells = ligneSelectionnee.getElementsByTagName("td");
@@ -104,8 +115,8 @@
                 var num_secu_sociale = encodeURIComponent(cells[8].innerText);
 
                 // Rediriger vers la page de modification avec les informations de la ligne
-                window.location.href = 'modification_patient.php?id=' +
-                    '&civilite=' + civilite +
+                window.location.href = 'modification_patient.php?' +
+                    'civilite=' + civilite +
                     '&nom=' + nom +
                     '&prenom=' + prenom +
                     '&adresse=' + adresse +
@@ -113,7 +124,7 @@
                     '&ville=' + ville +
                     '&date_naissance=' + date_naissance +
                     '&lieu_naissance=' + lieu_naissance +
-                    '&num_secu_sociale=' + num_secu_sociale;
+                    '&num_secu_sociale=' + num_secu_sociale; 
             }
         }
 
