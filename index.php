@@ -12,6 +12,10 @@
     <span>MedicoGest</span>
 </div>
 
+<div class="logo">
+    <img src="image/LogoMedicoGest.png" />
+</div>
+
 <div class="container mt-5">
     <div class="row d-flex justify-content-center justify-align-content-center ">
         <div class="col-md-6">
@@ -41,6 +45,17 @@
 
 <style>
 
+/* Style appliqué uniquement à la page d'accueil */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
 body {
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(44,117,255,1) 0%, rgba(55,218,252,1) 100%);
     display : flex;
@@ -56,7 +71,7 @@ body {
     max-width: 2000px; /* Définir une largeur maximale pour la carte */
     margin: 0 auto; /* Centrer la carte */
     justify-content: center;
-    margin-top: 1rem;
+    margin-bottom: 5rem;
 }
 
 .forms-inputs {
@@ -104,6 +119,16 @@ body {
     color: white;
     font-size: 5rem;
     font-family: 'Lato', sans-serif;
+    font-weight: bold;
+}
+
+.logo {
+    display : flex;
+    justify-content: center ;
+}
+
+.logo img{
+    width: 50%;
 }
 
 </style>

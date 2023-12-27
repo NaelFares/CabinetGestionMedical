@@ -7,7 +7,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-       
     </head>
     <body>
 
@@ -161,7 +160,7 @@
                         <div class="col-12">
                         <label> Choisissez un medecin traitant</label>
                             <div class="input-group">
-                                <select name="combo_idM" required>
+                                <select name="combo_idM"> <!--required-->
                                     <option> </option>
                                 <?php
                                 $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
