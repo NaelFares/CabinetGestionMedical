@@ -115,7 +115,7 @@ body {
 }
 
 .titre {
-    margin-top: 4rem;
+    margin-top: 2rem;
     color: white;
     font-size: 5rem;
     font-family: 'Lato', sans-serif;
@@ -128,7 +128,7 @@ body {
 }
 
 .logo img{
-    width: 50%;
+    width: 40%;
 }
 
 </style>

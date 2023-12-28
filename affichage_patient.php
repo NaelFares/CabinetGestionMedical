@@ -23,7 +23,7 @@
                     <th>Prénom</th>
                     <th>Adresse</th>
                     <th>Code Postal</th>
-                    <th class="col-adresse">Ville</th>
+                    <th>Ville</th>
                     <th>Date de naissance</th>
                     <th>Lieu de naissance</th>
                     <th>N° sécurité sociale</th>

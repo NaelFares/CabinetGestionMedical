@@ -32,7 +32,7 @@ body{
       position: fixed;
       z-index: 99;
       width: 100%;
-      background: linear-gradient(90deg, rgba(44,176,255,1) 0%, rgba(44,117,255,1) 74%, rgba(36,37,38,1) 100%);
+      background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(44,117,255,1) 0%, rgba(55,218,252,1) 100%);
       box-shadow: 5px 5px 10px rgba(0.1, 0.1, 0.1, 0.1);
     }
 
