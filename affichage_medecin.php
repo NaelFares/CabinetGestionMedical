@@ -1,66 +1,61 @@
+
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
     <title>Les Medecins</title>
-    <link href="style.scss" rel="stylesheet">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="tableau.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
 </head>
 <body>
-    <?php
+<?php
      require('header.php');
      require('bd_connexion.php');
-     ?>
-
-    <!-- modifier le css du tableau dans style.scss -->
-    <div class="container">
-    <table class="responsive-table">
+     ?>   
+    <br>
+    <div class="containerTab">
+    <table class="tableau">
         <thead>
         <tr>
-            <th>Civilité</th>
+            <th class="col-civilite">Civilité</th>
             <th>Nom</th>
             <th>Prénom</th>
         </tr>
         </thead>
         <tbody>
 
-    <?php
+        <?php
        
-        // Préparation de la requête de recherche des patients
-        $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom FROM medecin');
+       // Préparation de la requête de recherche des patients
+       $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom FROM medecin');
 
-        if ($reqAffichage == false) {
-            echo "Erreur dans la préparation de la requête de recherche.";
-        } else {
-            // Exécution de la requête
-            $reqAffichage->execute();
+       if ($reqAffichage == false) {
+           echo "Erreur dans la préparation de la requête de recherche.";
+       } else {
+           // Exécution de la requête
+           $reqAffichage->execute();
 
-            if ($reqAffichage == false) {
-                echo "Erreur dans l'exécution de la requête d'affichage.";
-            } else {
-                // Récupération des résultats et affichage dans le tableau
-                while ($medecin = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    echo "<th scope=\"row\">{$medecin['civilite']}</th>";
-                    echo "<td>{$medecin['nom']}</td>";
-                    echo "<td>{$medecin['prenom']}</td>";
-                    echo "</tr>";
-                }
-            }
-        }
-                
-    ?>
-
+           if ($reqAffichage == false) {
+               echo "Erreur dans l'exécution de la requête d'affichage.";
+           } else {
+               // Récupération des résultats et affichage dans le tableau
+               while ($medecin = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
+                   echo "<tr>";
+                   echo "<td>{$medecin['civilite']}</td>";
+                   echo "<td>{$medecin['nom']}</td>";
+                   echo "<td>{$medecin['prenom']}</td>";
+                   echo "</tr>";
+               }
+           }
+       }
+               
+   ?>
     </tbody>
   </table>
-
-    <!-- modifier le css des boutons dans style.scss -->
-  <a href="ajout_medecin.php"><button>Ajouter un medecin</button></a>
-
 </div>
+
+<a href="ajout_medecin.php"><button class="button-ajout">Ajouter un medecin</button></a>
+
 </body>
 </html>
-
-

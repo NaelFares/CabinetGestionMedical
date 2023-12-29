@@ -1,0 +1,32 @@
+.containerTab {
+    margin-top: 5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.tableau {
+    border-collapse: collapse;
+    width: 70%; /* Ajusté pour être plus large */
+    background-color: white;
+    
+}
+
+.tableau th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.tableau th {
+    background-color:  rgba(44,117,255,1);
+    color: white;
+
+}
+
+/* Classe pour la colonne Civilité */
+.col-civilite {
+    width: 10%; /* Ajustez la largeur selon vos besoins */
+}
+

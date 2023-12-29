@@ -1,21 +1,20 @@
+
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
     <title>Les Patients</title>
-    <link href="style.scss" rel="stylesheet">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="tableau.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <?php
      require('header.php');
      require('bd_connexion.php');
      ?>
-
-    <div class="container">
-        <table class="responsive-table">
+    <br>
+    <div class="containerTab">
+        <table class="tableau">
             <thead>
                 <tr>
                     <th class="col-civilite">Civilité</th>
@@ -43,7 +42,7 @@
                     } else {
                         while ($patient = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr onclick=\"selectionnerLigne(this)\">";
-                            echo "<th>{$patient['civilite']}</th>";
+                            echo "<td>{$patient['civilite']}</td>";
                             echo "<td>{$patient['nom']}</td>";
                             echo "<td>{$patient['prenom']}</td>";
                             echo "<td>{$patient['adresse']}</td>";
@@ -59,12 +58,12 @@
                 ?>
             </tbody>
         </table>
-
-        <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
-        <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
-        <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
-
     </div>
+    
+    <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
+    <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
+    <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
+
 
     
      <!--Script permettant de selectionner une ligne visuellement et d'ajouter ses informations dans le lien pour modification -->

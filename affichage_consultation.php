@@ -3,20 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <title>Les Consultations</title>
-    <link href="style.scss" rel="stylesheet">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="tableau.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <?php
      require('header.php');
      require('bd_connexion.php');
      ?>
-
+     <br>
     <!-- modifier le css du tableau dans style.scss -->
-    <div class="container">
-    <table class="responsive-table">
+    <div class="containerTab">
+    <table class="tableau">
         <thead>
         <tr>
             <th>Date</th>
@@ -58,10 +56,11 @@
     </tbody>
   </table>
 
-    <!-- modifier le css des boutons dans style.scss -->
-  <a href="ajout_consultation.php"><button>Ajouter une consultation</button></a>
-
+   
 </div>
+ <!-- modifier le css des boutons dans style.scss -->
+ <a href="ajout_consultation.php"><button>Ajouter une consultation</button></a>
+
 </body>
 </html>
 
