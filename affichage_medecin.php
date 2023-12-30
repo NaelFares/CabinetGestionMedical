@@ -13,7 +13,6 @@
      require('header.php');
      require('bd_connexion.php');
      ?>   
-    <br>
     <div class="containerTab">
     <table class="tableau">
         <thead>
