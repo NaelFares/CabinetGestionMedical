@@ -62,7 +62,7 @@
                                             echo "Ce patient existe déjà dans la base de données.";
                                         } else {
                                             // Préparation de la requête d'insertion
-                                            $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
+                                            $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale, idM) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale, :idM)');
 
                                             // Vérification du fonctionnement de la requete d'insertion
                                             if($req == false) {
@@ -83,6 +83,8 @@
                                                     $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
                                                     $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
                                                     $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
+                                                    $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+
                                                     // Exécution de la requête d'insertion
                                                     $req->execute();
 
@@ -163,18 +165,18 @@
                                 <div class="col-12">
                                 <label> Choisissez un medecin traitant</label>
                                     <div class="input-group">
-                                        <select name="combo_idM"> <!--required-->
+                                        <select name="idM"> <!--required-->
                                             <option> </option>
-                                        <?php
-                                        $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
-                                        $reqMedecins->execute();
-                                        while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
-                                            $idMedecin = $medecin['id'];
-                                            $civiliteMedecin = $medecin['civilite'];
-                                            $nomMedecin = $medecin['nom'];
-                                            $prenomMedecin = $medecin['prenom'];
-                                            echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
-                                        ?>
+                                            <?php
+                                            $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
+                                            $reqMedecins->execute();
+                                            while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
+                                                $idMedecin = $medecin['idM'];
+                                                $civiliteMedecin = $medecin['civilite'];
+                                                $nomMedecin = $medecin['nom'];
+                                                $prenomMedecin = $medecin['prenom'];
+                                                echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
