@@ -29,7 +29,7 @@
                         require('bd_connexion.php');
 
                         // Préparation de la requête de test de présence d'une consultation
-                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE datee = :datee AND heure = :heure AND idP = :idP AND idM = :idM');
+                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE date_heure = :date_heure AND heure_fin = :heure_fin AND idP = :idP AND idM = :idM');
 
                         //Test de la requete de présence d'une consultation => die si erreur
                         if($reqExisteDeja == false) {
@@ -40,8 +40,8 @@
                             //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
                             //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
                             //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                            $reqExisteDeja->bindParam(':datee', $_POST['datee'], PDO::PARAM_STR);
-                            $reqExisteDeja->bindParam(':heure', $_POST['heure'], PDO::PARAM_STR);
+                            $reqExisteDeja->bindParam(':date_heure', $_POST['date_heure'], PDO::PARAM_STR);
+                            $reqExisteDeja->bindParam(':heure_fin', $_POST['heure_fin'], PDO::PARAM_STR);
                             $reqExisteDeja->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                             $reqExisteDeja->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
 
@@ -63,20 +63,20 @@
                                     echo "Cette consultation existe déjà dans la base de données.";
                                 } else {
                                     // Préparation de la requête d'insertion
-                                    $req = $linkpdo->prepare('INSERT INTO consultation(datee, heure, idP, idM) VALUES(:datee, heure, :idP, :idM)');
+                                    $req = $linkpdo->prepare('INSERT INTO consultation(date_heure, heure_fin, idP, idM) VALUES(:date_heure, :heure_fin, :idP, :idM)');
 
                                     // Vérification du fonctionnement de la requete d'insertion
                                     if($req == false) {
                                         die('Probleme de la préparation de la requete d\'insertion');
                                     }
 
-                                    if (empty($_POST['datee']) || empty($_POST['heure']) || empty($_POST['idP']) || empty($_POST['idM'])) {
+                                    if (empty($_POST['date_heure']) || empty($_POST['heure_fin']) || empty($_POST['idP']) || empty($_POST['idM'])) {
                                         echo "Champs manquants.";
                                     } else {
 
                                             // Exécution de la requête d'insertion
-                                            $req->bindParam(':datee', $_POST['datee'] , PDO::PARAM_STR);
-                                            $req->bindParam(':heure', $_POST['heure'] , PDO::PARAM_STR);
+                                            $req->bindParam(':date_heure', $_POST['date_heure'] , PDO::PARAM_STR);
+                                            $req->bindParam(':heure_fin', $_POST['heure_fin'] , PDO::PARAM_STR);
                                             $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                                             $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
                                             $req->execute();
@@ -128,8 +128,7 @@
                             <div class="input-group">
                                 <select name="idP" required>
                                     <?php
-                                    $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom FROM patient');
-                                                        
+                                    $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom, idM FROM patient');
                                     if ($reqPatients == false) {
                                         echo "Erreur dans la préparation de la requête d'affichage.";
                                     } else {
@@ -142,7 +141,8 @@
                                                     $civilitePatient = $patient['civilite'];
                                                     $nomPatient = $patient['nom'];
                                                     $prenomPatient = $patient['prenom'];
-                                                    echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";
+                                                    $medecinRefPatient = $patient['idM'];
+                                                    echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient $medecinRefPatient</option>";
                                                 }
                                         }
                                     }
@@ -156,6 +156,9 @@
                         <label> Choisissez un medecin</label>
                             <div class="input-group">
                                 <select name="idM" required>
+                                    <?php echo "<option value=</option>";?>
+
+                                    <option> </option>
                                 <?php
                                 $reqMedecins = $linkpdo->prepare('SELECT idM, civilite, nom, prenom FROM medecin');
                                 if ($reqMedecins == false) {
@@ -170,7 +173,9 @@
                                             $civiliteMedecin = $medecin['civilite'];
                                             $nomMedecin = $medecin['nom'];
                                             $prenomMedecin = $medecin['prenom'];
+                                           
                                             echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";
+
                                         }
                                     }
                                 }
