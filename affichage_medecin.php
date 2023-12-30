@@ -9,10 +9,15 @@
 
 </head>
 <body>
-<?php
-     require('header.php');
-     require('bd_connexion.php');
-     ?>   
+
+    <?php
+        require('header.php');
+        require('bd_connexion.php');
+     ?> 
+
+    <!--Espace vide pour permettre de placer le header en haut de page-->
+    <div class="vide-haut-page"> </div>
+
     <div class="containerTab">
     <table class="tableau">
         <thead>

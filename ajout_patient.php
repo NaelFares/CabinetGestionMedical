@@ -11,185 +11,188 @@
     <body>
 
         <?php require('header.php');?>
+        
+        <!--Espace vide pour permettre de placer le header en haut de page-->
+        <div class="vide-haut-page"> </div>
 
-<div>
-    <!--Debut du formulaire-->
-    <div class="row justify-content-center">
-        <div class=" col-lg-7 col-md-8">
-            <div class="card p-9">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <h2 class="heading text-center">Ajouter un patient</h2>
-                        <h4 class="errormessage text-center">
-                        <?php
+        <div>
+            <!--Debut du formulaire-->
+            <div class="row justify-content-center">
+                <div class=" col-lg-7 col-md-8">
+                    <div class="card p-9">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <h2 class="heading text-center">Ajouter un patient</h2>
+                                <h4 class="errormessage text-center">
+                                <?php
 
-                        //print_r($_POST);
+                                //print_r($_POST);
 
-                        require('bd_connexion.php');
-                        // Préparation de la requête de test de présence d'un contact
-                        $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
+                                require('bd_connexion.php');
+                                // Préparation de la requête de test de présence d'un contact
+                                $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE nom = :nom AND prenom = :prenom');
 
-                        //Test de la requete de présence d'un contact => die si erreur
-                        if($reqExisteDeja == false) {
-                            die("Erreur de préparation de la requête de test de présence d'un patient.");
-                        } else {
-
-                            // Liaison des paramètres
-                            //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
-                            //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
-                            //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                            $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-                            $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-
-                            // Exécution de la requête
-                            $reqExisteDeja->execute();
-
-                            //Vérification de la bonne exécution de la requete ExisteDéja
-                            //Si oui on arrete et on affiche une erreur
-                            //Si non on execute la requete
-                            if($reqExisteDeja == false) {
-                                die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
-                            } else {
-
-                                // Récupération du résultat
-                                $nbPatients = $reqExisteDeja->fetchColumn();
-
-                                // Vérification si le patient existe déjà
-                                if ($nbPatients > 0) {
-                                    echo "Ce patient existe déjà dans la base de données.";
+                                //Test de la requete de présence d'un contact => die si erreur
+                                if($reqExisteDeja == false) {
+                                    die("Erreur de préparation de la requête de test de présence d'un patient.");
                                 } else {
-                                    // Préparation de la requête d'insertion
-                                    $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
 
-                                    // Vérification du fonctionnement de la requete d'insertion
-                                    if($req == false) {
-                                        die('Probleme de la préparation de la requete d\'insertion');
-                                    }
+                                    // Liaison des paramètres
+                                    //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
+                                    //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
+                                    //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
+                                    $reqExisteDeja->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+                                    $reqExisteDeja->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
 
-                                    if (empty($_POST['civilite']) || empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['adresse']) || empty($_POST['ville']) || empty($_POST['cp']) || empty($_POST['date_naissance']) || empty($_POST['lieu_naissance']) || empty($_POST['num_secu_sociale'])) {
-                                        echo "Champs manquants.";
+                                    // Exécution de la requête
+                                    $reqExisteDeja->execute();
+
+                                    //Vérification de la bonne exécution de la requete ExisteDéja
+                                    //Si oui on arrete et on affiche une erreur
+                                    //Si non on execute la requete
+                                    if($reqExisteDeja == false) {
+                                        die("Erreur dans l'exécution de la requête de test de présence d'un patient.");
                                     } else {
 
-                                           // Attribution des paramètres
-                                            $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
-                                            $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-                                            $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-                                            $req->bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                                            $req->bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
-                                            $req->bindParam(':cp', $_POST['cp'], PDO::PARAM_STR);
-                                            $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
-                                            $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
-                                            $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
-                                             // Exécution de la requête d'insertion
-                                            $req->execute();
+                                        // Récupération du résultat
+                                        $nbPatients = $reqExisteDeja->fetchColumn();
 
-                                                //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                                                //$req->debugDumpParams();
+                                        // Vérification si le patient existe déjà
+                                        if ($nbPatients > 0) {
+                                            echo "Ce patient existe déjà dans la base de données.";
+                                        } else {
+                                            // Préparation de la requête d'insertion
+                                            $req = $linkpdo->prepare('INSERT INTO patient(civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale) VALUES(:civilite, :nom, :prenom, :adresse, :ville, :cp, :date_naissance, :lieu_naissance, :num_secu_sociale)');
 
-                                                echo "Le patient a été ajouté avec succès.";
-                                                //pour rediriger vers le tableau d'affichage des l'insertion
-                                                //header("Location: affichage_patient.php?success=1");
-                                                //exit;
-                                        }
-                                    }   
-                                } }      
-                            ?></h4>
+                                            // Vérification du fonctionnement de la requete d'insertion
+                                            if($req == false) {
+                                                die('Probleme de la préparation de la requete d\'insertion');
+                                            }
 
+                                            if (empty($_POST['civilite']) || empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['adresse']) || empty($_POST['ville']) || empty($_POST['cp']) || empty($_POST['date_naissance']) || empty($_POST['lieu_naissance']) || empty($_POST['num_secu_sociale'])) {
+                                                echo "Champs manquants.";
+                                            } else {
+
+                                                // Attribution des paramètres
+                                                    $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
+                                                    $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+                                                    $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+                                                    $req->bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
+                                                    $req->bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
+                                                    $req->bindParam(':cp', $_POST['cp'], PDO::PARAM_STR);
+                                                    $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
+                                                    $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
+                                                    $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
+                                                    // Exécution de la requête d'insertion
+                                                    $req->execute();
+
+                                                        //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                                        //$req->debugDumpParams();
+
+                                                        echo "Le patient a été ajouté avec succès.";
+                                                        //pour rediriger vers le tableau d'affichage des l'insertion
+                                                        //header("Location: affichage_patient.php?success=1");
+                                                        //exit;
+                                                }
+                                            }   
+                                        } }      
+                                    ?></h4>
+
+                            </div>
+                        </div>
+                        <form class="form-card" method="post" action="ajout_patient.php">
+                            <div class="row justify-content-center form-group">
+                                <div class="col-12 px-auto">
+                                    <fieldset>
+                                        <div class="custom-control custom-radio custom-control-inline"> 
+                                            <input id="customRadioInline1" type="radio" name="civilite" value="Mme" class="custom-control-input" checked="true"> 
+                                            <label for="customRadioInline1" class="custom-control-label label-radio">Mme</label> 
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline"> 
+                                            <input id="customRadioInline2" type="radio" name="civilite" value="M." class="custom-control-input"> 
+                                            <label for="customRadioInline2" class="custom-control-label label-radio">M.</label> 
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="input-group"> <input type="text" name="nom" required> <label>Nom</label> </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="input-group"> <input type="text" name="prenom" required> <label>Prénom</label> </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="input-group"> <input type="text" name="adresse" required> <label>Adresse</label> </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="input-group"> <input type="text" minlength="5" maxlength="5"  name="cp" required> <label>Code Postal</label> </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="input-group"> <input type="text" name="ville" required> <label>Ville</label> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="input-group"> <input type="date"  name="date_naissance" required> <label>Date de naissance</label> </div>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="input-group"> <input type="text" name="lieu_naissance" required> <label>Lieu de naissance</label> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="input-group"> <input type="text" name="num_secu_sociale" minlength="13" maxlength="13" required> <label>Numéro de sécurité sociale </label> </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                <label> Choisissez un medecin traitant</label>
+                                    <div class="input-group">
+                                        <select name="combo_idM"> <!--required-->
+                                            <option> </option>
+                                        <?php
+                                        $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
+                                        $reqMedecins->execute();
+                                        while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
+                                            $idMedecin = $medecin['id'];
+                                            $civiliteMedecin = $medecin['civilite'];
+                                            $nomMedecin = $medecin['nom'];
+                                            $prenomMedecin = $medecin['prenom'];
+                                            echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="col-12">
+                                        <input type="submit" name="ajouter_patient" value="Ajouter" class="btn-ajouter">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <form class="form-card" method="post" action="ajout_patient.php">
-                    <div class="row justify-content-center form-group">
-                        <div class="col-12 px-auto">
-                            <fieldset>
-                                <div class="custom-control custom-radio custom-control-inline"> 
-                                    <input id="customRadioInline1" type="radio" name="civilite" value="Mme" class="custom-control-input" checked="true"> 
-                                    <label for="customRadioInline1" class="custom-control-label label-radio">Mme</label> 
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline"> 
-                                    <input id="customRadioInline2" type="radio" name="civilite" value="M." class="custom-control-input"> 
-                                    <label for="customRadioInline2" class="custom-control-label label-radio">M.</label> 
-                                </div>
-                             </fieldset>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"> <input type="text" name="nom" required> <label>Nom</label> </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"> <input type="text" name="prenom" required> <label>Prénom</label> </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"> <input type="text" name="adresse" required> <label>Adresse</label> </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="input-group"> <input type="text" minlength="5" maxlength="5"  name="cp" required> <label>Code Postal</label> </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="input-group"> <input type="text" name="ville" required> <label>Ville</label> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="input-group"> <input type="date"  name="date_naissance" required> <label>Date de naissance</label> </div>
-                                </div>
-                                <div class="col-8">
-                                    <div class="input-group"> <input type="text" name="lieu_naissance" required> <label>Lieu de naissance</label> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"> <input type="text" name="num_secu_sociale" minlength="13" maxlength="13" required> <label>Numéro de sécurité sociale </label> </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                        <label> Choisissez un medecin traitant</label>
-                            <div class="input-group">
-                                <select name="combo_idM"> <!--required-->
-                                    <option> </option>
-                                <?php
-                                $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
-                                $reqMedecins->execute();
-                                while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
-                                    $idMedecin = $medecin['id'];
-                                    $civiliteMedecin = $medecin['civilite'];
-                                    $nomMedecin = $medecin['nom'];
-                                    $prenomMedecin = $medecin['prenom'];
-                                    echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
-                                 ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="col-12">
-                                 <input type="submit" name="ajouter_patient" value="Ajouter" class="btn-ajouter">
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
-    <!--Fin du formulaire-->
+            <!--Fin du formulaire-->
 
-</div>
+        </div>
 
 
 <!--Serveur-->

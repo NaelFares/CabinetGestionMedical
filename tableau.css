@@ -1,32 +1,41 @@
 .containerTab {
-    margin-top: 5em;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: auto; /* Pour la scrollbar */
 }
 
 .tableau {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
     border-collapse: collapse;
-    width: 70%; /* Ajusté pour être plus large */
+    width: 85%; /* Ajusté pour être plus large */
     background-color: white;
-    
+    box-shadow: 5px 5px 10px rgba(0.1, 0.1, 0.1, 0.1);
 }
 
 .tableau th, td {
-    border: 1px solid #ddd;
+    border: 0.5px solid #dddddd26;
     padding: 8px;
     text-align: center;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
 }
 
 .tableau th {
-    background-color:  rgba(44,117,255,1);
+    background-color:  rgb(46, 46, 46);
     color: white;
+    font-weight:normal;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
 
+.div-tbody {
+  max-height: 40px !important; /* Définissez la hauteur maximale souhaitée pour le corps du tableau */
+  overflow-y: auto; /* Ajoutez une barre de défilement vertical si nécessaire */
 }
 
 /* Classe pour la colonne Civilité */
 .col-civilite {
-    width: 10%; /* Ajustez la largeur selon vos besoins */
+    width: 10%; /* Ajuster la largeur selon les besoins */
 }
 

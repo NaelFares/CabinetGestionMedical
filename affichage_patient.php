@@ -8,10 +8,15 @@
         <link href="style.css" rel="stylesheet">
     </head>
     <body>
+
         <?php
         require('header.php');
         require('bd_connexion.php');
         ?>
+
+        <!--Espace vide pour permettre de placer le header en haut de page-->
+        <div class="vide-haut-page"> </div>
+
         <div class="containerTab">
             <table class="tableau">
                 <thead>
@@ -27,41 +32,45 @@
                         <th>N° sécurité sociale</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale FROM patient');
-
-                    if ($reqAffichage == false) {
-                        echo "Erreur dans la préparation de la requête d'affichage.";
-                    } else {
-                        $reqAffichage->execute();
+                <div class="div-tbody">
+                    <tbody>
+                        <?php
+                        $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale FROM patient');
 
                         if ($reqAffichage == false) {
-                            echo "Erreur dans l'exécution de la requête d'affichage.";
+                            echo "Erreur dans la préparation de la requête d'affichage.";
                         } else {
-                            while ($patient = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr onclick=\"selectionnerLigne(this)\">";
-                                echo "<td>{$patient['civilite']}</td>";
-                                echo "<td>{$patient['nom']}</td>";
-                                echo "<td>{$patient['prenom']}</td>";
-                                echo "<td>{$patient['adresse']}</td>";
-                                echo "<td>{$patient['cp']}</td>";
-                                echo "<td>{$patient['ville']}</td>";
-                                echo "<td>{$patient['date_naissance']}</td>";
-                                echo "<td>{$patient['lieu_naissance']}</td>";
-                                echo "<td>{$patient['num_secu_sociale']}</td>";
-                                echo "</tr>";
+                            $reqAffichage->execute();
+
+                            if ($reqAffichage == false) {
+                                echo "Erreur dans l'exécution de la requête d'affichage.";
+                            } else {
+                                while ($patient = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<tr onclick=\"selectionnerLigne(this)\">";
+                                    echo "<td>{$patient['civilite']}</td>";
+                                    echo "<td>{$patient['nom']}</td>";
+                                    echo "<td>{$patient['prenom']}</td>";
+                                    echo "<td>{$patient['adresse']}</td>";
+                                    echo "<td>{$patient['cp']}</td>";
+                                    echo "<td>{$patient['ville']}</td>";
+                                    echo "<td>{$patient['date_naissance']}</td>";
+                                    echo "<td>{$patient['lieu_naissance']}</td>";
+                                    echo "<td>{$patient['num_secu_sociale']}</td>";
+                                    echo "</tr>";
+                                }
                             }
                         }
-                    }
-                    ?>
-                </tbody>
+                        ?>
+                    </tbody>
+                </div>
             </table>
         </div>
         
-        <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
-        <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
-        <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
+        <div class="button-sous-tableau">
+            <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
+            <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
+            <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
+        </div>
 
     </body>
 
