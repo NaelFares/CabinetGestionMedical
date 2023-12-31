@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Vérifier si l'utilisateur est authentifié
+if (!isset($_SESSION["login"])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
@@ -103,6 +113,7 @@
             <a href="ajout_consultation.php"><button class="button-ajout">Ajouter une consultation</button></a>
             <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier une consultation</a>
             <a href="" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer une consultation</a>
+            
         </div>
 </body>
 </html>
