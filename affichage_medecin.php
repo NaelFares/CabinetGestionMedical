@@ -6,6 +6,7 @@
         <title>Les Medecins</title>
         <link href="tableau.css" rel="stylesheet">
         <link href="style.css" rel="stylesheet">
+        <script src="selectionDeLigne.js"></script>
     </head>
     <body>
 
@@ -44,7 +45,7 @@
                         } else {
                             // Récupération des résultats et affichage dans le tableau
                             while ($medecin = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr>";
+                                echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
                                 echo "<td>{$medecin['civilite']}</td>";
                                 echo "<td>{$medecin['nom']}</td>";
                                 echo "<td>{$medecin['prenom']}</td>";
@@ -64,7 +65,13 @@
             <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un medecin</a>
             <a href="suppression_medecin.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un medecin</a>
         </div>
-
     </body>
-
 </html>
+
+<style>
+.tableau {
+    border-collapse: collapse;
+    background-color: white;
+    width: 900px /* Pour ne pas avoir la scrollbar en bas*/
+}
+</style>
