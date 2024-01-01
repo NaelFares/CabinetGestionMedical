@@ -1,3 +1,3 @@
 <?php
-require('verificationUtilisateur.php');
+require('module/verificationUtilisateur.php');
 ?>

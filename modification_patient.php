@@ -1,6 +1,6 @@
 
 <?php
-require('verificationUtilisateur.php');
+require('module/verificationUtilisateur.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -16,8 +16,8 @@ require('verificationUtilisateur.php');
 
 <body>
     <?php
-    require('bd_connexion.php');
-    require('header.php');
+    require('module/bd_connexion.php');
+    require('module/header.php');
 
     if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
         // Récupérez les valeurs des paramètres GET

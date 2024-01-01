@@ -1,12 +1,12 @@
 <?php
-require('verificationUtilisateur.php');
+require('module/verificationUtilisateur.php');
 ?>
 <!DOCTYPE HTML>
 <html lang="fr">
     <head>
         <meta charset="utf-8" />
         <title>Suppresion d'un patient</title>
-        <link href="style.scss" rel="stylesheet">
+        <link href="style/style.scss" rel="stylesheet">
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -14,6 +14,7 @@ require('verificationUtilisateur.php');
     <body>
 
         <?php
+        require('module/bd_connexion.php');
 
         if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['ville']) && !empty($_GET['cp']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
             // Récupérez les valeurs des paramètres GET
@@ -85,7 +86,7 @@ require('verificationUtilisateur.php');
 
 
         <?php
-        require('bd_connexion.php');
+        
 
         // Si le bouton confirmer à été pressé
         if (isset($_POST['bouttonSupression'])) {

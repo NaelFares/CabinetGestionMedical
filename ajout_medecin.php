@@ -1,5 +1,5 @@
 <?php
-require('verificationUtilisateur.php');
+require('module/verificationUtilisateur.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -7,7 +7,7 @@ require('verificationUtilisateur.php');
     <head>
         <meta charset="utf-8" />
         <title>Ajout d'un medecin</title>
-        <link href="style.css" rel="stylesheet">
+        <link href="style/style.css" rel="stylesheet">
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -15,7 +15,7 @@ require('verificationUtilisateur.php');
     </head>
     <body>
 
-        <?php require('header.php');?>
+        <?php require('module/header.php');?>
 
         <!--Espace vide pour permettre de placer le header en haut de page-->
         <div class="vide-haut-page"> </div>
@@ -33,7 +33,7 @@ require('verificationUtilisateur.php');
 
                                 //print_r($_POST);
 
-                                require('bd_connexion.php');
+                                require('module/bd_connexion.php');
                                 // Préparation de la requête de test de présence d'un medecin
                                 $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM medecin WHERE nom = :nom AND prenom = :prenom');
 

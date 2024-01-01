@@ -1,6 +1,6 @@
 
 <?php
-require('verificationUtilisateur.php');
+require('module/verificationUtilisateur.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -8,15 +8,15 @@ require('verificationUtilisateur.php');
     <head>
         <meta charset="utf-8" />
         <title>Les Patients</title>
-        <link href="tableau.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-        <script src="selectionDeLigne.js"></script>
+        <link href="style/tableau.css" rel="stylesheet">
+        <link href="style/style.css" rel="stylesheet">
+        <script src="js/selectionDeLigne.js"></script>
     </head>
     <body>
 
         <?php
-        require('header.php');
-        require('bd_connexion.php');
+        require('module/header.php');
+        require('module/bd_connexion.php');
         ?>
 
         <!--Espace vide pour permettre de placer le header en haut de page-->
@@ -51,7 +51,7 @@ require('verificationUtilisateur.php');
                             echo "Erreur dans l'exécution de la requête d'affichage.";
                         } else {
                             while ($patient = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr onclick=\"selectionnerLigne(this)\">";
+                                echo "<tr onclick=\"js/selectionnerLigne(this)\">";
                                 echo "<td>{$patient['civilite']}</td>";
                                 echo "<td>{$patient['nom']}</td>";
                                 echo "<td>{$patient['prenom']}</td>";
