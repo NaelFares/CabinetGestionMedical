@@ -1,3 +1,6 @@
+<?php
+require('verificationUtilisateur.php');
+?>
 
 <!DOCTYPE HTML>
 <html lang="fr">

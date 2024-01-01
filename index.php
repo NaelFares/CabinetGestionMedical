@@ -8,7 +8,7 @@
             $login = htmlspecialchars($_POST["login"]); // Eviter les script html et s'assurer qu'il s'agisse bien de caractères
             $mdp = $_POST["mdp"];
             // Vérification pas sécurisé car le login et le mdp sont visibles (à remplacer par une vérification sécurisée si jamais avec la BD)
-            if ($login == 'prof' && $mdp == '$iutinfo') {
+            if ($login == 'Prof' && $mdp == '$iutinfo') {
                 // Authentification réussie
                 $_SESSION["login"] = $login;
                 header("Location: affichage_consultation.php"); // Redirigez vers la page d'affichage des consultations après la connexion

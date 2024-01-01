@@ -40,6 +40,14 @@
     top: 0px;
 }
 
+.tableau td {
+    cursor: pointer;
+}
+
+.tableau tr:hover {
+    background-color: rgba(0, 0, 0, 0.081);
+}
+
 /* Classe pour la colonne Civilité */
 .col-civilite {
     width: 10%; /* Ajuster la largeur selon les besoins */
