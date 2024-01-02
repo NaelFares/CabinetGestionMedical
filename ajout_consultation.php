@@ -191,7 +191,7 @@ require('module/verificationUtilisateur.php');
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="col-12">
-                                 <input type="submit" name="ajouter_consultation" value="Ajouter" class="btn-ajouter">
+                                 <input type="submit" name="ajouter_consultation" value="Ajouter" class="btn">
                             </div>
                         </div>
                     </div>

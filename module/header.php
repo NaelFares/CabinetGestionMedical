@@ -45,9 +45,9 @@
                 <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
             </div>
             <div class="utilisateur">
-                    <img width=6% src="image/icone_utilisateur.png" />
+                    <img width=5% src="image/icone_utilisateur.png" />
                     <p> <?php echo $_SESSION['login']; ?> </p> <!-- Permet d'afficher le nom de l'utilisateur dans la session actuelle -->
-                    <a class="deconnexion" href="deconnexion.php">Déconnexion</a> <!-- Bouton de deconnexion qui renvoit à la page de connexion -->
+                    <a class="deconnexion" href="module/deconnexion.php">Déconnexion</a> <!-- Bouton de deconnexion qui renvoit à la page de connexion -->
                 </div>
         </nav>
      </header>

@@ -25,15 +25,37 @@
 
     function envoyerVersPageModification() {
 
-                    if (typeof civilite === 'undefined' || typeof nom === 'undefined') {
-                console.error('Erreur : civilite ou nom non défini');
-                return;
-            }
+        if (ligneSelectionnee != null ) {
+            // Récupérer les données de la ligne sélectionnée
+            var cells = ligneSelectionnee.getElementsByTagName("td");
+            var civilite = encodeURIComponent(cells[0].innerText);
+            var nom = encodeURIComponent(cells[1].innerText);
+            var prenom = encodeURIComponent(cells[2].innerText);
+            var adresse = encodeURIComponent(cells[3].innerText);
+            var cp = encodeURIComponent(cells[4].innerText);
+            var ville = encodeURIComponent(cells[5].innerText);
+            var date_naissance = encodeURIComponent(cells[6].innerText);
+            var lieu_naissance = encodeURIComponent(cells[7].innerText);
+            var num_secu_sociale = encodeURIComponent(cells[8].innerText);
 
-            console.log("civilite:", civilite);
-            console.log("nom:", nom);
+            // Construire l'URL avec les paramètres
+            var url = "modification_patient.php?" +
+            "civilite=" + civilite +
+            "&nom=" + nom +
+            "&prenom=" + prenom +
+            "&adresse=" + adresse +
+            "&cp=" + cp +
+            "&ville=" + ville +
+            "&date_naissance=" + date_naissance +
+            "&lieu_naissance=" + lieu_naissance +
+            "&num_secu_sociale=" + num_secu_sociale;
 
-            //ENLEVER DESSU
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
+        }
+    }
+
+    function envoyerVersPageSuppression() {
 
         if (ligneSelectionnee != null ) {
             // Récupérer les données de la ligne sélectionnée
@@ -48,17 +70,20 @@
             var lieu_naissance = encodeURIComponent(cells[7].innerText);
             var num_secu_sociale = encodeURIComponent(cells[8].innerText);
 
-            // Rediriger vers la page de modification avec les informations de la ligne
-            window.location.href = 'modification_patient.php?' +
-                'civilite=' + civilite +
-                '&nom=' + nom +
-                '&prenom=' + prenom +
-                '&adresse=' + adresse +
-                '&cp=' + cp +
-                '&ville=' + ville +
-                '&date_naissance=' + date_naissance +
-                '&lieu_naissance=' + lieu_naissance +
-                '&num_secu_sociale=' + num_secu_sociale; 
+            // Construire l'URL avec les paramètres
+            var url = "suppression_patient.php?" +
+            "civilite=" + civilite +
+            "&nom=" + nom +
+            "&prenom=" + prenom +
+            "&adresse=" + adresse +
+            "&cp=" + cp +
+            "&ville=" + ville +
+            "&date_naissance=" + date_naissance +
+            "&lieu_naissance=" + lieu_naissance +
+            "&num_secu_sociale=" + num_secu_sociale;
+
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
         }
     }
 

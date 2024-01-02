@@ -12,7 +12,6 @@ require('module/verificationUtilisateur.php');
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-
         <?php
         require('module/bd_connexion.php');
 
@@ -30,6 +29,8 @@ require('module/verificationUtilisateur.php');
         }
         ?>
 
+         <!--Espace vide pour permettre de placer le header en haut de page-->
+         <div class="vide-haut-page"> </div>
         <br>
         <h1> Supprimer un patient </h1>
         <div class="container">

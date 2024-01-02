@@ -51,7 +51,7 @@ require('module/verificationUtilisateur.php');
                             echo "Erreur dans l'exécution de la requête d'affichage.";
                         } else {
                             while ($patient = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr onclick=\"js/selectionnerLigne(this)\">";
+                                echo "<tr onclick=\"selectionnerLigne(this)\">";
                                 echo "<td>{$patient['civilite']}</td>";
                                 echo "<td>{$patient['nom']}</td>";
                                 echo "<td>{$patient['prenom']}</td>";
@@ -73,10 +73,9 @@ require('module/verificationUtilisateur.php');
         
         <div class="button-sous-tableau">
             <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
-            <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
-            <a href="suppression_patient.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
+            <a class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
+            <a class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
         </div>
-
     </body>
 
 </html>

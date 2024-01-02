@@ -48,7 +48,7 @@ require('module/verificationUtilisateur.php');
                         } else {
                             // Récupération des résultats et affichage dans le tableau
                             while ($medecin = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<tr onclick=\"js/selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
+                                echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
                                 echo "<td>{$medecin['civilite']}</td>";
                                 echo "<td>{$medecin['nom']}</td>";
                                 echo "<td>{$medecin['prenom']}</td>";

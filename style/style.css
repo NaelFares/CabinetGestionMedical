@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 body{
-	background-image: url('image/fond.jpg');
+	background-image: url('../image/fond.jpg'); /* Préciser le répertoire parent avec ../ */
 	background-size: 25%;
 }
 
@@ -63,7 +63,7 @@ body{
       cursor:pointer;
       border-radius: 10px;
       font-weight: 500;
-      font-size: 18px;
+      font-size: 15px;
       font-weight: normal;
     }
 
@@ -367,10 +367,13 @@ body{
 
 
 .errormessage{
-	font-size: 30px;
-	margin-top: 25px;
-	margin-bottom: 30px;
-	padding-left: 20px;
+	font-size: 20px;
+	margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.errormessage p{
+	color: red;
 }
 
 .heading{
@@ -473,7 +476,7 @@ input:focus + label
 	background-color: #3F51B5
 }
         
-.btn-ajouter {
+.btn {
     background-color: #2c75ff;
     width: 100%;
     overflow: hidden;
@@ -483,8 +486,13 @@ input:focus + label
     border-radius: 6px;
     padding-top: 30px;
     padding-left: 25px;
-	color: white !important;
-	font-size: 1rem !important;
+	  color: white !important;
+	  font-size: 1rem !important;
+}
+
+.btn:hover {
+  background-color: #0b51d4;
+  transition: all 0.5s;
 }
         
 .fit-image{
