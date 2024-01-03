@@ -36,11 +36,14 @@ require('module/verificationUtilisateur.php');
                         <th>Date de naissance</th>
                         <th>Lieu de naissance</th>
                         <th>N° sécurité sociale</th>
+                        <th>Médecin référent</th>
+                        <!--On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du médecin référent dans la fonction js-->
+                        <th style=display:none >IdMedecinRef</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale FROM patient');
+                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale, idM FROM patient');
 
                     if ($reqAffichage == false) {
                         echo "Erreur dans la préparation de la requête d'affichage.";
@@ -61,6 +64,31 @@ require('module/verificationUtilisateur.php');
                                 echo "<td>{$patient['date_naissance']}</td>";
                                 echo "<td>{$patient['lieu_naissance']}</td>";
                                 echo "<td>{$patient['num_secu_sociale']}</td>";
+
+                               // Affiche le médecin référent si il existe
+                                if (is_null($patient['idM'])) {
+                                    echo "<td>Aucun</td>";
+                                } else {
+                                    $idmedecinRef = $patient['idM'];
+                                     // Récupération du nom du médecin
+                                     $reqMedecin = $linkpdo->prepare('SELECT nom, prenom FROM medecin WHERE idM = :idM');
+                                     if ($reqMedecin == false) {
+                                         echo "Erreur dans la préparation de la requête du medecin.";
+                                     } else {
+                                     $reqMedecin->bindParam(':idM', $idmedecinRef);
+                                     $reqMedecin->execute();
+                                     if ($reqMedecin == false) {
+                                         echo "Erreur dans l'exécution de la requête du medecin.";
+                                     } else {
+                                         $medecin = $reqMedecin->fetch(PDO::FETCH_ASSOC);
+                                         echo "<td>{$medecin['nom']} {$medecin['prenom']}</td>";
+                                         }
+                                     }
+                                }
+
+                                // On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du médecin référent dans la fonction js
+                                echo "<td style=display:none >{$patient['idM']}</td>";
+
                                 echo "</tr>";
                             }
                         }
@@ -73,7 +101,8 @@ require('module/verificationUtilisateur.php');
         
         <div class="button-sous-tableau">
             <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
-            <a class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un patient</a>
+            <!--Appel la fonction pour récupérer les infos d'un patient pour le modifier en lui donnant l'id du médecin -->
+            <a class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModificationPatient()" disabled >Modifier un patient</a>
             <a class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
         </div>
     </body>

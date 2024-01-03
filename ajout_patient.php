@@ -68,27 +68,40 @@ require('module/verificationUtilisateur.php');
                             } else {
 
                                 // Attribution des paramètres
-                                    $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
-                                    $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-                                    $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-                                    $req->bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                                    $req->bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
-                                    $req->bindParam(':cp', $_POST['cp'], PDO::PARAM_STR);
-                                    $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
-                                    $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
-                                    $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
-                                    $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                                $req->bindParam(':civilite', $_POST['civilite'], PDO::PARAM_STR);
+                                $req->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+                                $req->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+                                $req->bindParam(':adresse', $_POST['adresse'], PDO::PARAM_STR);
+                                $req->bindParam(':ville', $_POST['ville'], PDO::PARAM_STR);
+                                $req->bindParam(':cp', $_POST['cp'], PDO::PARAM_STR);
+                                $req->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
+                                $req->bindParam(':lieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
+                                $req->bindParam(':num_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
 
-                                    // Exécution de la requête d'insertion
+                                 // Vérification si un médecin référent a été choisi et que la valeur n'est pas vide
+                                 if (isset($_POST['idM']) && !empty($_POST['idM'])) {
+                                    $idM = $_POST['idM'];      
+                                } else {
+                                    // Exécuter la requête avec NULL
+                                    $idM = null; 
+                                }
+
+                                $req->bindParam(':idM', $idM, PDO::PARAM_INT);
+                                
+                                /// Exécution de la requête d'insertion
+                                try {
                                     $req->execute();
+                                    $msgErreur = "Le patient a été ajouté avec succès !";
+                                } catch (PDOException $e) {
+                                    $msgErreur = "Erreur d'exécution de la requête : " . $e->getMessage();
+                                }
 
-                                        //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                                        //$req->debugDumpParams();
+                                    //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                    //$req->debugDumpParams();
 
-                                        $msgErreur = "Le patient a été ajouté avec succès !";
-                                        //pour rediriger vers le tableau d'affichage des l'insertion
-                                        //header("Location: affichage_patient.php?success=1");
-                                        //exit;
+                                    //pour rediriger vers le tableau d'affichage des l'insertion
+                                    //header("Location: affichage_patient.php?success=1");
+                                    //exit;
                                 }
                             }   
                         } 
@@ -112,7 +125,7 @@ require('module/verificationUtilisateur.php');
                                 <p><?php echo $msgErreur; ?></p>
                             </div>
                         </div>
-                        <form class="form-card" method="post" action="ajout_patient.php">
+                        <form class="form-card" method="post" action="">
                             <div class="row justify-content-center form-group">
                                 <div class="col-12 px-auto">
                                     <fieldset>
@@ -158,7 +171,8 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-4">
-                                            <div class="input-group"> <input type="date"  name="date_naissance" required> <label>Date de naissance</label> </div>
+                                            <!--Définit la date max comme la date actuelle, permet d'éviter de mettre une date de naissance antérieur-->
+                                    <div class="input-group"> <input type="date" name="date_naissance" required value="<?php echo $date_naissance; ?>" max="<?php echo date('Y-m-d'); ?>"> <label>Date de naissance</label> </div>
                                         </div>
                                         <div class="col-8">
                                             <div class="input-group"> <input type="text" name="lieu_naissance" required> <label>Lieu de naissance</label> </div>
@@ -173,11 +187,12 @@ require('module/verificationUtilisateur.php');
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-12">
-                                <label> Choisissez un medecin traitant</label>
+                                <label> Choisissez un medecin référent (facultatif)</label>
                                     <div class="input-group">
                                         <select name="idM"> <!--required-->
-                                            <option> </option>
+                                            <option value=""> </option>
                                             <?php
+                                            //requête pour afficher la liste des medecins pour le choix d'un medecin référent
                                             $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
                                             $reqMedecins->execute();
                                             while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {

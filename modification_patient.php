@@ -32,6 +32,7 @@ require('module/verificationUtilisateur.php');
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];
+        $idM = $_GET['idM'];
     }
     ?>
 
@@ -41,7 +42,7 @@ require('module/verificationUtilisateur.php');
         if (isset($_POST['modifier_patient'])) {
             // Préparation de la requête d'insertion
             // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
-            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale WHERE nom = :nom AND prenom = :prenom AND date_naissance = :date_naissance AND num_secu_sociale = :num_secu_sociale');
+            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale, idM = :nouveauIdM WHERE nom = :nom AND prenom = :prenom AND date_naissance = :date_naissance AND num_secu_sociale = :num_secu_sociale AND idM = :idM');
 
             if ($reqModification === false) {
                 echo "Erreur de préparation de la requête.";
@@ -56,11 +57,22 @@ require('module/verificationUtilisateur.php');
                 $reqModification->bindParam(':nouveauLieu_naissance', $_POST['lieu_naissance'], PDO::PARAM_STR);
                 $reqModification->bindParam(':nouveauNum_secu_sociale', $_POST['num_secu_sociale'], PDO::PARAM_STR);
 
+                 // Vérification si un médecin référent a été choisi et que la valeur n'est pas aucun
+                 if(isset($_POST['idM']) && $_POST['idM'] == "Aucun" || empty($_POST['idM']))  {
+                    // Exécuter la requête avec NULL
+                    $idMedecin = null; 
+                 } else if (isset($_POST['idM']) && !empty($_POST['idM'])) {
+                    $idMedecin = $_POST['idM'];      
+                }
+
+                $reqModification->bindParam(':nouveauIdM', $idMedecin, PDO::PARAM_INT);
+
+
                 $reqModification->bindParam(':nom', $nom, PDO::PARAM_STR);
                 $reqModification->bindParam(':prenom', $prenom, PDO::PARAM_STR);
                 $reqModification->bindParam(':date_naissance', $date_naissance, PDO::PARAM_STR);
                 $reqModification->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
-
+                $reqModification->bindParam(':idM', $idM, PDO::PARAM_INT);
 
                 // Exécution de la requête
                  $reqModification->execute();
@@ -81,6 +93,7 @@ require('module/verificationUtilisateur.php');
                     $date_naissance = null;
                     $lieu_naissance = null;
                     $num_secu_sociale = null;
+                    $idM = null;
                 }
             }
         }
@@ -100,7 +113,8 @@ require('module/verificationUtilisateur.php');
                         <p><?php echo $msgErreur; ?></p>
                     </div>
                 </div>
-                <form class="form-card" method="post" action="modification_patient.php">
+                <!--Ne pas spécifier de action pour que le traitement php se fasse sur la page actuelle-->
+                <form class="form-card" method="post" action="">
                     <div class="row justify-content-center form-group">
                         <div class="col-12 px-auto">
                             <fieldset>
@@ -148,7 +162,8 @@ require('module/verificationUtilisateur.php');
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-4">
-                                    <div class="input-group"> <input type="date" name="date_naissance" required value="<?php echo $date_naissance; ?>"> <label>Date de naissance</label> </div>
+                                      <!--Définit la date max comme la date actuelle, permet d'éviter de mettre une date de naissance antérieure-->
+                                    <div class="input-group"> <input type="date" name="date_naissance" required value="<?php echo $date_naissance; ?>" max="<?php echo date('Y-m-d'); ?>"> <label>Date de naissance</label> </div>
                                 </div>
                                 <div class="col-8">
                                     <div class="input-group"> <input type="text" name="lieu_naissance" required value="<?php echo $lieu_naissance; ?>"> <label>Lieu de naissance</label> </div>
@@ -161,6 +176,44 @@ require('module/verificationUtilisateur.php');
                             <div class="input-group"> <input type="text" name="num_secu_sociale" minlength="13" maxlength="13" required value="<?php echo $num_secu_sociale; ?>"> <label>Numéro de sécurité sociale </label> </div>
                         </div>
                     </div>
+                    <div class="row justify-content-center">
+                                <div class="col-12">
+                                <label> Choisissez un medecin référent (facultatif) </label>
+                                    <div class="input-group">
+                                        <select name="idM"> <!--required-->
+
+                                             <?php
+                                            //requête pour afficher le médecin référent du patient qu'on modifie à partir de l'Id du médecin récupéré
+                                            $reqMedecinRefActuel = $linkpdo->prepare('SELECT civilite,nom, prenom FROM medecin WHERE idM = :idM');
+                                            $reqMedecinRefActuel->bindParam(':idM', $idM, PDO::PARAM_INT);
+                                            $reqMedecinRefActuel->execute();
+                                            //On prend l'enregistrement du medecin actuel
+                                            $medecinActuel = $reqMedecinRefActuel->fetch(PDO::FETCH_ASSOC);
+                                            //On associe les valeurs à des variables pour les affichées dans l'option
+                                            $civiliteMedecinActuel = $medecinActuel['civilite'];
+                                            $nomMedecinActuel = $medecinActuel['nom'];
+                                            $prenomMedecinActuel = $medecinActuel['prenom'];
+                                            echo "<option value=\"$idM\">$civiliteMedecinActuel $nomMedecinActuel $prenomMedecinActuel</option>";
+                                            ?>
+
+                                            <option value="Aucun">Aucun</option>
+
+                                            <?php
+                                            //requête pour afficher la liste des medecins pour le choix d'un medecin référent
+                                            $reqMedecins = $linkpdo->prepare('SELECT idM, civilite,nom, prenom FROM medecin');
+                                            $reqMedecins->execute();
+                                            while ($medecin = $reqMedecins->fetch(PDO::FETCH_ASSOC)) {
+                                                $idMedecin = $medecin['idM'];
+                                                $civiliteMedecin = $medecin['civilite'];
+                                                $nomMedecin = $medecin['nom'];
+                                                $prenomMedecin = $medecin['prenom'];
+                                                echo "<option value=\"$idMedecin\">$civiliteMedecin $nomMedecin $prenomMedecin</option>";}
+                                            ?>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="col-12">
@@ -176,7 +229,3 @@ require('module/verificationUtilisateur.php');
 </body>
 </html>
 
-<script>
-	
-
-</script>

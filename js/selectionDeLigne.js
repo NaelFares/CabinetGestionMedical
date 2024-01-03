@@ -55,6 +55,42 @@
         }
     }
 
+    function envoyerVersPageModificationPatient() {
+
+        if (ligneSelectionnee != null ) {
+            // Récupérer les données de la ligne sélectionnée
+            var cells = ligneSelectionnee.getElementsByTagName("td");
+            var civilite = encodeURIComponent(cells[0].innerText);
+            var nom = encodeURIComponent(cells[1].innerText);
+            var prenom = encodeURIComponent(cells[2].innerText);
+            var adresse = encodeURIComponent(cells[3].innerText);
+            var cp = encodeURIComponent(cells[4].innerText);
+            var ville = encodeURIComponent(cells[5].innerText);
+            var date_naissance = encodeURIComponent(cells[6].innerText);
+            var lieu_naissance = encodeURIComponent(cells[7].innerText);
+            var num_secu_sociale = encodeURIComponent(cells[8].innerText);
+            // on oublie la colonne 9 car il s'agit du nom et prénom du médecin ref qui n'est pas utile ici
+            var idM = encodeURIComponent(cells[10].innerText);
+
+            // Construire l'URL avec les paramètres
+            var url = "modification_patient.php?" +
+            "civilite=" + civilite +
+            "&nom=" + nom +
+            "&prenom=" + prenom +
+            "&adresse=" + adresse +
+            "&cp=" + cp +
+            "&ville=" + ville +
+            "&date_naissance=" + date_naissance +
+            "&lieu_naissance=" + lieu_naissance +
+            "&num_secu_sociale=" + num_secu_sociale +
+            "&idM=" + idM;
+            
+
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
+        }
+    }
+
     function envoyerVersPageSuppression() {
 
         if (ligneSelectionnee != null ) {
