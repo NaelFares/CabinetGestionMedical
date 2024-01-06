@@ -31,12 +31,11 @@ require('module/verificationUtilisateur.php');
         $msgErreur = ""; // Déclaration de la variable de message d'erreur
 
         if (isset($_POST['supprimer_medecin'])) {
-            // Récupérer les valeurs des paramètres POST
             $civilite = $_POST['civilite'];
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
-
             // Préparation de la requête de suppression
+            // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme 
             $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom');
 
             if ($reqSuppression === false) {

@@ -65,6 +65,7 @@
 
         if (ligneSelectionnee != null ) {
             // Récupérer les données de la ligne sélectionnée
+            // Crypter les informations pour + de sécurité 
             var cells = ligneSelectionnee.getElementsByTagName("td");
             var civilite = encodeURIComponent(cells[0].innerText);
             var nom = encodeURIComponent(cells[1].innerText);
@@ -75,6 +76,8 @@
             var date_naissance = encodeURIComponent(cells[6].innerText);
             var lieu_naissance = encodeURIComponent(cells[7].innerText);
             var num_secu_sociale = encodeURIComponent(cells[8].innerText);
+            // on oublie la colonne 9 car il s'agit du nom et prénom du médecin ref qui n'est pas utile ici
+            var idM = encodeURIComponent(cells[10].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "suppression_patient.php?" +
@@ -86,7 +89,9 @@
             "&ville=" + ville +
             "&date_naissance=" + date_naissance +
             "&lieu_naissance=" + lieu_naissance +
-            "&num_secu_sociale=" + num_secu_sociale;
+            "&num_secu_sociale=" + num_secu_sociale +
+            "&idM=" + idM;
+            
 
             // Rediriger vers la page de modification avec les paramètres dans l'URL
             window.location.href = url; 

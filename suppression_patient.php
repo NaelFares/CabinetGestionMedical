@@ -19,6 +19,7 @@ require('module/verificationUtilisateur.php');
     <?php
     require('module/bd_connexion.php');
 
+
     if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
@@ -38,7 +39,6 @@ require('module/verificationUtilisateur.php');
         $msgErreur = ""; // Déclaration de la variable de message d'erreur
 
         if (isset($_POST['supprimer_patient'])) {
-            // Récupérer les valeurs des paramètres POST
             $civilite = $_POST['civilite'];
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
@@ -49,8 +49,8 @@ require('module/verificationUtilisateur.php');
             $lieu_naissance = $_POST['lieu_naissance'];
             $num_secu_sociale = $_POST['num_secu_sociale'];
             $idM = $_POST['idM'];
-
             // Préparation de la requête de suppression
+            // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
             $reqSuppression = $linkpdo->prepare('DELETE FROM patient WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom AND adresse = :adresse AND cp = :cp AND ville = :ville AND date_naissance = :date_naissance AND lieu_naissance = :lieu_naissance AND num_secu_sociale = :num_secu_sociale');
 
             if ($reqSuppression === false) {
