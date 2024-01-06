@@ -87,7 +87,7 @@ require('module/verificationUtilisateur.php');
                     <div class="card p-9">
                         <div class="row justify-content-center">
                             <div class="col-12">
-                                <h2 class="heading text-center">Ajouter une consultation</h2>
+                                <h2 class="heading text-center">Modifier une consultation</h2>
                                 <div class="errormessage text-center">
                                     <p><?php echo $msgErreur; ?></p>
                                 </div>
@@ -99,7 +99,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label>Date</label>
                                         <div class="input-group-date"> 
-                                            <input type="date" name="date" required min="<?php echo date('Y-m-d'); ?>">  
+                                            <input type="date" name="date" required value="<?php echo $date_consultation ?>" min="<?php echo date('Y-m-d'); ?>">  
                                     </div>
                                 </div>
                             </div>
@@ -108,6 +108,10 @@ require('module/verificationUtilisateur.php');
                                     <label> Choisissez un creneau </label>
                                         <div class="input-group">
                                             <select name="heure" required>
+                                                <option> <?php echo $heure_debut; ?> </option> 
+
+                                                <option> </option>
+
                                                 <?php
                                                     $interval = new DateInterval('PT30M');
                                                     $start_time = new DateTime('08:00');
@@ -133,6 +137,8 @@ require('module/verificationUtilisateur.php');
                                 <label> Choisissez une durée</label>
                                     <div class="input-group">
                                         <select name="duree" required>
+                                            <option> <?php echo $duree ?> </option>
+                                            <option> </option>
                                             <option value="00:30:00"> 30 minutes </option>
                                             <option value="00:60:00"> 1 heure</option>
                                         </select>
@@ -145,6 +151,7 @@ require('module/verificationUtilisateur.php');
                                     <div class="input-group">
                                         <!-- Ajout de la classe 'patient-select' à l'élément select -->
                                         <select name="idP" class="patient-select" required>
+                                            <option> <?php echo $idP ?> </option>
                                             <option> </option>
                                             <?php
                                             $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom, idM FROM patient');
@@ -176,6 +183,7 @@ require('module/verificationUtilisateur.php');
                                     <div class="input-group">
                                         <!-- Ajout de l'ID 'medecin-select' à l'élément select -->
                                         <select name="idM" id="medecin-select" required>
+                                            <option> <?php echo $idM ?> </option>
                                             <option> </option>
                                             <?php
                                             $reqMedecins = $linkpdo->prepare('SELECT idM, civilite, nom, prenom FROM medecin');
