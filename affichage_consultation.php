@@ -28,8 +28,8 @@ require('module/verificationUtilisateur.php');
         <tr>
             <th>Date</th>
             <th>Heure de début</th>
-            <th>Heure de fin</th>
             <th>Durée</th>
+            <th>Heure de fin</th>
             <th>Patient</th>
             <th>Medecin</th>
         </tr>
@@ -37,7 +37,7 @@ require('module/verificationUtilisateur.php');
         <tbody>
              <?php
                 // Préparation de la requête de recherche des patients
-                $reqAffichage = $linkpdo->prepare('SELECT idM, date_consultation, heure_debut, heure_fin, idP FROM consultation');
+                $reqAffichage = $linkpdo->prepare('SELECT idM, date_consultation, heure_debut, duree, idP FROM consultation');
 
                 if ($reqAffichage == false) {
                     echo "Erreur dans la préparation de la requête d'affichage.";
@@ -53,15 +53,20 @@ require('module/verificationUtilisateur.php');
                             echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
                             echo "<td>{$consultation['date_consultation']}</td>";
                             echo "<td>{$consultation['heure_debut']}</td>";
-                            echo "<td>{$consultation['heure_fin']}</td>";
+                            echo "<td>{$consultation['duree']}</td>";
 
-                             // Calcul de la durée
+                            // Calcul de l'heure de fin
                             $heureDebut = new DateTime($consultation['heure_debut']);
-                            $heureFin = new DateTime($consultation['heure_fin']);
-                            $difference = $heureDebut->diff($heureFin);
 
-                            // Affichage de la durée
-                            echo "<td>{$difference->format('%H:%I:%S')}</td>";
+                            // Méthode pour créer une intervalle de temps pour obtenir la duree, pcq il y a un problème avec DateInterval
+                            $duree_datetime = new DateTime($consultation['duree']);
+                            // Création de l'intervalle, donc la durée, avec un temps null 00:00:00 pour obtenir la valeur de la durée mais en type Interval 
+                             // On a : A ->diff(B); cela renvoit B - A
+                            $duree = (new DateTime('00:00:00'))->diff($duree_datetime);
+                            $heureFin = $heureDebut->add($duree);
+
+                            // Affichage de l'heure de fin
+                            echo "<td>{$heureFin->format('H:i:s')}</td>";
 
                              // Récupération du nom du patient
                             $reqPatient = $linkpdo->prepare('SELECT nom, prenom FROM patient WHERE idP = :idP');

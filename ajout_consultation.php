@@ -150,8 +150,8 @@ require('module/verificationUtilisateur.php');
                                 <label> Choisissez une durée</label>
                                     <div class="input-group">
                                         <select name="duree" required>
-                                            <option value="30"> 30 minutes </option>
-                                            <option value="60"> 1 heure</option>
+                                            <option value="00:30:00"> 30 minutes </option>
+                                            <option value="00:60:00"> 1 heure</option>
                                         </select>
                                     </div>
                                 </div>
