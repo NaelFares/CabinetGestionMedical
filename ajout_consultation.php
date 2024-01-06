@@ -115,7 +115,7 @@ require('module/verificationUtilisateur.php');
                             <div class="row justify-content-center">
                                 <div class="col-12">
                                     <label>Date</label>
-                                        <div class="input-group"> 
+                                        <div class="input-group-date"> 
                                             <input type="date" name="date" required>  
                                     </div>
                                 </div>
