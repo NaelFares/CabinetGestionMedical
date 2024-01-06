@@ -85,17 +85,17 @@ require('module/verificationUtilisateur.php');
                                 <p><?php echo $msgErreur; ?></p>
                             </div>
                         </div>
-                        <form class="form-card" method="post" action="ajout_medecin.php">
+                        <form class="form-card" method="post" action="">
                             <div class="row justify-content-center form-group">
                                 <div class="col-12 px-auto">
                                     <fieldset>
                                         <div class="custom-control custom-radio custom-control-inline"> 
-                                            <input id="customRadioInline1" type="radio" name="civilite" value="Madame" class="custom-control-input" checked="true"> 
+                                            <input id="customRadioInline1" type="radio" name="civilite" value="Mme" class="custom-control-input"  
                                             <?php echo ($civilite == 'Mme') ? 'checked' : ''; ?>> <!--Vérifie et coche la case correspondant à la civilité-->
                                             <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> 
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline"> 
-                                            <input id="customRadioInline2" type="radio" name="civilite" value="Monsieur" class="custom-control-input"> 
+                                            <input id="customRadioInline2" type="radio" name="civilite" value="M." class="custom-control-input"
                                             <?php echo ($civilite == 'M.') ? 'checked' : ''; ?>> <!--Vérifie et coche la case correspondant à la civilité-->
                                             <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> 
                                         </div>
@@ -115,7 +115,7 @@ require('module/verificationUtilisateur.php');
                             <div class="row justify-content-center">
                                 <div class="col-12">
                                     <div class="col-12">
-                                        <input type="submit" name="modifier_medecin" value="Ajouter" class="btn">
+                                        <input type="submit" name="modifier_medecin" value="Valider les modifications" class="btn">
                                     </div>
                                 </div>
                             </div>
