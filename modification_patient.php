@@ -42,7 +42,7 @@ require('module/verificationUtilisateur.php');
         if (isset($_POST['modifier_patient'])) {
             // Préparation de la requête d'insertion
             // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
-            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale, idM = :nouveauIdM WHERE nom = :nom AND prenom = :prenom AND date_naissance = :date_naissance AND num_secu_sociale = :num_secu_sociale AND idM = :idM');
+            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale, idM = :nouveauIdM WHERE nom = :nom AND prenom = :prenom AND date_naissance = :date_naissance AND num_secu_sociale = :num_secu_sociale');
 
             if ($reqModification === false) {
                 echo "Erreur de préparation de la requête.";
@@ -61,18 +61,17 @@ require('module/verificationUtilisateur.php');
                  if(isset($_POST['idM']) && $_POST['idM'] == "Aucun" || empty($_POST['idM']))  {
                     // Exécuter la requête avec NULL
                     $idMedecin = null; 
-                 } else if (isset($_POST['idM']) && !empty($_POST['idM'])) {
+                 } else if (!empty($_POST['idM'])) {
                     $idMedecin = $_POST['idM'];      
                 }
 
                 $reqModification->bindParam(':nouveauIdM', $idMedecin, PDO::PARAM_INT);
 
-
+                // Paramètres du where
                 $reqModification->bindParam(':nom', $nom, PDO::PARAM_STR);
                 $reqModification->bindParam(':prenom', $prenom, PDO::PARAM_STR);
                 $reqModification->bindParam(':date_naissance', $date_naissance, PDO::PARAM_STR);
                 $reqModification->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
-                $reqModification->bindParam(':idM', $idM, PDO::PARAM_INT);
 
                 // Exécution de la requête
                  $reqModification->execute();

@@ -59,6 +59,7 @@
 
         if (ligneSelectionnee != null ) {
             // Récupérer les données de la ligne sélectionnée
+            // Crypter les informations pour + de sécurité 
             var cells = ligneSelectionnee.getElementsByTagName("td");
             var civilite = encodeURIComponent(cells[0].innerText);
             var nom = encodeURIComponent(cells[1].innerText);
