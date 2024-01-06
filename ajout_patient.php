@@ -131,11 +131,11 @@ require('module/verificationUtilisateur.php');
                                     <fieldset>
                                         <div class="custom-control custom-radio custom-control-inline"> 
                                             <input id="customRadioInline1" type="radio" name="civilite" value="Mme" class="custom-control-input" checked="true"> 
-                                            <label for="customRadioInline1" class="custom-control-label label-radio">Mme</label> 
+                                            <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> 
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline"> 
                                             <input id="customRadioInline2" type="radio" name="civilite" value="M." class="custom-control-input"> 
-                                            <label for="customRadioInline2" class="custom-control-label label-radio">M.</label> 
+                                            <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> 
                                         </div>
                                     </fieldset>
                                 </div>
