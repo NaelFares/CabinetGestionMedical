@@ -65,7 +65,7 @@ require('module/verificationUtilisateur.php');
         
         <div class="button-sous-tableau">
             <a href="ajout_medecin.php"><button class="button-ajout">Ajouter un medecin</button></a>
-            <a href="" class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModification()" disabled >Modifier un medecin</a>
+            <a class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModificationMedecin()" disabled >Modifier un medecin</a>
             <a href="suppression_medecin.php" class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un medecin</a>
         </div>
     </body>

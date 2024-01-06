@@ -92,6 +92,28 @@
         }
     }
 
+    function envoyerVersPageModificationMedecin() {
+
+        if (ligneSelectionnee != null ) {
+            // Récupérer les données de la ligne sélectionnée
+            // Crypter les informations pour + de sécurité 
+            var cells = ligneSelectionnee.getElementsByTagName("td");
+            var civilite = encodeURIComponent(cells[0].innerText);
+            var nom = encodeURIComponent(cells[1].innerText);
+            var prenom = encodeURIComponent(cells[2].innerText);
+
+            // Construire l'URL avec les paramètres
+            var url = "modification_medecin.php?" +
+            "civilite=" + civilite +
+            "&nom=" + nom +
+            "&prenom=" + prenom;
+            
+
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
+        }
+    }
+
     function envoyerVersPageSuppression() {
 
         if (ligneSelectionnee != null ) {
