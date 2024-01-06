@@ -134,6 +134,57 @@
         }
     }
 
+    function envoyerVersPageModificationConsultation() {
+
+        if (ligneSelectionnee != null ) {
+            // Récupérer les données de la ligne sélectionnée
+            // Crypter les informations pour + de sécurité 
+            var cells = ligneSelectionnee.getElementsByTagName("td");
+            var date_consultation = encodeURIComponent(cells[0].innerText);
+            var heure_debut = encodeURIComponent(cells[1].innerText);
+            var duree = encodeURIComponent(cells[2].innerText);
+            var idP = encodeURIComponent(cells[4].innerText);
+            var idM = encodeURIComponent(cells[5].innerText);
+
+            // Construire l'URL avec les paramètres
+            var url = "modification_consultation.php?" +
+            "date_consultation=" + date_consultation +
+            "&heure_debut=" + heure_debut +
+            "&duree=" + duree +
+            "&idP=" + idP +
+            "&idM=" + idM;
+            
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
+        }
+    }
+
+    function envoyerVersPageSuppressionConsultation() {
+
+        if (ligneSelectionnee != null ) {
+            // Récupérer les données de la ligne sélectionnée
+            // Crypter les informations pour + de sécurité 
+            var cells = ligneSelectionnee.getElementsByTagName("td");
+            var date_consultation = encodeURIComponent(cells[0].innerText);
+            var heure_debut = encodeURIComponent(cells[1].innerText);
+            var duree = encodeURIComponent(cells[2].innerText);
+            var idP = encodeURIComponent(cells[4].innerText);
+            var idM = encodeURIComponent(cells[5].innerText);
+
+            // Construire l'URL avec les paramètres
+            var url = "suppression_consultation.php?" +
+            "date_consultation=" + date_consultation +
+            "&heure_debut=" + heure_debut +
+            "&duree=" + duree +
+            "&idP=" + idP +
+            "&idM=" + idM;
+            
+            // Rediriger vers la page de modification avec les paramètres dans l'URL
+            window.location.href = url; 
+        }
+    }
+
+
 
       // Gestionnaire d'événement pour le clic sur le document
       document.addEventListener("click", function(event) {
