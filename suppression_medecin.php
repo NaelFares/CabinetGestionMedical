@@ -48,9 +48,9 @@ require('module/verificationUtilisateur.php');
                 $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
 
                 // Exécution de la requête
-                $resultat = $reqSuppression->execute();
+                $reqSuppression->execute();
 
-                if ($resultat === false) {
+                if ($reqSuppression === false) {
                     echo "Erreur dans l'exécution de la requête de suppression : ";
                 } else {
                     // Afficher un message de succès

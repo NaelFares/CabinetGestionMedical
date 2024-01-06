@@ -103,7 +103,7 @@ require('module/verificationUtilisateur.php');
             <a href="ajout_patient.php"><button class="button-ajout">Ajouter un patient</button></a>
             <!--Appel la fonction pour récupérer les infos d'un patient pour le modifier en lui donnant l'id du médecin -->
             <a class="lien-modif-supp" id="boutonModification" onclick="envoyerVersPageModificationPatient()" disabled >Modifier un patient</a>
-            <a class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppression()" disabled >Supprimer un patient</a>
+            <a class="lien-modif-supp" id="boutonSuppression" onclick="envoyerVersPageSuppressionPatient()" disabled >Supprimer un patient</a>
         </div>
     </body>
 
