@@ -444,6 +444,17 @@ body{
 	margin-left: 1px;
 	margin-right: 1px;
 	border-radius:6px;
+  padding-top: 30px;
+	padding-left: 25px
+}
+
+/* variante pour un input différent dans la page ajout consultation */
+.input-group-date input {
+  position:relative;
+	height:60px;
+	margin-left: 1px;
+	margin-right: 1px;
+	border-radius:6px;
 	padding-left: 25px
 }
         
