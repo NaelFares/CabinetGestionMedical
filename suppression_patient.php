@@ -92,7 +92,7 @@ require('module/verificationUtilisateur.php');
                         <div class="row justify-content-center">
                             <div class="col-12">
                                 <div class="boutons-suppression">
-                                    <a href="affichage_patient.php" class="btn-supp-annuler">Retour à l'accueil</a>
+                                    <a href="affichage_patient.php" class="btn-supp-annuler">Retour à la liste</a>
                                     <div><input class="input-supp-valider" type="submit" name="supprimer_patient" value="Supprimer le patient"></div>
                                 </div>
                             </div>
