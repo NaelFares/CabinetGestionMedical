@@ -99,7 +99,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label>Date</label>
                                         <div class="input-group-date"> 
-                                            <input type="date" name="date" required value="<?php echo $date_consultation ?>" min="<?php echo date('Y-m-d'); ?>">  
+                                            <input type="date" name="date" required value="<?php echo $date_consultation ?>">  
                                     </div>
                                 </div>
                             </div>
