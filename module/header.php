@@ -40,7 +40,7 @@
                     <li><a href="ajout_consultation.php">Ajouter consultation</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Statistiques</a></li>
+                <li><a href="statistiques.php">Statistiques</a></li>
                 </ul>
                 <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
             </div>

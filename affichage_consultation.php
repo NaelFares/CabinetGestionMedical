@@ -51,7 +51,8 @@ require('module/verificationUtilisateur.php');
                         // Récupération des résultats et affichage dans le tableau
                         while ($consultation = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
-                            echo "<td>{$consultation['date_consultation']}</td>";
+                            $dateConsultation = new DateTime($consultation['date_consultation']);
+                            echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
                             echo "<td>{$consultation['heure_debut']}</td>";
                             echo "<td>{$consultation['duree']}</td>";
 

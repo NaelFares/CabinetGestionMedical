@@ -61,7 +61,8 @@ require('module/verificationUtilisateur.php');
                                 echo "<td>{$patient['adresse']}</td>";
                                 echo "<td>{$patient['cp']}</td>";
                                 echo "<td>{$patient['ville']}</td>";
-                                echo "<td>{$patient['date_naissance']}</td>";
+                                $dateDeNaissance = new DateTime($patient['date_naissance']);
+                                echo "<td>{$dateDeNaissance->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
                                 echo "<td>{$patient['lieu_naissance']}</td>";
                                 echo "<td>{$patient['num_secu_sociale']}</td>";
 
