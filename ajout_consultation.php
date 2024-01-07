@@ -178,7 +178,7 @@ require('module/verificationUtilisateur.php');
                                                         $nomPatient = $patient['nom'];
                                                         $prenomPatient = $patient['prenom'];
                                                         $medecinRefPatient = $patient['idM'];
-                                                        echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient $medecinRefPatient</option>";
+                                                        echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";
                                                     }
                                                 }
                                             }
