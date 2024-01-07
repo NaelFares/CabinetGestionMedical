@@ -17,6 +17,87 @@ require('module/verificationUtilisateur.php');
      require('module/bd_connexion.php');
      ?>
 
+    <?php
+        // Traitement pour les hommes ayant moins de 25 ans
+        $reqNbHommeMoins25 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) < 25 ;");
+        if ($reqNbHommeMoins25 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+            $reqNbHommeMoins25->execute();                   
+            if ($reqNbHommeMoins25 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $nbHommeMoins25 = $reqNbHommeMoins25->fetchColumn();
+            }
+        }
+            
+        // Traitement pour les femmes ayant moins de 25 ans
+        $reqNbFemmeMoins25 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) < 25 ;");
+        if ($reqNbFemmeMoins25 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+           $reqNbFemmeMoins25->execute();
+            if ($reqNbFemmeMoins25 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $nbFemmeMoins25 = $reqNbFemmeMoins25->fetchColumn();
+            }
+        }
+
+        // Traitement pour les hommes ayant entre 25 et 50 ans
+        $reqNbHommeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
+        if ($reqNbHommeEntre25_50 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+            $reqNbHommeEntre25_50->execute();
+            if ($reqNbHommeEntre25_50 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $NbHommeEntre25_50 = $reqNbHommeEntre25_50->fetchColumn();
+            }
+        }
+
+        // Traitement pour les femmes ayant entre 25 et 50 ans
+        $reqNbFemmeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
+        if ($reqNbFemmeEntre25_50 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+           $reqNbFemmeEntre25_50->execute();    
+            if ($reqNbFemmeEntre25_50 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $NbFemmeEntre25_50 = $reqNbFemmeEntre25_50->fetchColumn();                           
+            }
+        }
+
+        // Traitement pour les hommes ayant plus de 50 ans
+        $reqNbHommeplus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
+        if ($reqNbHommeplus50 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+            $reqNbHommeplus50->execute(); 
+            if ($reqNbHommeplus50 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $nbHommePlus50 = $reqNbHommeplus50->fetchColumn();                             
+            }
+        }
+
+        // Traitement pour les hommes ayant plus de 50 ans
+        $reqNbFemmePlus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
+        if ($reqNbFemmePlus50 == false) {
+            echo "Erreur dans la préparation de la requête d'affichage.";
+        } else {
+           $reqNbFemmePlus50->execute(); 
+            if ($reqNbFemmePlus50 == false) {
+                echo "Erreur dans l'exécution de la requête d'affichage.";
+            } else {
+                $nbFemmePlus50 = $reqNbFemmePlus50->fetchColumn();
+            }
+        }
+        
+    ?>
+
     <!--Espace vide pour permettre de placer le header en haut de page-->
     <div class="vide-haut-page"> </div>
     <div class="containerExterieur">
@@ -32,128 +113,22 @@ require('module/verificationUtilisateur.php');
                 <tbody>
                     <tr>
                         <th>Moins de 25 ans</th>
-                        <td>
-                            <?php
-                                $reqNbHommeMoins25 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) < 25 ;");
-
-                                if ($reqNbHommeMoins25 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                    $reqNbHommeMoins25->execute();
-                                    
-                                    if ($reqNbHommeMoins25 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $nbHommeMoins25 = $reqNbHommeMoins25->fetchColumn();
-                                        echo $nbHommeMoins25;                              
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                                $reqNbFemmeMoins25 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) < 25 ;");
-
-                                if ($reqNbFemmeMoins25 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                   $reqNbFemmeMoins25->execute();
-                                    
-                                    if ($reqNbFemmeMoins25 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $nbFemmeMoins25 = $reqNbFemmeMoins25->fetchColumn();
-                                        echo $nbFemmeMoins25;                              
-                                    }
-                                }
-                                
-                            ?>
-                        </td>
-                        
+                        <td> <?php echo $nbHommeMoins25;?> </td>
+                        <td> <?php echo $nbFemmeMoins25;?> </td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
                         <th>Entre 25 et 50 ans</th>
-                        <td> 
-                            <?php
-                                $reqNbHommeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
-
-                                if ($reqNbHommeEntre25_50 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                    $reqNbHommeEntre25_50->execute();
-                                    
-                                    if ($reqNbHommeEntre25_50 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $NbHommeEntre25_50 = $reqNbHommeEntre25_50->fetchColumn();
-                                        echo $NbHommeEntre25_50;                              
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td> 
-                            <?php
-                                $reqNbFemmeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
-
-                                if ($reqNbFemmeEntre25_50 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                   $reqNbFemmeEntre25_50->execute();
-                                    
-                                    if ($reqNbFemmeEntre25_50 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $NbFemmeEntre25_50 = $reqNbFemmeEntre25_50->fetchColumn();
-                                        echo $NbFemmeEntre25_50;                              
-                                    }
-                                }
-                                
-                            ?>
-                        </td>                            
+                        <td> <?php echo $NbHommeEntre25_50; ?> </td>
+                        <td> <?php echo $NbFemmeEntre25_50; ?> </td>                            
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
                         <th>Plus de 50 ans</th>
-                        <td> 
-                            <?php
-                                $reqNbHommeplus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
-
-                                if ($reqNbHommeplus50 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                    $reqNbHommeplus50->execute();
-                                    
-                                    if ($reqNbHommeplus50 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $nbHommePlus50 = $reqNbHommeplus50->fetchColumn();
-                                        echo $nbHommePlus50;                              
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td> 
-                            <?php
-                                $reqNbFemmePlus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
-
-                                if ($reqNbFemmePlus50 == false) {
-                                    echo "Erreur dans la préparation de la requête d'affichage.";
-                                } else {
-                                   $reqNbFemmePlus50->execute();
-                                    
-                                    if ($reqNbFemmePlus50 == false) {
-                                        echo "Erreur dans l'exécution de la requête d'affichage.";
-                                    } else {
-                                        $nbFemmePlus50 = $reqNbFemmePlus50->fetchColumn();
-                                        echo $nbFemmePlus50;                              
-                                    }
-                                }
-                                
-                            ?>
-                        </td>
+                        <td> <?php echo $nbHommePlus50; ?> </td>
+                        <td> <?php echo $nbFemmePlus50; ?> </td>
                     </tr>
                 </tbody>
             </table>
@@ -199,7 +174,7 @@ require('module/verificationUtilisateur.php');
                                 $infoMedecin = $medecin['civilite'] . " " . $medecin['nom'] . " " . $medecin['prenom'];
                                 echo "<td>{$infoMedecin}</td>";
                                 if ($medecin['duree_totale'] == null){
-                                    echo "<td>00:00:00</td>";
+                                    echo "<td>Aucune consultation</td>";
                                 } else {
                                 echo "<td>{$medecin['duree_totale']}</td>";
                                 }
