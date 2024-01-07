@@ -37,7 +37,7 @@ require('module/verificationUtilisateur.php');
         <tbody>
              <?php
                 // Préparation de la requête de recherche des patients
-                $reqAffichage = $linkpdo->prepare('SELECT idM, date_consultation, heure_debut, duree, idP FROM consultation');
+                $reqAffichage = $linkpdo->prepare('SELECT idM, date_consultation, heure_debut, duree, idP FROM consultation ORDER BY date_consultation DESC');
 
                 if ($reqAffichage == false) {
                     echo "Erreur dans la préparation de la requête d'affichage.";
