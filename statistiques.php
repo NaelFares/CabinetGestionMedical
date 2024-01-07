@@ -82,8 +82,43 @@ require('module/verificationUtilisateur.php');
                 <tbody>
                     <tr>
                         <th>Plus de 50 ans</th>
-                        <td> </td>
-                        <td> </td>
+                        <td> 
+                            <?php
+                                $reqNbHommeplus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
+
+                                if ($reqNbHommeplus50 == false) {
+                                    echo "Erreur dans la préparation de la requête d'affichage.";
+                                } else {
+                                    $reqNbHommeplus50->execute();
+                                    
+                                    if ($reqNbHommeplus50 == false) {
+                                        echo "Erreur dans l'exécution de la requête d'affichage.";
+                                    } else {
+                                        $nbHommePlus50 = $reqNbHommeplus50->fetchColumn();
+                                        echo $nbHommePlus50;                              
+                                    }
+                                }
+                            ?>
+                        </td>
+                        <td> 
+                            <?php
+                                $reqNbFemmePlus50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) > 50 ;");
+
+                                if ($reqNbFemmePlus50 == false) {
+                                    echo "Erreur dans la préparation de la requête d'affichage.";
+                                } else {
+                                   $reqNbFemmePlus50->execute();
+                                    
+                                    if ($reqNbFemmePlus50 == false) {
+                                        echo "Erreur dans l'exécution de la requête d'affichage.";
+                                    } else {
+                                        $nbFemmePlus50 = $reqNbFemmePlus50->fetchColumn();
+                                        echo $nbFemmePlus50;                              
+                                    }
+                                }
+                                
+                            ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
