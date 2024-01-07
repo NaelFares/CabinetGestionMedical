@@ -75,8 +75,43 @@ require('module/verificationUtilisateur.php');
                 <tbody>
                     <tr>
                         <th>Entre 25 et 50 ans</th>
-                        <td> </td>
-                        <td> </td>                            
+                        <td> 
+                            <?php
+                                $reqNbHommeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'M.' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
+
+                                if ($reqNbHommeEntre25_50 == false) {
+                                    echo "Erreur dans la préparation de la requête d'affichage.";
+                                } else {
+                                    $reqNbHommeEntre25_50->execute();
+                                    
+                                    if ($reqNbHommeEntre25_50 == false) {
+                                        echo "Erreur dans l'exécution de la requête d'affichage.";
+                                    } else {
+                                        $NbHommeEntre25_50 = $reqNbHommeEntre25_50->fetchColumn();
+                                        echo $NbHommeEntre25_50;                              
+                                    }
+                                }
+                            ?>
+                        </td>
+                        <td> 
+                            <?php
+                                $reqNbFemmeEntre25_50 = $linkpdo->prepare("SELECT count(*) FROM patient WHERE civilite = 'Mme' AND TIMESTAMPDIFF(YEAR, date_naissance, CURDATE()) BETWEEN 25 AND  50 ;");
+
+                                if ($reqNbFemmeEntre25_50 == false) {
+                                    echo "Erreur dans la préparation de la requête d'affichage.";
+                                } else {
+                                   $reqNbFemmeEntre25_50->execute();
+                                    
+                                    if ($reqNbFemmeEntre25_50 == false) {
+                                        echo "Erreur dans l'exécution de la requête d'affichage.";
+                                    } else {
+                                        $NbFemmeEntre25_50 = $reqNbFemmeEntre25_50->fetchColumn();
+                                        echo $NbFemmeEntre25_50;                              
+                                    }
+                                }
+                                
+                            ?>
+                        </td>                            
                     </tr>
                 </tbody>
                 <tbody>
