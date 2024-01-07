@@ -571,6 +571,38 @@ border-radius:6px;
 padding-left: 25px
 }
 
+.titre-suppression {
+  margin-left: auto; /* Pour centrer  */
+  margin-right: auto; /* Pour centrer  */
+  text-align:center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.informations-patient {
+  font-size: 18px;
+  width: 100%;
+  text-align: center;
+}
+
+.informations-nom-patient {
+  font-size: 20px;
+  color: white;
+  background-color: rgb(46, 46, 46);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5rem;
+}
+
+/* Pages Suppression */
+.centrer-milieu-page {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
+
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// PAGE ajouter patient, medecin, consultation  /////////////////////
@@ -600,7 +632,7 @@ padding-left: 25px
 
 .button-ajout{
     color: #ffffff;
-    background: #2f91fe;;
+    background: #2f91fe;
     padding:10px 10px;
     border:unset;
     cursor:pointer;
@@ -644,6 +676,65 @@ a[disabled] {
     transition: all 0.5s;
     border-radius: 10px;
     box-shadow: 0px 1px 1px #414141cc;
+}
+
+/* Page suppression */
+.boutons-suppression {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.input-supp-valider{
+  font-size: 16px !important;
+  color: #ffffff !important;
+  background-color:#e21b17;
+  border: unset !important;
+  cursor:pointer;
+  border-radius: 10px;
+  margin: 0px !important;
+  padding: 0px !important;
+  margin-right: 5px !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.input-supp-valider:hover{
+  background: #a91411;
+  transition: all 0.5s;
+  border-radius: 10px;
+  box-shadow: 0px 1px 1px #414141cc;
+}
+
+.btn-supp-annuler{
+  font-size: 16px;
+  color: #ffffff;
+  background-color:#2f91fe;
+  padding: 10px 20px;
+  border:unset;
+  cursor:pointer;
+  margin-right: 5px;
+  border-radius: 10px;
+}
+
+.btn-supp-annuler:hover{
+  background: #035dc4;
+  transition: all 0.5s;
+  border-radius: 10px;
+  box-shadow: 0px 1px 1px #414141cc;
+}
+
+ /* Style pour les liens désactivés */
+ input[disabled] {
+  pointer-events: none; /* Désactive les événements du lien, y compris le clic */
+  opacity: 0.4; /* Opacité réduite pour indiquer que le lien est désactivé */
+  cursor: not-allowed; /* Curseur non autorisé pour indiquer que le lien est désactivé */
 }
 
 
