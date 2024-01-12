@@ -69,13 +69,13 @@ require('module/verificationUtilisateur.php');
                             die('Probleme de la préparation de la requete d\'insertion');
                         }
 
-                        if (empty($_POST['date']) || empty($_POST['heure']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
+                        if (empty($_POST['date_consultation']) || empty($_POST['heure_debut']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
                             $msgErreur =  "Champs manquants.";
                         } else {
 
                                 // Exécution de la requête d'insertion
-                                $req->bindParam(':date_consultation', $_POST['date'], PDO::PARAM_STR);
-                                $req->bindParam(':heure_debut', $_POST['heure'], PDO::PARAM_STR);
+                                $req->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                                $req->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
                                 $req->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
                                 $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                                 $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
@@ -114,7 +114,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label>Date</label>
                                         <div class="input-group-date"> 
-                                            <input type="date" name="date" required min="<?php echo date('Y-m-d'); ?>">  
+                                            <input type="date" name="date_consultation" required min="<?php echo date('Y-m-d'); ?>">  
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label> Choisissez un creneau </label>
                                         <div class="input-group">
-                                            <select name="heure" required>
+                                            <select name="heure_debut" required>
                                                 <?php
                                                     $interval = new DateInterval('PT30M');
                                                     $start_time = new DateTime('08:00');
@@ -162,7 +162,7 @@ require('module/verificationUtilisateur.php');
                                         <select name="idP" class="patient-select" required>
                                             <option> </option>
                                             <?php
-                                            $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom, idM FROM patient');
+                                            $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom FROM patient');
                                             if ($reqPatients == false) {
                                                 echo "Erreur dans la préparation de la requête d'affichage.";
                                             } else {
@@ -175,7 +175,6 @@ require('module/verificationUtilisateur.php');
                                                         $civilitePatient = $patient['civilite'];
                                                         $nomPatient = $patient['nom'];
                                                         $prenomPatient = $patient['prenom'];
-                                                        $medecinRefPatient = $patient['idM'];
                                                         echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";
                                                     }
                                                 }

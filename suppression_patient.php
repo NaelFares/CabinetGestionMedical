@@ -83,8 +83,8 @@ require('module/verificationUtilisateur.php');
                             <div class="errormessage text-center">
                                 <p><?php echo $msgErreur; ?></p>
                             </div>
-                            <div class="informations-patient">
-                                <p class="informations-nom-patient"><?php echo $civilite . " " . $nom . " " . $prenom?></p>
+                            <div class="informations">
+                                <p class="informations-medecin-patient-consultation"><?php echo $civilite . " " . $nom . " " . $prenom?></p>
                                 <p> Date de naissance : <?php echo $date_naissance?></p> 
                                 <p> Num sécurité sociale : <?php echo $num_secu_sociale?></p> 
                             </div>

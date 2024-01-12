@@ -579,13 +579,13 @@ padding-left: 25px
   margin-bottom: 30px;
 }
 
-.informations-patient {
+.informations {
   font-size: 18px;
   width: 100%;
   text-align: center;
 }
 
-.informations-nom-patient {
+.informations-medecin-patient-consultation {
   font-size: 20px;
   color: white;
   background-color: rgb(46, 46, 46);
