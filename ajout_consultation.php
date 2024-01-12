@@ -11,15 +11,13 @@ require('module/verificationUtilisateur.php');
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="miseAJourComboBox.js"></script>
+        <script src="js/miseAJourComboBox.js"></script>
     </head>
     <body>
 
         <?php 
             require('module/header.php');
             require('module/bd_connexion.php');
-
-            
         ?>
 
         <?php
@@ -192,6 +190,7 @@ require('module/verificationUtilisateur.php');
                                     <div class="input-group">
                                         <!-- Ajout de l'ID 'medecin-select' à l'élément select -->
                                         <select name="idM" id="medecin-select" required>
+                                            <option id="MedecinRef" value=""> </option>
                                             <option> </option>
                                             <?php
                                             $reqMedecins = $linkpdo->prepare('SELECT idM, civilite, nom, prenom FROM medecin');

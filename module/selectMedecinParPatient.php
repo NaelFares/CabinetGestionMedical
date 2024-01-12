@@ -6,7 +6,7 @@ require('bd_connexion.php');
     $patientId = $_POST['patientId'];
 
     // Préparation de la requête pour récupérer les médecins associés au patient
-    $reqMedecinRef = $linkpdo->prepare('SELECT m.idM, m.civilite, m.nom, m.prenom FROM medecin m, patient p WHERE p.idP = :idP AND m.idM = p.idM');
+    $reqMedecinRef = $linkpdo->prepare('SELECT m.idM, m.civilite, m.nom, m.prenom FROM medecin m, patient p WHERE m.idM = p.idM AND p.idP = :idP');
 
     if ($reqMedecinRef == false) {
         echo "Erreur dans la préparation de la requête d'affichage.";
