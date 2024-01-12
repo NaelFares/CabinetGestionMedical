@@ -1,20 +1,21 @@
+
 <?php
 require('module/verificationUtilisateur.php');
 ?>
 
 <!DOCTYPE HTML>
 <html lang="fr">
-    <head>
-        <meta charset="utf-8" />
-        <title>Suppresion d'un medecin</title>
-        <link href="style/style.css" rel="stylesheet">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-       
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8" />
+    <title>Suppression d'un medecin</title>
+    <link href="style/style.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</head>
 
+<body>
+        
     <?php
     require('module/bd_connexion.php');
 
@@ -27,15 +28,12 @@ require('module/verificationUtilisateur.php');
     }
     ?>
 
-        <?php
+    <?php
         $msgErreur = ""; // Déclaration de la variable de message d'erreur
 
         if (isset($_POST['supprimer_medecin'])) {
-            $civilite = $_POST['civilite'];
-            $nom = $_POST['nom'];
-            $prenom = $_POST['prenom'];
             // Préparation de la requête de suppression
-            // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme 
+            // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
             $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom');
 
             if ($reqSuppression === false) {
@@ -50,120 +48,45 @@ require('module/verificationUtilisateur.php');
                 $reqSuppression->execute();
 
                 if ($reqSuppression === false) {
-                    echo "Erreur dans l'exécution de la requête de suppression : ";
+                    $msgErreur = "Erreur dans l'exécution de la requête de suppression : ";
                 } else {
                     // Afficher un message de succès
                     $msgErreur = "Le medecin a été supprimé avec succès !";
-
-                    // Vider les valeurs dans les champs de saisie pour éviter les erreurs de récupération de champs vides par $_POST
-                    $civilite = null;
-                    $nom = null;
-                    $prenom = null;
+                   
                 }
             }
         }
         ?>
 
-
-
-    
-
-        <!--Espace vide pour permettre de placer le header en haut de page-->
-        <div class="vide-haut-page"> </div>
-
-        <div>
-            <!--Debut du formulaire-->
-            <div class="row justify-content-center">
-                <div class=" col-lg-7 col-md-8">
-                    <div class="card p-9">
+    <div class="centrer-milieu-page">
+        <div class="row justify-content-center">
+            <div class=" col-lg-7 col-md-8">
+                <div class="card p-9">
+                    <form class="form-card" method="post" action="">
                         <div class="row justify-content-center">
                             <div class="col-12">
-                                <h2 class="heading text-center">Supprimer un medecin</h2>
+                                <h3 class="titre-suppression">Voulez-vous vraiment supprimer ce medecin ?</h3>
                             </div>
                             <div class="errormessage text-center">
                                 <p><?php echo $msgErreur; ?></p>
                             </div>
+                            <div class="informations">
+                                <p class="informations-medecin-patient-consultation"><?php echo $civilite . " " . $nom . " " . $prenom?></p>
+                            </div>
                         </div>
-                        <form class="form-card" method="post" action="suppression_medecin.php">
-                            <div class="row justify-content-center form-group">
-                                <div class="col-12 px-auto">
-                                    <fieldset>
-                                        <div class="custom-control custom-radio custom-control-inline"> 
-                                            <input id="customRadioInline1" type="radio" name="civilite" value="Mme" class="custom-control-input"  
-                                            <?php echo ($civilite == 'Mme') ? 'checked' : ''; ?> readonly> <!--Vérifie et coche la case correspondant à la civilité-->
-                                            <label for="customRadioInline1" class="custom-control-label label-radio">Madame</label> 
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline"> 
-                                            <input id="customRadioInline2" type="radio" name="civilite" value="M." class="custom-control-input"
-                                            <?php echo ($civilite == 'M.') ? 'checked' : ''; ?> readonly> <!--Vérifie et coche la case correspondant à la civilité-->
-                                            <label for="customRadioInline2" class="custom-control-label label-radio">Monsieur</label> 
-                                        </div>
-                                    </fieldset>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="boutons-suppression">
+                                    <a href="affichage_medecin.php" class="btn-supp-annuler">Retour à la liste</a>
+                                    <div><input class="input-supp-valider" type="submit" name="supprimer_medecin" value="Supprimer le medecin"></div>
                                 </div>
                             </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12">
-                                    <div class="input-group"> <input type="text" name="nom" required value="<?php echo $nom; ?>" readonly> <label>Nom</label> </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12">
-                                    <div class="input-group"> <input type="text" name="prenom" required value="<?php echo $prenom; ?>" readonly> <label>Prénom</label> </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12">
-                                    <div class="col-12">
-                                        <input type="submit" name="supprimer_medecin" value="Supprimer le medecin" class="btn">
-                                        <input type="button" onclick="window.location.href='affichage_medecin.php';" value="Annuler" class="">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!--Fin du formulaire-->
         </div>
-                
-    </body>
-
+    </div>
+    
+</body>
 </html>
-
-
-<script>
-        $(document).ready(function(){
-
-
-//For Date formatted input
-var expDate = document.getElementById('exp');
-expDate.onkeyup = function (e) {
-    if (this.value == this.lastValue) return;
-    var caretPosition = this.selectionStart;
-    var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
-    var parts = [];
-    
-    for (var i = 0, len = sanitizedValue.length; i < len; i += 2) {
-        parts.push(sanitizedValue.substring(i, i + 2));
-    }
-    
-    for (var i = caretPosition - 1; i >= 0; i--) {
-        var c = this.value[i];
-        if (c < '0' || c > '9') {
-            caretPosition--;
-        }
-    }
-    caretPosition += Math.floor(caretPosition / 2);
-    
-    this.value = this.lastValue = parts.join('/');
-    this.selectionStart = this.selectionEnd = caretPosition;
-}
-	
-	// Radio button
-	$('.radio-group .radio').click(function(){
-	    $(this).parent().parent().find('.radio').removeClass('selected');
-	    $(this).addClass('selected');
-	});
-})
-</script>
