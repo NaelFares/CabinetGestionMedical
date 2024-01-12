@@ -75,7 +75,7 @@ require('module/verificationUtilisateur.php');
                                 <p><?php echo $msgErreur; ?></p>
                             </div>
                             <div class="informations">
-                                <p class="informations-medecin-patient-consultation-"><?php echo "Le " . $date_consultation . " à " . $heure_debut?> </p>
+                                <p class="informations-medecin-patient-consultation"><?php echo "Le " . $date_consultation . " à " . $heure_debut?> </p>
                                 <p> Patient : <?php echo $idP?></p> 
                                 <p> Medecin : <?php echo $idM?></p> 
                                 <p> Durée : <?php echo $duree?></p> 
