@@ -164,7 +164,7 @@ require('module/verificationUtilisateur.php');
                                         <select name="idP" class="patient-select" required>
                                             <option> </option>
                                             <?php
-                                            $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom, idM FROM patient');
+                                            $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom FROM patient');
                                             if ($reqPatients == false) {
                                                 echo "Erreur dans la préparation de la requête d'affichage.";
                                             } else {
@@ -177,7 +177,6 @@ require('module/verificationUtilisateur.php');
                                                         $civilitePatient = $patient['civilite'];
                                                         $nomPatient = $patient['nom'];
                                                         $prenomPatient = $patient['prenom'];
-                                                        $medecinRefPatient = $patient['idM'];
                                                         echo "<option value=\"$idPatient\">$civilitePatient $nomPatient $prenomPatient</option>";
                                                     }
                                                 }
