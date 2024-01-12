@@ -33,17 +33,22 @@ require('module/verificationUtilisateur.php');
                         <th>Adresse</th>
                         <th>Code Postal</th>
                         <th>Ville</th>
+                        <!--On rend cette colonne invisible dans le site, elle sert uniquement à récupérer la date dans le format de la BD-->
+                        <th style=display:none>Date BD</th>
                         <th>Date de naissance</th>
                         <th>Lieu de naissance</th>
                         <th>N° sécurité sociale</th>
                         <th>Médecin référent</th>
                         <!--On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du médecin référent dans la fonction js-->
                         <th style=display:none >IdMedecinRef</th>
+                        <!--On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du patient dans la fonction js-->
+                        <th style=display:none>IdPatient</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale, idM FROM patient');
+                    $reqAffichage = $linkpdo->prepare('SELECT idP, civilite, nom, prenom, adresse, ville, cp, date_naissance, lieu_naissance, num_secu_sociale, idM FROM patient');
 
                     if ($reqAffichage == false) {
                         echo "Erreur dans la préparation de la requête d'affichage.";
@@ -61,8 +66,11 @@ require('module/verificationUtilisateur.php');
                                 echo "<td>{$patient['adresse']}</td>";
                                 echo "<td>{$patient['cp']}</td>";
                                 echo "<td>{$patient['ville']}</td>";
-                                $dateDeNaissance = new DateTime($patient['date_naissance']);
-                                echo "<td>{$dateDeNaissance->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
+                                echo "<td style=display:none>{$patient['date_naissance']}</td>";
+
+                                $dateAffichage = new DateTime($patient['date_naissance']);
+                                echo "<td>{$dateAffichage->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
+
                                 echo "<td>{$patient['lieu_naissance']}</td>";
                                 echo "<td>{$patient['num_secu_sociale']}</td>";
 
@@ -89,6 +97,8 @@ require('module/verificationUtilisateur.php');
 
                                 // On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du médecin référent dans la fonction js
                                 echo "<td style=display:none >{$patient['idM']}</td>";
+                                // On rend cette colonne invisible dans le site, elle sert uniquement à récupérer l'id du patient dans la fonction js
+                                echo "<td style=display:none >{$patient['idP']}</td>";
 
                                 echo "</tr>";
                             }

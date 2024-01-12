@@ -20,11 +20,13 @@ require('module/verificationUtilisateur.php');
     require('module/bd_connexion.php');
 
 
-    if (!empty($_GET['date_consultation']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
+    if (!empty($_GET['date_consultation']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['npPatient']) && !empty($_GET['npMedecin']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
         // Récupérez les valeurs des paramètres GET
         $date_consultation = $_GET['date_consultation'];
         $heure_debut = $_GET['heure_debut'];
         $duree = $_GET['duree'];
+        $npPatient = $_GET['npPatient'];
+        $npMedecin = $_GET['npMedecin'];
         $idP = $_GET['idP'];
         $idM = $_GET['idM'];
     }
@@ -49,6 +51,7 @@ require('module/verificationUtilisateur.php');
                 $reqSuppression->bindParam(':idM', $idM, PDO::PARAM_STR);
 
                 // Exécution de la requête
+                
                 $reqSuppression->execute();
 
                 if ($reqSuppression === false) {
@@ -76,8 +79,8 @@ require('module/verificationUtilisateur.php');
                             </div>
                             <div class="informations">
                                 <p class="informations-medecin-patient-consultation"><?php echo "Le " . $date_consultation . " à " . $heure_debut?> </p>
-                                <p> Patient : <?php echo $idP?></p> 
-                                <p> Medecin : <?php echo $idM?></p> 
+                                <p> Patient : <?php echo $npPatient?></p> 
+                                <p> Medecin : <?php echo $npMedecin?></p> 
                                 <p> Durée : <?php echo $duree?></p> 
                             </div>
                         </div>

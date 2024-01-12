@@ -19,8 +19,7 @@ require('module/verificationUtilisateur.php');
     <?php
     require('module/bd_connexion.php');
 
-
-    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
+    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
         $nom = $_GET['nom'];
@@ -28,10 +27,12 @@ require('module/verificationUtilisateur.php');
         $adresse = $_GET['adresse'];
         $cp = $_GET['cp'];
         $ville = $_GET['ville'];
+        $date_BD = $_GET['date_BD'];
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];
         $idM = $_GET['idM'];
+        $idP = $_GET['idP'];
     }
     ?>
 
@@ -39,37 +40,78 @@ require('module/verificationUtilisateur.php');
         $msgErreur = ""; // Déclaration de la variable de message d'erreur
 
         if (isset($_POST['supprimer_patient'])) {
-            // Préparation de la requête de suppression
-            // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
-            $reqSuppression = $linkpdo->prepare('DELETE FROM patient WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom AND adresse = :adresse AND cp = :cp AND ville = :ville AND date_naissance = :date_naissance AND lieu_naissance = :lieu_naissance AND num_secu_sociale = :num_secu_sociale');
 
-            if ($reqSuppression === false) {
-                echo "Erreur de préparation de la requête.";
+            // Préparation de la requête de test de présence d'une consultation pour ce patient
+            $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE idP = :idP');
+
+            //Test de la requete de présence d'une consultation => die si erreur
+            if($reqExisteDeja == false) {
+                die("Erreur de préparation de la requête de test de présence de consultations.");
             } else {
-                // Liaison des paramètres
-                $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':ville', $ville, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':cp', $cp, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':date_naissance', $date_naissance, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':lieu_naissance', $lieu_naissance, PDO::PARAM_STR);
-                $reqSuppression->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
+
+                $reqExisteDeja->bindParam(':idP', $idP , PDO::PARAM_STR);
 
                 // Exécution de la requête
-                $reqSuppression->execute();
+                $reqExisteDeja->execute();
 
-                if ($reqSuppression === false) {
-                    $msgErreur = "Erreur dans l'exécution de la requête de suppression : ";
+                //Vérification de la bonne exécution de la requete ExisteDéja
+                //Si oui on arrete et on affiche une erreur
+                //Si non on execute la requete
+                if($reqExisteDeja == false) {
+                    die("Erreur dans l'exécution de la requête de test de présence d'une consultation.");
                 } else {
-                    // Afficher un message de succès
-                    $msgErreur = "Le patient a été supprimé avec succès !";
-                   
+                     // Récupération du résultat
+                     $nbConsultations = $reqExisteDeja->fetchColumn();
+
+                     // Vérification si la consultation existe déjà
+                     if ($nbConsultations > 0) {
+                         $reqDeleteConsultationDuPatient = $linkpdo->prepare('DELETE FROM consultation WHERE idP = :idP');
+
+                         if($reqDeleteConsultationDuPatient == false) {
+                            die("Erreur de préparation de la requête de suppression de consultations.");
+                        } else {
+                            $reqDeleteConsultationDuPatient->bindParam(':idP', $idP , PDO::PARAM_STR);
+            
+                            // Exécution de la requête
+                            $reqDeleteConsultationDuPatient->execute();
+                        }
+                    }
+
+                    // Préparation de la requête de suppression
+                    // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
+                    $reqSuppression = $linkpdo->prepare('DELETE FROM patient WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom AND adresse = :adresse AND cp = :cp AND ville = :ville AND date_naissance = :date_naissance AND lieu_naissance = :lieu_naissance AND num_secu_sociale = :num_secu_sociale');
+
+                    if ($reqSuppression === false) {
+                        echo "Erreur de préparation de la requête.";
+                    } else {
+                        // Liaison des paramètres
+                        $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':ville', $ville, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':cp', $cp, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':date_naissance', $date_BD, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':lieu_naissance', $lieu_naissance, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
+
+                        // Exécution de la requête
+                        echo "DELETE FROM patient WHERE civilite =" .  $civilite . " AND nom = " . $nom . " AND prenom = " . $prenom . " AND adresse = " . $adresse . " AND cp = " . $cp . " AND ville = " . $ville . " AND date_naissance = " . $date_BD . " AND lieu_naissance = " . $lieu_naissance . " AND num_secu_sociale = " . $num_secu_sociale;
+
+                        $reqSuppression->execute();
+
+                        if ($reqSuppression === false) {
+                            $msgErreur = "Erreur dans l'exécution de la requête de suppression : ";
+                        } else {
+                            // Afficher un message de succès
+                            $msgErreur = "Le patient a été supprimé avec succès !";
+                            
+                        }
+                    }
                 }
             }
         }
-        ?>
+    ?>
 
     <div class="centrer-milieu-page">
         <div class="row justify-content-center">

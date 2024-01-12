@@ -73,11 +73,16 @@
             var adresse = encodeURIComponent(cells[3].innerText);
             var cp = encodeURIComponent(cells[4].innerText);
             var ville = encodeURIComponent(cells[5].innerText);
-            var date_naissance = encodeURIComponent(cells[6].innerText);
-            var lieu_naissance = encodeURIComponent(cells[7].innerText);
-            var num_secu_sociale = encodeURIComponent(cells[8].innerText);
-            // on oublie la colonne 9 car il s'agit du nom et prénom du médecin ref qui n'est pas utile ici
-            var idM = encodeURIComponent(cells[10].innerText);
+            // Date issues de la colonne non affichée pour aller avec le format de la BD
+            var date_BD = encodeURIComponent(cells[6].innerText);
+            // Date en format français pour afficher sur l'interface
+            var date_naissance = encodeURIComponent(cells[7].innerText);
+            var lieu_naissance = encodeURIComponent(cells[8].innerText);
+            var num_secu_sociale = encodeURIComponent(cells[9].innerText);
+            // on oublie la colonne 10 car il s'agit du nom et prénom du médecin ref qui n'est pas utile ici
+            var idM = encodeURIComponent(cells[11].innerText);
+            var idP = encodeURIComponent(cells[12].innerText);
+
 
             // Construire l'URL avec les paramètres
             var url = "suppression_patient.php?" +
@@ -87,11 +92,13 @@
             "&adresse=" + adresse +
             "&cp=" + cp +
             "&ville=" + ville +
+            "&date_BD=" + date_BD +
             "&date_naissance=" + date_naissance +
             "&lieu_naissance=" + lieu_naissance +
             "&num_secu_sociale=" + num_secu_sociale +
-            "&idM=" + idM;
-            
+            "&idM=" + idM +
+            "&idP=" + idP;
+         
 
             // Rediriger vers la page de modification avec les paramètres dans l'URL
             window.location.href = url; 
@@ -173,14 +180,19 @@
             var date_consultation = encodeURIComponent(cells[0].innerText);
             var heure_debut = encodeURIComponent(cells[1].innerText);
             var duree = encodeURIComponent(cells[2].innerText);
-            var idP = encodeURIComponent(cells[4].innerText);
-            var idM = encodeURIComponent(cells[5].innerText);
+            // on saute le 3 car il n'est que informatif : heure de fin
+            var npPatient = encodeURIComponent(cells[4].innerText);
+            var npMedecin = encodeURIComponent(cells[5].innerText);
+            var idP = encodeURIComponent(cells[6].innerText);
+            var idM = encodeURIComponent(cells[7].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "suppression_consultation.php?" +
             "date_consultation=" + date_consultation +
             "&heure_debut=" + heure_debut +
             "&duree=" + duree +
+            "&npPatient=" + npPatient +
+            "&npMedecin=" + npMedecin +
             "&idP=" + idP +
             "&idM=" + idM;
             

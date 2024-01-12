@@ -32,6 +32,10 @@ require('module/verificationUtilisateur.php');
             <th>Heure de fin</th>
             <th>Patient</th>
             <th>Medecin</th>
+            <!-- Colonnes invisibles pour recuperer l'id du patient et du medecin -->
+            <th style=display:none >IdPatientRef</th>
+            <th style=display:none >IdMedecinRef</th>
+
         </tr>
         </thead>
         <tbody>
@@ -51,8 +55,11 @@ require('module/verificationUtilisateur.php');
                         // Récupération des résultats et affichage dans le tableau
                         while ($consultation = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
-                            $dateConsultation = new DateTime($consultation['date_consultation']);
-                            echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
+                           // $dateConsultation = new DateTime($consultation['date_consultation']);
+                            //echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
+
+                            echo "<td>{$consultation['date_consultation']}</td>";
+
                             echo "<td>{$consultation['heure_debut']}</td>";
                             echo "<td>{$consultation['duree']}</td>";
 
@@ -95,6 +102,10 @@ require('module/verificationUtilisateur.php');
 
                                         echo "<td>{$patient['nom']} {$patient['prenom']}</td>";
                                         echo "<td>{$medecin['nom']} {$medecin['prenom']}</td>";
+                                        // Colonnes invisibles pour récuperer l'id du patient et l'id du medecin
+                                        echo "<td style=display:none >{$consultation['idP']}</td>";
+                                        echo "<td style=display:none >{$consultation['idM']}</td>";
+
                                         echo "</tr>";
                                         }
                                     }
