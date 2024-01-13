@@ -21,7 +21,7 @@ require('module/verificationUtilisateur.php');
     require('module/header.php');
 
 
-    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
+    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
         $nom = $_GET['nom'];
@@ -29,6 +29,7 @@ require('module/verificationUtilisateur.php');
         $adresse = $_GET['adresse'];
         $cp = $_GET['cp'];
         $ville = $_GET['ville'];
+        $date_BD = $_GET['date_BD'];
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];
@@ -162,7 +163,7 @@ require('module/verificationUtilisateur.php');
                             <div class="row">
                                 <div class="col-4">
                                       <!--Définit la date max comme la date actuelle, permet d'éviter de mettre une date de naissance antérieure-->
-                                    <div class="input-group"> <input type="date" name="date_naissance" required value="<?php echo $date_naissance; ?>" max="<?php echo date('Y-m-d'); ?>"> <label>Date de naissance</label> </div>
+                                    <div class="input-group"> <input type="date" name="date_naissance" required value="<?php echo $date_BD; ?>" max="<?php echo date('Y-m-d'); ?>"> <label>Date de naissance</label> </div>
                                 </div>
                                 <div class="col-8">
                                     <div class="input-group"> <input type="text" name="lieu_naissance" required value="<?php echo $lieu_naissance; ?>"> <label>Lieu de naissance</label> </div>
