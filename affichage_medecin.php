@@ -29,13 +29,14 @@ require('module/verificationUtilisateur.php');
                         <th class="col-civilite">Civilité</th>
                         <th>Nom</th>
                         <th>Prénom</th>
+                        <th style=display:none>idMedecin</th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php
        
                     // Préparation de la requête de recherche des patients
-                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom FROM medecin');
+                    $reqAffichage = $linkpdo->prepare('SELECT civilite, nom, prenom, idM FROM medecin');
 
                     if ($reqAffichage == false) {
                         echo "Erreur dans la préparation de la requête de recherche.";
@@ -52,6 +53,7 @@ require('module/verificationUtilisateur.php');
                                 echo "<td>{$medecin['civilite']}</td>";
                                 echo "<td>{$medecin['nom']}</td>";
                                 echo "<td>{$medecin['prenom']}</td>";
+                                echo "<td style=display:none>{$medecin['idM']}</td>";
                                 echo "</tr>";
                             }
                         }
