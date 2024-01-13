@@ -60,7 +60,10 @@ require('module/verificationUtilisateur.php');
 
                             echo "<td>{$consultation['date_consultation']}</td>";
 
-                            echo "<td>{$consultation['heure_debut']}</td>";
+                            $heure = $consultation['heure_debut'];
+                            $heureFormatee = DateTime::createFromFormat('H:i:s', $heure)->format('H\hi');
+
+                            echo "<td>{$heureFormatee}</td>";
                             echo "<td>{$consultation['duree']}</td>";
 
                             // Calcul de l'heure de fin
@@ -74,7 +77,7 @@ require('module/verificationUtilisateur.php');
                             $heureFin = $heureDebut->add($duree);
 
                             // Affichage de l'heure de fin
-                            echo "<td>{$heureFin->format('H:i:s')}</td>";
+                            echo "<td>{$heureFin->format('H\hi')}</td>";
 
                              // Récupération du nom du patient
                             $reqPatient = $linkpdo->prepare('SELECT nom, prenom FROM patient WHERE idP = :idP');

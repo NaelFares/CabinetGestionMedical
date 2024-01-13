@@ -176,7 +176,10 @@ require('module/verificationUtilisateur.php');
                                 if ($medecin['duree_totale'] == null){
                                     echo "<td>Aucune consultation</td>";
                                 } else {
-                                echo "<td>{$medecin['duree_totale']}</td>";
+                                $heure = $medecin['duree_totale'];
+                                $heureFormatee = DateTime::createFromFormat('H:i:s', $heure)->format('H\hi');
+
+                                echo "<td>{$heureFormatee}</td>";
                                 }
                                 echo "</tr>";
                             }
