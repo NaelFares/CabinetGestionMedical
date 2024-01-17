@@ -66,8 +66,10 @@ require('module/verificationUtilisateur.php');
                                 echo "<td>{$patient['adresse']}</td>";
                                 echo "<td>{$patient['cp']}</td>";
                                 echo "<td>{$patient['ville']}</td>";
+                                // c'est la date dans le format de la BD afin de pouvoir interagir avec
                                 echo "<td style=display:none>{$patient['date_naissance']}</td>";
 
+                                // c'est la date pour l'afficher dans le tableau dans le format jj/mm/aaaa
                                 $dateAffichage = new DateTime($patient['date_naissance']);
                                 echo "<td>{$dateAffichage->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
 

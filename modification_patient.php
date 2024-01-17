@@ -39,6 +39,7 @@ require('module/verificationUtilisateur.php');
 
     <?php
          $msgErreur = ""; // Déclaration de la variable de message d'erreur
+         $test = "";
 
         if (isset($_POST['modifier_patient'])) {
             // Préparation de la requête d'insertion
@@ -75,7 +76,8 @@ require('module/verificationUtilisateur.php');
                 $reqModification->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
 
                 // Exécution de la requête
-                 $reqModification->execute();
+                $test = "UPDATE patient SET civilite = " . $_POST['civilite'] . " nom = " . $_POST['nom'] . " prenom = " . $_POST['prenom'] . " adresse = " . $_POST['adresse'] . " ville = " . $_POST['ville'] . " cp = " . $_POST['cp'] . " date_naissance = " . $_POST['date_naissance'] . " lieu_naissance = " . $_POST['lieu_naissance'] . " num_secu_sociale = " . $_POST['num_secu_sociale'] . " idM = " . $_POST['idM'] . "WHERE nom = " . $nom . " AND prenom = " . $prenom . " AND date_naissance = " . $date_BD . " AND num_secu_sociale = " . $num_secu_sociale;
+                $reqModification->execute();
 
                 if($reqModification == false) {
                     echo "Erreur dans l'exécution de la requête de modification.";
@@ -94,6 +96,7 @@ require('module/verificationUtilisateur.php');
                     $lieu_naissance = null;
                     $num_secu_sociale = null;
                     $idM = null;
+                    $date_BD = null;
                 }
             }
         }
@@ -101,6 +104,9 @@ require('module/verificationUtilisateur.php');
 
     <!--Espace vide pour permettre de placer le header en haut de page-->
     <div class="vide-haut-page"> </div>
+
+    <?php echo $test ?>
+
 
     <div class="row justify-content-center">
         <div class=" col-lg-7 col-md-8">
