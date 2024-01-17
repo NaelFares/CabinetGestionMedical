@@ -81,10 +81,10 @@ require('module/verificationUtilisateur.php');
                                 $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
                                 $req->execute();
 
-                                    //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                                    //$req->debugDumpParams();
+                                //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                //$req->debugDumpParams();
 
-                                    $msgErreur =  "La consultation a été ajoutée avec succès !";
+                                $msgErreur =  "La consultation a été ajoutée avec succès !";
                             }
                         }   
                     } 

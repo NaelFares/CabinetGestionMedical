@@ -19,13 +19,16 @@ require('module/verificationUtilisateur.php');
             require('module/header.php');
             require('module/bd_connexion.php');
 
-            if (!empty($_GET['date_consultation']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
+            if (!empty($_GET['date_BD']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['idP']) && !empty($_GET['idM'])  && !empty($_GET['npPatient'])  && !empty($_GET['npMedecin'])) {
                 // Récupérez les valeurs des paramètres GET
-                $date_consultation = $_GET['date_consultation'];
                 $heure_debut = $_GET['heure_debut'];
                 $duree = $_GET['duree'];
                 $idP = $_GET['idP'];
                 $idM = $_GET['idM'];
+                $date_BD = $_GET['date_BD'];
+                $npPatient = $_GET['npPatient'];
+                $npMedecin = $_GET['npMedecin'];
+
             }
         ?>
 
@@ -48,12 +51,11 @@ require('module/verificationUtilisateur.php');
 
 
                         // Paramètres du where
-                        $reqModification->bindParam(':date_consultation', $date_consultation, PDO::PARAM_STR);
+                        $reqModification->bindParam(':date_consultation', $date_BD, PDO::PARAM_STR);
                         $reqModification->bindParam(':heure_debut', $heure_debut, PDO::PARAM_STR);
                         $reqModification->bindParam(':duree', $duree, PDO::PARAM_STR);
                         $reqModification->bindParam(':idM', $idM, PDO::PARAM_STR);
                         $reqModification->bindParam(':idP', $idP, PDO::PARAM_STR);
-
 
                         // Exécution de la requête
                         $reqModification->execute();
@@ -65,11 +67,13 @@ require('module/verificationUtilisateur.php');
                             $msgErreur = "La consultation a été modifiée avec succès !";
 
                             // vider les valeurs dans les champs de saisie pour éviter les erreurs de récupération de champs vides par $_POST
-                            $date_consultation = null;
+                            $date_BD = null;
                             $heure_debut = null;
                             $duree = null;
                             $idM = null;
                             $idP = null;
+                            $npMedecin = null;
+                            $npPatient = null;
                         }
                     }
                 }
@@ -99,7 +103,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label>Date</label>
                                         <div class="input-group-date"> 
-                                            <input type="date" name="date_consultation" required value="<?php echo $date_consultation ?>">  
+                                            <input type="date" name="date_consultation" required value="<?php echo $date_BD ?>">  
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +144,7 @@ require('module/verificationUtilisateur.php');
                                             <option> <?php echo $duree ?> </option>
                                             <option> </option>
                                             <option value="00:30:00"> 30 minutes </option>
-                                            <option value="00:60:00"> 1 heure</option>
+                                            <option value="01:00:00"> 1 heure</option>
                                         </select>
                                     </div>
                                 </div>
@@ -151,7 +155,7 @@ require('module/verificationUtilisateur.php');
                                     <div class="input-group">
                                         <!-- Ajout de la classe 'patient-select' à l'élément select -->
                                         <select name="idP" class="patient-select" required>
-                                            <option> <?php echo $idP ?> </option>
+                                            <option  value="<?php echo $idP ?>" > <?php echo $npPatient ?> </option>
                                             <option> </option>
                                             <?php
                                             $reqPatients = $linkpdo->prepare('SELECT idP, civilite, nom, prenom FROM patient');
@@ -182,7 +186,7 @@ require('module/verificationUtilisateur.php');
                                     <div class="input-group">
                                         <!-- Ajout de l'ID 'medecin-select' à l'élément select -->
                                         <select name="idM" id="medecin-select" required>
-                                            <option> <?php echo $idM ?> </option>
+                                            <option value="<?php echo $idM ?>"> <?php echo $npMedecin ?> </option>
                                             <option> </option>
                                             <?php
                                             $reqMedecins = $linkpdo->prepare('SELECT idM, civilite, nom, prenom FROM medecin');

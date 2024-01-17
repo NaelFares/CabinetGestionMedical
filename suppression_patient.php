@@ -19,7 +19,7 @@ require('module/verificationUtilisateur.php');
     <?php
     require('module/bd_connexion.php');
 
-    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP'])) {
+    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
         $nom = $_GET['nom'];
@@ -28,6 +28,7 @@ require('module/verificationUtilisateur.php');
         $cp = $_GET['cp'];
         $ville = $_GET['ville'];
         $date_BD = $_GET['date_BD'];
+        // uniquement pour l'affichage
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];

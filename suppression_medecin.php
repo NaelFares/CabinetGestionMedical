@@ -34,6 +34,10 @@ require('module/verificationUtilisateur.php');
 
         if (isset($_POST['supprimer_medecin'])) {
 
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////// Test de présence de consultation //////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // Préparation de la requête de test de présence d'une consultation pour ce patient
             $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE idM = :idM');
 
@@ -70,35 +74,83 @@ require('module/verificationUtilisateur.php');
                         }
                     }
 
-                    // Préparation de la requête de suppression
-                    // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
-                    $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom');
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //////////////////////////////// Test de présence de médecin référent //////////////////////////////////
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                    if ($reqSuppression === false) {
-                        echo "Erreur de préparation de la requête.";
-                    } else {
-                        // Liaison des paramètres
-                        $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+                         // Préparation de la requête de test de présence d'un medecin referent
+                        $reqReferentExiste = $linkpdo->prepare('SELECT COUNT(*) FROM patient WHERE idM = :idM');
 
-                        // Exécution de la requête
-                        echo "DELETE FROM patient WHERE civilite =" .  $civilite . " AND nom = " . $nom . " AND prenom = " . $prenom;
-
-                        $reqSuppression->execute();
-
-                        if ($reqSuppression === false) {
-                            $msgErreur = "Erreur dans l'exécution de la requête de suppression : ";
+                        //Test de la requete de présence d'un medecin referent => die si erreur
+                        if($reqReferentExiste == false) {
+                            die("Erreur de préparation de la requête de test de présence de medecin reférent.");
                         } else {
-                            // Afficher un message de succès
-                            $msgErreur = "Le medecin a été supprimé avec succès !";
+
+                            $reqReferentExiste->bindParam(':idM', $idM , PDO::PARAM_STR);
+
+                            // Exécution de la requête
+                            $reqReferentExiste->execute();
+
+                            //Vérification de la bonne exécution de la requete ExisteDéja
+                            //Si oui on arrete et on affiche une erreur
+                            //Si non on execute la requete
+                            if($reqReferentExiste == false) {
+                                die("Erreur dans l'exécution de la requête de test de présence d'un medecin referent.");
+                            } else {
+                                // Récupération du résultat
+                                $nbReference = $reqReferentExiste->fetchColumn();
+
+                                // Vérification si il ya une reference
+                                if ($nbReference > 0) {
+                                    // Mettre à jour les références à NULL dans la table Patient
+                                    $reqUpdateReferenceMedecin = $linkpdo->prepare('UPDATE Patient SET idM = NULL WHERE idM = :idM');
+
+                                    if($reqUpdateReferenceMedecin == false) {
+                                        die("Erreur de préparation de la requête de suppression de referencement.");
+                                    } else {
+                                        $reqUpdateReferenceMedecin->bindParam(':idM', $idM , PDO::PARAM_STR);
+                        
+                                        // Exécution de la requête
+                                        $reqUpdateReferenceMedecin->execute();
+                                    }
+                                }
+
+                                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                ///////////////////////////////////// suppression du médecin ///////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                                // Préparation de la requête de suppression
+                                // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
+                                $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom');
+
+                                if ($reqSuppression === false) {
+                                    echo "Erreur de préparation de la requête.";
+                                } else {
+                                    // Liaison des paramètres
+                                    $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
+                                    $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
+                                    $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+
+                                    //debug
+                                    //echo "DELETE FROM patient WHERE civilite =" .  $civilite . " AND nom = " . $nom . " AND prenom = " . $prenom;
+                                    
+                                    // Exécution de la requête
+                                    $reqSuppression->execute();
+
+                                    if ($reqSuppression === false) {
+                                        $msgErreur = "Erreur dans l'exécution de la requête de suppression : ";
+                                    } else {
+                                        // Afficher un message de succès
+                                        $msgErreur = "Le medecin a été supprimé avec succès !";
                             
+                                }
+                            }
                         }
                     }
-                }
+                }  
             }
         }
-        ?>
+    ?>
 
     <div class="centrer-milieu-page">
         <div class="row justify-content-center">

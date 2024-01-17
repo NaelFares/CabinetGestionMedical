@@ -165,14 +165,18 @@
             //on ne recupere pas la date de la colonne 0 car elle sert juste d'affichgage
             var heure_debut = encodeURIComponent(cells[1].innerText);
             var duree = encodeURIComponent(cells[2].innerText);
-            var idP = encodeURIComponent(cells[4].innerText);
-            var idM = encodeURIComponent(cells[5].innerText);
-            var date_BD = encodeURIComponent(cells[6].innerText);
+            var npPatient = encodeURIComponent(cells[4].innerText);
+            var npMedecin = encodeURIComponent(cells[5].innerText);
+            var idP = encodeURIComponent(cells[6].innerText);
+            var idM = encodeURIComponent(cells[7].innerText);
+            var date_BD = encodeURIComponent(cells[8].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "modification_consultation.php?" +
             "&heure_debut=" + heure_debut +
             "&duree=" + duree +
+            "&npPatient=" + npPatient +
+            "&npMedecin=" + npMedecin + 
             "&idP=" + idP +
             "&idM=" + idM + 
             "&date_BD=" + date_BD;

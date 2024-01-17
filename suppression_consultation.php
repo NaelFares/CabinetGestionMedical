@@ -20,7 +20,7 @@ require('module/verificationUtilisateur.php');
     require('module/bd_connexion.php');
 
 
-    if (!empty($_GET['date_consultation']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['npPatient']) && !empty($_GET['npMedecin']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
+    if (!empty($_GET['date_consultation']) && !empty($_GET['heure_debut']) && !empty($_GET['duree']) && !empty($_GET['npPatient']) && !empty($_GET['npMedecin']) && !empty($_GET['idP']) && !empty($_GET['idM']) && !empty($_GET['date_BD'])) {
         // Récupérez les valeurs des paramètres GET
         $date_consultation = $_GET['date_consultation'];
         $heure_debut = $_GET['heure_debut'];
@@ -51,9 +51,10 @@ require('module/verificationUtilisateur.php');
                 $reqSuppression->bindParam(':idP', $idP, PDO::PARAM_STR);
                 $reqSuppression->bindParam(':idM', $idM, PDO::PARAM_STR);
 
-                // Exécution de la requête
-                echo "DELETE FROM consultation WHERE date_consultation = " . $date_BD . " AND heure_debut =" . $heure_debut . " AND duree = " . $duree . " AND idP = " . $idP . " AND idM = " . $idM ;
+                //Debug
+                //echo "DELETE FROM consultation WHERE date_consultation = " . $date_BD . " AND heure_debut =" . $heure_debut . " AND duree = " . $duree . " AND idP = " . $idP . " AND idM = " . $idM ;
 
+                // Exécution de la requête
                 $reqSuppression->execute();
 
                 if ($reqSuppression === false) {
@@ -84,8 +85,6 @@ require('module/verificationUtilisateur.php');
                                 <p> Patient : <?php echo $npPatient?></p> 
                                 <p> Medecin : <?php echo $npMedecin?></p> 
                                 <p> Durée : <?php echo $duree?></p> 
-                                <p> hophophop <?php echo $date_BD?></p> 
-
                             </div>
                         </div>
                         <div class="row justify-content-center">
