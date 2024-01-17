@@ -35,6 +35,8 @@ require('module/verificationUtilisateur.php');
             <!-- Colonnes invisibles pour recuperer l'id du patient et du medecin -->
             <th style=display:none >IdPatientRef</th>
             <th style=display:none >IdMedecinRef</th>
+            <th style=display:none >Date_BD</th>
+
 
         </tr>
         </thead>
@@ -55,10 +57,10 @@ require('module/verificationUtilisateur.php');
                         // Récupération des résultats et affichage dans le tableau
                         while ($consultation = $reqAffichage->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
-                           // $dateConsultation = new DateTime($consultation['date_consultation']);
-                            //echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
+                            $dateConsultation = new DateTime($consultation['date_consultation']);
+                            echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
 
-                            echo "<td>{$consultation['date_consultation']}</td>";
+                           
 
                             $heure = $consultation['heure_debut'];
                             $heureFormatee = DateTime::createFromFormat('H:i:s', $heure)->format('H\hi');
@@ -108,6 +110,7 @@ require('module/verificationUtilisateur.php');
                                         // Colonnes invisibles pour récuperer l'id du patient et l'id du medecin
                                         echo "<td style=display:none >{$consultation['idP']}</td>";
                                         echo "<td style=display:none >{$consultation['idM']}</td>";
+                                        echo "<td style=display:none >{$consultation['date_consultation']}</td>";
 
                                         echo "</tr>";
                                         }
