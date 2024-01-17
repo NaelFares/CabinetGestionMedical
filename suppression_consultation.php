@@ -29,6 +29,7 @@ require('module/verificationUtilisateur.php');
         $npMedecin = $_GET['npMedecin'];
         $idP = $_GET['idP'];
         $idM = $_GET['idM'];
+        $date_BD = $_GET['date_BD'];
     }
     ?>
 
@@ -44,14 +45,15 @@ require('module/verificationUtilisateur.php');
                 echo "Erreur de préparation de la requête.";
             } else {
                 // Liaison des paramètres
-                $reqSuppression->bindParam(':date_consultation', $date_consultation, PDO::PARAM_STR);
+                $reqSuppression->bindParam(':date_consultation', $date_BD, PDO::PARAM_STR);
                 $reqSuppression->bindParam(':heure_debut', $heure_debut, PDO::PARAM_STR);
                 $reqSuppression->bindParam(':duree', $duree, PDO::PARAM_STR);
                 $reqSuppression->bindParam(':idP', $idP, PDO::PARAM_STR);
                 $reqSuppression->bindParam(':idM', $idM, PDO::PARAM_STR);
 
                 // Exécution de la requête
-                
+                echo "DELETE FROM consultation WHERE date_consultation = " . $date_BD . " AND heure_debut =" . $heure_debut . " AND duree = " . $duree . " AND idP = " . $idP . " AND idM = " . $idM ;
+
                 $reqSuppression->execute();
 
                 if ($reqSuppression === false) {
@@ -82,6 +84,8 @@ require('module/verificationUtilisateur.php');
                                 <p> Patient : <?php echo $npPatient?></p> 
                                 <p> Medecin : <?php echo $npMedecin?></p> 
                                 <p> Durée : <?php echo $duree?></p> 
+                                <p> hophophop <?php echo $date_BD?></p> 
+
                             </div>
                         </div>
                         <div class="row justify-content-center">

@@ -196,7 +196,7 @@
             var npMedecin = encodeURIComponent(cells[5].innerText);
             var idP = encodeURIComponent(cells[6].innerText);
             var idM = encodeURIComponent(cells[7].innerText);
-            var date_BD = encodeURIComponent(cells[6].innerText);
+            var date_BD = encodeURIComponent(cells[8].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "suppression_consultation.php?" +
@@ -207,7 +207,7 @@
             "&npMedecin=" + npMedecin +
             "&idP=" + idP +
             "&idM=" + idM + 
-            "&date_BD" + date_BD;
+            "&date_BD=" + date_BD;
             
             // Rediriger vers la page de modification avec les paramètres dans l'URL
             window.location.href = url; 
