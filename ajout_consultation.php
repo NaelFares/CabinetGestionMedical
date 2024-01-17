@@ -132,7 +132,7 @@ require('module/verificationUtilisateur.php');
                                                         $formatted_time = $start_time->format('H:i');
 
                                                         // Exclure les créneaux entre 12h30 et 14h00
-                                                        if ($formatted_time !== '12:30' && $formatted_time !== '13:00' && $formatted_time !== '13:30') {
+                                                        if ($formatted_time !== '12:00' && $formatted_time !== '12:30' && $formatted_time !== '13:00' && $formatted_time !== '13:30') {
                                                             echo "<option value=\"$formatted_time\">$formatted_time</option>";
                                                         }
 
