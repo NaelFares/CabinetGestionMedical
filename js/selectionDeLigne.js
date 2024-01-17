@@ -162,19 +162,20 @@
             // Récupérer les données de la ligne sélectionnée
             // Crypter les informations pour + de sécurité 
             var cells = ligneSelectionnee.getElementsByTagName("td");
-            var date_consultation = encodeURIComponent(cells[0].innerText);
+            //on ne recupere pas la date de la colonne 0 car elle sert juste d'affichgage
             var heure_debut = encodeURIComponent(cells[1].innerText);
             var duree = encodeURIComponent(cells[2].innerText);
             var idP = encodeURIComponent(cells[4].innerText);
             var idM = encodeURIComponent(cells[5].innerText);
+            var date_BD = encodeURIComponent(cells[6].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "modification_consultation.php?" +
-            "date_consultation=" + date_consultation +
             "&heure_debut=" + heure_debut +
             "&duree=" + duree +
             "&idP=" + idP +
-            "&idM=" + idM;
+            "&idM=" + idM + 
+            "&date_BD=" + date_BD;
             
             // Rediriger vers la page de modification avec les paramètres dans l'URL
             window.location.href = url; 
@@ -195,6 +196,7 @@
             var npMedecin = encodeURIComponent(cells[5].innerText);
             var idP = encodeURIComponent(cells[6].innerText);
             var idM = encodeURIComponent(cells[7].innerText);
+            var date_BD = encodeURIComponent(cells[6].innerText);
 
             // Construire l'URL avec les paramètres
             var url = "suppression_consultation.php?" +
@@ -204,7 +206,8 @@
             "&npPatient=" + npPatient +
             "&npMedecin=" + npMedecin +
             "&idP=" + idP +
-            "&idM=" + idM;
+            "&idM=" + idM + 
+            "&date_BD" + date_BD;
             
             // Rediriger vers la page de modification avec les paramètres dans l'URL
             window.location.href = url; 
