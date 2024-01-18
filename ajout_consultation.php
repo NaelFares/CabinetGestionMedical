@@ -22,75 +22,113 @@ require('module/verificationUtilisateur.php');
 
         <?php
 
-        $msgErreur = ""; // Déclaration de la variable de message d'erreur
+            $msgErreur = ""; // Déclaration de la variable de message d'erreur
 
-        if (isset($_POST['ajouter_consultation'])) {
+            if (isset($_POST['ajouter_consultation'])) {
 
-            // Préparation de la requête de test de présence d'une consultation
-            $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE date_consultation = :date_consultation AND heure_debut = :heure_debut AND duree = :duree AND idP = :idP AND idM = :idM');
-
-            //Test de la requete de présence d'une consultation => die si erreur
-            if($reqExisteDeja == false) {
-                die("Erreur de préparation de la requête de test de présence d'une consultation.");
-            } else {
+                // Préparation de la requête de test de présence d'une consultation
+                $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE date_consultation = :date_consultation AND heure_debut = :heure_debut AND duree = :duree AND idP = :idP AND idM = :idM');
                 
-                // Liaison des paramètres
-                //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
-                //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
-                //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                $reqExisteDeja->bindParam(':date_consultation', $_POST['date'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':heure_debut', $_POST['heure'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                // Préparation de la requête de test de chevauchement de consultation
+                $reqChevauchement = $linkpdo->prepare('SELECT COUNT(*) FROM consultation 
+                                                    WHERE idM = :idM 
+                                                    AND date_consultation = :date_consultation 
+                                                    AND ((:heure_debut BETWEEN heure_debut AND (heure_debut + duree)) 
+                                                    OR ((:heure_debut + :duree) BETWEEN heure_debut AND (heure_debut + duree)) 
+                                                    OR (:heure_debut <= heure_debut AND (:heure_debut + :duree) >= (heure_debut + duree))');
 
-                // Exécution de la requête
-                $reqExisteDeja->execute();
+                // Préparation de la requête de test de consultation le samedi - dimanche
+                $reqConsultSamediDimanche = $linkpdo->prepare('SELECT COUNT(*) 
+                                                FROM consultation 
+                                                WHERE idM = :idM 
+                                                    AND DAYOFWEEK(date_consultation) IN (1, 7)');
 
-                //Vérification de la bonne exécution de la requete ExisteDéja
-                //Si oui on arrete et on affiche une erreur
-                //Si non on execute la requete
+
+                //Test de la requete de présence d'une consultation => die si erreur
                 if($reqExisteDeja == false) {
-                    die("Erreur dans l'exécution de la requête de test de présence d'une consultation.");
+                    die("Erreur de préparation de la requête de test de présence d'une consultation.");
+                } elseif ($reqChevauchement == false) {
+                    die("Erreur de préparation de la requête de test de chevauchement sur une consultation.");
+                } elseif ($reqConsultSamediDimanche == false) {
+                    die("Erreur de préparation de la reqête de test de consultation le samedi ou le dimanche.");
                 } else {
+                    
+                    // Liaison des paramètres
+                    //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
+                    //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
+                    //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
+                    $reqExisteDeja->bindParam(':date_consultation', $_POST['date'], PDO::PARAM_STR);
+                    $reqExisteDeja->bindParam(':heure_debut', $_POST['heure'], PDO::PARAM_STR);
+                    $reqExisteDeja->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
+                    $reqExisteDeja->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
+                    $reqExisteDeja->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
 
-                    // Récupération du résultat
-                    $nbConsultations = $reqExisteDeja->fetchColumn();
+                    $reqChevauchement->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                    $reqChevauchement->bindParam(':date_consultation', $_POST['date'], PDO::PARAM_STR);
+                    $reqChevauchement->bindParam(':heure_debut', $_POST['heure'], PDO::PARAM_STR);
+                    $reqChevauchement->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
 
-                    // Vérification si le patient existe déjà
-                    if ($nbConsultations > 0) {
-                        $msgErreur = "Cette consultation existe déjà dans la base de données.";
+                    $reqConsultSamediDimanche->bindParam(':idM', $medecinId, PDO::PARAM_STR);
+
+                    // Exécution des requêtes
+                    $reqExisteDeja->execute();
+                    $reqChevauchement->execute();
+                    $reqConsultSamediDimanche->execute();
+
+                    //Vérification de la bonne exécution de la requete ExisteDéja
+                    //Si non on arrete et on affiche une erreur
+                    //Si oui on execute la requete
+                    if($reqExisteDeja == false) {
+                        die("Erreur dans l'exécution de la requête de test de présence d'une consultation.");
+                    } elseif ($reqChevauchement == false) {
+                        die("Erreur dans l'exécution de la requête de test de chevauchement sur une consultation.");
+                    } elseif ($reqConsultSamediDimanche == false) {
+                        die("Erreur dans l'exécution de la reqête de test de consultation le samedi ou le dimanche.");
                     } else {
-                        // Préparation de la requête d'insertion
-                        $req = $linkpdo->prepare('INSERT INTO consultation(date_consultation, heure_debut, duree, idP, idM) VALUES(:date_consultation, :heure_debut, :duree, :idP, :idM)');
 
-                        // Vérification du fonctionnement de la requete d'insertion
-                        if($req == false) {
-                            die('Probleme de la préparation de la requete d\'insertion');
-                        }
+                        // Récupération des résultat
+                        $nbConsultations = $reqExisteDeja->fetchColumn();
+                        $nbConsultationsChevauchement = $reqChevauchement->fetchColumn();
+                        $nbConsultationsSamDim = $reqConsultSamediDimanche->fetchColumn();
 
-                        if (empty($_POST['date_consultation']) || empty($_POST['heure_debut']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
-                            $msgErreur =  "Champs manquants.";
+                        // Vérification si le patient existe déjà
+                        if ($nbConsultations > 0) {
+                            $msgErreur = "Cette consultation existe déjà dans la base de données.";
+                        } elseif ($nbConsultationsChevauchement > 0) {
+                            $msgErreur = "Ce créneau n'est pas disponible.";
+                        } elseif ($nbConsultationsSamDim > 0){
+                            $msgErreur = "Les consultations le Samedi ou le Dimanche ne sont pas disponibles";
                         } else {
+                            // Préparation de la requête d'insertion
+                            $req = $linkpdo->prepare('INSERT INTO consultation(date_consultation, heure_debut, duree, idP, idM) VALUES(:date_consultation, :heure_debut, :duree, :idP, :idM)');
 
-                                // Exécution de la requête d'insertion
-                                $req->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
-                                $req->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
-                                $req->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
-                                $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
-                                $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
-                                $req->execute();
-
-                                //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                                //$req->debugDumpParams();
-
-                                $msgErreur =  "La consultation a été ajoutée avec succès !";
+                            // Vérification du fonctionnement de la requete d'insertion
+                            if($req == false) {
+                                die('Probleme de la préparation de la requete d\'insertion');
                             }
-                        }   
-                    } 
-                }      
-             }
-         ?>
+
+                            if (empty($_POST['date_consultation']) || empty($_POST['heure_debut']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
+                                $msgErreur =  "Champs manquants.";
+                            } else {
+
+                                    // Exécution de la requête d'insertion
+                                    $req->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                                    $req->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
+                                    $req->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
+                                    $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
+                                    $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                                    $req->execute();
+
+                                    //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                    //$req->debugDumpParams();
+
+                                    $msgErreur =  "La consultation a été ajoutée avec succès !";
+                            }  
+                        } 
+                    }      
+                }
+            }
+        ?>
 
         <!--Espace vide pour permettre de placer le header en haut de page-->
         <div class="vide-haut-page"> </div>
