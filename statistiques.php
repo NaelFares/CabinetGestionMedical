@@ -112,21 +112,21 @@ require('module/verificationUtilisateur.php');
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Moins de 25 ans</th>
+                        <th class="titre-stats"> Moins de 25 ans</th>
                         <td> <?php echo $nbHommeMoins25;?> </td>
                         <td> <?php echo $nbFemmeMoins25;?> </td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <th>Entre 25 et 50 ans</th>
+                        <th class="titre-stats">Entre 25 et 50 ans</th>
                         <td> <?php echo $NbHommeEntre25_50; ?> </td>
                         <td> <?php echo $NbFemmeEntre25_50; ?> </td>                            
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <th>Plus de 50 ans</th>
+                        <th class="titre-stats">Plus de 50 ans</th>
                         <td> <?php echo $nbHommePlus50; ?> </td>
                         <td> <?php echo $nbFemmePlus50; ?> </td>
                     </tr>

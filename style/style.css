@@ -16,7 +16,7 @@ body{
  /* Style de la div vide pour permettre au header de se placer en haut de page*/
  .vide-haut-page {
   width: 100%; /* Largeur de 100% de la largeur parente */
-  height: 100px; /* Hauteur de 200 pixels, ajustez selon vos besoins */
+  height: 100px; /* Hauteur de 100 pixels, ajustez selon vos besoins */
   margin: 0;
   padding: 0;
 }
