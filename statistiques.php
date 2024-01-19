@@ -9,6 +9,7 @@ require('module/verificationUtilisateur.php');
     <title>Les Statistiques</title>
     <link href="style/statistiques.css" rel="stylesheet">
     <link href="style/style.css" rel="stylesheet">
+    <link rel="icon" href="image/favicon.ico" type="image/x-icon">
 </head>
 
 <body>

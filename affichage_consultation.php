@@ -10,6 +10,7 @@ require('module/verificationUtilisateur.php');
     <link href="style/tableau.css" rel="stylesheet">
     <link href="style/style.css" rel="stylesheet">
     <script src="js/selectionDeLigne.js"></script>
+    <link rel="icon" href="image/favicon.ico" type="image/x-icon">
 </head>
 
 <body>

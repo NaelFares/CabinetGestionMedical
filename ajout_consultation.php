@@ -13,6 +13,7 @@ require('module/verificationUtilisateur.php');
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="js/miseAJourComboBox.js"></script>
         <script src="js/erreurSamediDimanche.js"></script>
+        <link rel="icon" href="image/favicon.ico" type="image/x-icon">
     </head>
     <body>
 
