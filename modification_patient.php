@@ -21,7 +21,7 @@ require('module/verificationUtilisateur.php');
     require('module/header.php');
 
 
-    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale'])) {
+    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
         $nom = $_GET['nom'];
@@ -29,11 +29,13 @@ require('module/verificationUtilisateur.php');
         $adresse = $_GET['adresse'];
         $cp = $_GET['cp'];
         $ville = $_GET['ville'];
+        //Format de la base de donnée
         $date_BD = $_GET['date_BD'];
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];
         $idM = $_GET['idM'];
+        $idP = $_GET['idP'];
     }
     ?>
 
@@ -44,7 +46,7 @@ require('module/verificationUtilisateur.php');
         if (isset($_POST['modifier_patient'])) {
             // Préparation de la requête d'insertion
             // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
-            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale, idM = :nouveauIdM WHERE nom = :nom AND prenom = :prenom AND date_naissance = :date_naissance AND num_secu_sociale = :num_secu_sociale');
+            $reqModification = $linkpdo->prepare('UPDATE patient SET civilite = :nouvelleCivilite, nom = :nouveauNom, prenom = :nouveauPrenom, adresse = :nouvelleAdresse, ville = :nouvelleVille, cp = :nouveauCp, date_naissance = :nouvelleDate_naissance, lieu_naissance = :nouveauLieu_naissance, num_secu_sociale = :nouveauNum_secu_sociale, idM = :nouveauIdM WHERE idP = :idP');
 
             if ($reqModification === false) {
                 echo "Erreur de préparation de la requête.";
@@ -70,13 +72,9 @@ require('module/verificationUtilisateur.php');
                 $reqModification->bindParam(':nouveauIdM', $idMedecin, PDO::PARAM_INT);
 
                 // Paramètres du where
-                $reqModification->bindParam(':nom', $nom, PDO::PARAM_STR);
-                $reqModification->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-                $reqModification->bindParam(':date_naissance', $date_naissance, PDO::PARAM_STR);
-                $reqModification->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
+                $reqModification->bindParam(':idP', $idP, PDO::PARAM_STR);
 
                 // Exécution de la requête
-                $test = "UPDATE patient SET civilite = " . $_POST['civilite'] . " nom = " . $_POST['nom'] . " prenom = " . $_POST['prenom'] . " adresse = " . $_POST['adresse'] . " ville = " . $_POST['ville'] . " cp = " . $_POST['cp'] . " date_naissance = " . $_POST['date_naissance'] . " lieu_naissance = " . $_POST['lieu_naissance'] . " num_secu_sociale = " . $_POST['num_secu_sociale'] . " idM = " . $_POST['idM'] . "WHERE nom = " . $nom . " AND prenom = " . $prenom . " AND date_naissance = " . $date_BD . " AND num_secu_sociale = " . $num_secu_sociale;
                 $reqModification->execute();
 
                 if($reqModification == false) {

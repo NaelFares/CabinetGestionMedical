@@ -19,7 +19,7 @@ require('module/verificationUtilisateur.php');
     <?php
     require('module/bd_connexion.php');
 
-    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP']) && !empty($_GET['idM'])) {
+    if (!empty($_GET['civilite']) && !empty($_GET['nom']) && !empty($_GET['prenom']) && !empty($_GET['adresse']) && !empty($_GET['cp']) && !empty($_GET['ville']) && !empty($_GET['date_BD']) && !empty($_GET['date_naissance']) && !empty($_GET['lieu_naissance']) && !empty($_GET['num_secu_sociale']) && !empty($_GET['idP'])) {
         // Récupérez les valeurs des paramètres GET
         $civilite = $_GET['civilite'];
         $nom = $_GET['nom'];
@@ -28,7 +28,7 @@ require('module/verificationUtilisateur.php');
         $cp = $_GET['cp'];
         $ville = $_GET['ville'];
         $date_BD = $_GET['date_BD'];
-        // uniquement pour l'affichage
+        // uniquement pour l'affichage dans la page suppression
         $date_naissance = $_GET['date_naissance'];
         $lieu_naissance = $_GET['lieu_naissance'];
         $num_secu_sociale = $_GET['num_secu_sociale'];
@@ -80,24 +80,14 @@ require('module/verificationUtilisateur.php');
 
                     // Préparation de la requête de suppression
                     // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
-                    $reqSuppression = $linkpdo->prepare('DELETE FROM patient WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom AND adresse = :adresse AND cp = :cp AND ville = :ville AND date_naissance = :date_naissance AND lieu_naissance = :lieu_naissance AND num_secu_sociale = :num_secu_sociale');
+                    $reqSuppression = $linkpdo->prepare('DELETE FROM patient WHERE idP = :idP AND num_secu_sociale = :num_secu_sociale');
 
                     if ($reqSuppression === false) {
                         echo "Erreur de préparation de la requête.";
                     } else {
                         // Liaison des paramètres
-                        $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':ville', $ville, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':cp', $cp, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':date_naissance', $date_BD, PDO::PARAM_STR);
-                        $reqSuppression->bindParam(':lieu_naissance', $lieu_naissance, PDO::PARAM_STR);
+                        $reqSuppression->bindParam(':idP', $idP, PDO::PARAM_STR);
                         $reqSuppression->bindParam(':num_secu_sociale', $num_secu_sociale, PDO::PARAM_STR);
-
-                        // Exécution de la requête
-                        echo "DELETE FROM patient WHERE civilite =" .  $civilite . " AND nom = " . $nom . " AND prenom = " . $prenom . " AND adresse = " . $adresse . " AND cp = " . $cp . " AND ville = " . $ville . " AND date_naissance = " . $date_BD . " AND lieu_naissance = " . $lieu_naissance . " AND num_secu_sociale = " . $num_secu_sociale;
 
                         $reqSuppression->execute();
 

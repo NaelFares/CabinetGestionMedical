@@ -226,13 +226,8 @@ require('module/verificationUtilisateur.php');
                             echo "<tr onclick=\"selectionnerLigne(this)\">"; // Appel de la fonction js de selection de ligne
                             $dateConsultation = new DateTime($consultation['date_consultation']);
                             echo "<td>{$dateConsultation->format('d/m/Y')}</td>"; // Format jj/mm/aaaa
-
-                           
-
-                            $heure = $consultation['heure_debut'];
-                            $heureFormatee = DateTime::createFromFormat('H:i:s', $heure)->format('H\hi');
-
-                            echo "<td>{$heureFormatee}</td>";
+                            
+                            echo "<td>{$consultation['heure_debut']}</td>";
                             echo "<td>{$consultation['duree']}</td>";
 
                             // Calcul de l'heure de fin
@@ -246,7 +241,7 @@ require('module/verificationUtilisateur.php');
                             $heureFin = $heureDebut->add($duree);
 
                             // Affichage de l'heure de fin
-                            echo "<td>{$heureFin->format('H\hi')}</td>";
+                            echo "<td>{$heureFin->format('H:i:s')}</td>";
 
                              // Récupération du nom du patient
                             $reqPatient = $linkpdo->prepare('SELECT nom, prenom FROM patient WHERE idP = :idP');
