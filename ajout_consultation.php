@@ -114,7 +114,7 @@ require('module/verificationUtilisateur.php');
                                 <div class="col-12">
                                     <label>Date</label>
                                         <div class="input-group-date"> 
-                                            <input type="date" name="date_consultation" required min="<?php echo date('Y-m-d'); ?>">  
+                                            <input type="date" name="date_consultation" id="date_consultation" required min="<?php echo date('Y-m-d'); ?>">  
                                     </div>
                                 </div>
                             </div>
@@ -235,4 +235,21 @@ require('module/verificationUtilisateur.php');
 </body>
 
 </html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var inputDate = document.getElementById('date_consultation');
+
+    inputDate.addEventListener('input', function() {
+      var selectedDate = new Date(this.value);
+      var dayOfWeek = selectedDate.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
+
+      // Désactivez les samedis (6) et dimanches (0)
+      if (dayOfWeek === 0 || dayOfWeek === 6) {
+        alert("Les samedis et dimanches ne sont pas autorisés. Veuillez sélectionner une autre date.");
+        this.value = ''; // Effacez la date sélectionnée
+      }
+    });
+  });
+</script>
 
