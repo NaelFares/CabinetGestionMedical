@@ -12,6 +12,7 @@ require('module/verificationUtilisateur.php');
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="js/miseAJourComboBox.js"></script>
+        <script src="js/erreurSamediDimanche.js"></script>
     </head>
     <body>
 
@@ -26,7 +27,7 @@ require('module/verificationUtilisateur.php');
 
         if (isset($_POST['ajouter_consultation'])) {
 
-            // Préparation de la requête de test de présence d'une consultation
+            // Préparation de la requête de test de présence de la même consultation 
             $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE date_consultation = :date_consultation AND heure_debut = :heure_debut AND duree = :duree AND idP = :idP AND idM = :idM');
 
             //Test de la requete de présence d'une consultation => die si erreur
@@ -59,7 +60,7 @@ require('module/verificationUtilisateur.php');
 
                     // Vérification si le patient existe déjà
                     if ($nbConsultations > 0) {
-                        $msgErreur = "Cette consultation existe déjà dans la base de données.";
+                        $msgErreur = "Cette consultation est déjà enregistrée";
                     } else {
                         // Préparation de la requête d'insertion
                         $req = $linkpdo->prepare('INSERT INTO consultation(date_consultation, heure_debut, duree, idP, idM) VALUES(:date_consultation, :heure_debut, :duree, :idP, :idM)');
@@ -105,6 +106,8 @@ require('module/verificationUtilisateur.php');
                                 <h2 class="heading text-center">Ajouter une consultation</h2>
                                 <div class="errormessage text-center">
                                     <p><?php echo $msgErreur; ?></p>
+                                     <!-- Section message erreur pour la selection du samedi ou du dimanche, le test de selection est fais en javascript -->
+                                    <p id="message-erreur-date"></p>
                                 </div>
                             </div>
                         </div>
@@ -235,21 +238,3 @@ require('module/verificationUtilisateur.php');
 </body>
 
 </html>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var inputDate = document.getElementById('date_consultation');
-
-    inputDate.addEventListener('input', function() {
-      var selectedDate = new Date(this.value);
-      var dayOfWeek = selectedDate.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
-
-      // Désactivez les samedis (6) et dimanches (0)
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        alert("Les samedis et dimanches ne sont pas autorisés. Veuillez sélectionner une autre date.");
-        this.value = ''; // Effacez la date sélectionnée
-      }
-    });
-  });
-</script>
-

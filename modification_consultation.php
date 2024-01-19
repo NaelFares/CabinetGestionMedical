@@ -12,6 +12,7 @@ require('module/verificationUtilisateur.php');
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="miseAJourComboBox.js"></script>
+        <script src="js/erreurSamediDimanche.js"></script>
     </head>
     <body>
 
@@ -94,6 +95,8 @@ require('module/verificationUtilisateur.php');
                                 <h2 class="heading text-center">Modifier une consultation</h2>
                                 <div class="errormessage text-center">
                                     <p><?php echo $msgErreur; ?></p>
+                                    <!-- Section message erreur pour la selection du samedi ou du dimanche, le test de selection est fais en javascript -->
+                                    <p id="message-erreur-date"></p>
                                 </div>
                             </div>
                         </div>
@@ -226,12 +229,7 @@ require('module/verificationUtilisateur.php');
             </div>
             <!--Fin du formulaire-->
 
-        </div>
-
-
-<!--Serveur-->
-
-                
+        </div>                
 </body>
 
 </html>
