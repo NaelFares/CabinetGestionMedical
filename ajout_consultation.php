@@ -39,8 +39,8 @@ require('module/verificationUtilisateur.php');
                 //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
                 //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
                 //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                $reqExisteDeja->bindParam(':date_consultation', $_POST['date'], PDO::PARAM_STR);
-                $reqExisteDeja->bindParam(':heure_debut', $_POST['heure'], PDO::PARAM_STR);
+                $reqExisteDeja->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                $reqExisteDeja->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
                 $reqExisteDeja->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
                 $reqExisteDeja->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
                 $reqExisteDeja->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
@@ -49,8 +49,8 @@ require('module/verificationUtilisateur.php');
                 $reqExisteDeja->execute();
 
                 //Vérification de la bonne exécution de la requete ExisteDéja
-                //Si oui on arrete et on affiche une erreur
-                //Si non on execute la requete
+                //Si non on arrete et on affiche une erreur
+                //Si oui on execute la requete
                 if($reqExisteDeja == false) {
                     die("Erreur dans l'exécution de la requête de test de présence d'une consultation.");
                 } else {
@@ -60,32 +60,104 @@ require('module/verificationUtilisateur.php');
 
                     // Vérification si le patient existe déjà
                     if ($nbConsultations > 0) {
-                        $msgErreur = "Cette consultation est déjà enregistrée";
+                        $msgErreur = "Cette consultation est déjà enregistrée.";
                     } else {
-                        // Préparation de la requête d'insertion
-                        $req = $linkpdo->prepare('INSERT INTO consultation(date_consultation, heure_debut, duree, idP, idM) VALUES(:date_consultation, :heure_debut, :duree, :idP, :idM)');
 
-                        // Vérification du fonctionnement de la requete d'insertion
-                        if($req == false) {
-                            die('Probleme de la préparation de la requete d\'insertion');
-                        }
+                        // Préparation de la requête de test de chevauchement de consultation pour un medecin
+                        $reqChevauchementMedecin = $linkpdo->prepare('SELECT COUNT(*)
+                        FROM consultation
+                        WHERE idM = :idM
+                          AND date_consultation = :date_consultation
+                          AND (
+                              (:heure_debut BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
+                              OR (ADDTIME(:heure_debut, :duree) BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
+                              OR (heure_debut BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
+                              OR (ADDTIME(heure_debut, duree )BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
+                          )');
 
-                        if (empty($_POST['date_consultation']) || empty($_POST['heure_debut']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
-                            $msgErreur =  "Champs manquants.";
+                        // Préparation de la requête de test de chevauchement de consultation pour un patient
+                        $reqChevauchementPatient= $linkpdo->prepare('SELECT COUNT(*)
+                        FROM consultation
+                        WHERE idP = :idP
+                          AND date_consultation = :date_consultation
+                          AND (
+                              (:heure_debut BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
+                              OR (ADDTIME(:heure_debut, :duree) BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
+                              OR (heure_debut BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
+                              OR (ADDTIME(heure_debut, duree )BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
+                          )');
+
+                        //Test de la requete de présence d'une consultation => die si erreur
+                        if($reqChevauchementMedecin == false || $reqChevauchementPatient == false) {
+                            die("Erreur de préparation de la requête de test de chevauchement d'une consultation.");
                         } else {
+                            
+                            // Liaison des paramètres
+                            //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
+                            //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
+                            //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
+                            $reqChevauchementMedecin->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                            $reqChevauchementMedecin->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
+                            $reqChevauchementMedecin->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
+                            $reqChevauchementMedecin->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
 
-                                // Exécution de la requête d'insertion
-                                $req->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
-                                $req->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
-                                $req->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
-                                $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
-                                $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
-                                $req->execute();
+                            // Liaison des paramètres pour la requête chevauchement patient
+                            $reqChevauchementPatient->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                            $reqChevauchementPatient->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
+                            $reqChevauchementPatient->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
+                            $reqChevauchementPatient->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
 
-                                //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
-                                //$req->debugDumpParams();
+                            // Exécution de la requête
+                            $reqChevauchementMedecin->execute();
 
-                                $msgErreur =  "La consultation a été ajoutée avec succès !";
+                            // Exécution de la requête
+                            $reqChevauchementPatient->execute();
+
+                            //Vérification de la bonne exécution de la requete de test de chevauchement
+                            //Si non on arrete et on affiche une erreure
+                            //Si oui on execute la requete
+                            if($reqChevauchementMedecin == false || $reqChevauchementPatient == false) {
+                                die("Erreur dans l'exécution de la requête de test de chevauchement de consultation.");
+                            } else {
+
+                                // Récupération du résultat pour un medecin
+                                $nbConsultationChevauchementMedecin = $reqChevauchementMedecin->fetchColumn();
+
+                                // Récupération du résultat pour un patient
+                                $nbConsultationChevauchementPatient = $reqChevauchementPatient->fetchColumn();
+
+                                // Vérification de chevauchement de la consultation
+                                if (($nbConsultationChevauchementMedecin > 0) || ($nbConsultationChevauchementPatient > 0)) {
+                                    $msgErreur = "Créneau déjà réservé.";
+                                } else {
+
+                                    // Préparation de la requête d'insertion
+                                    $req = $linkpdo->prepare('INSERT INTO consultation(date_consultation, heure_debut, duree, idP, idM) VALUES(:date_consultation, :heure_debut, :duree, :idP, :idM)');
+
+                                    // Vérification du fonctionnement de la requete d'insertion
+                                    if($req == false) {
+                                        die('Probleme de la préparation de la requete d\'insertion');
+                                    }
+
+                                    if (empty($_POST['date_consultation']) || empty($_POST['heure_debut']) || empty($_POST['duree']) || empty($_POST['idP']) || empty($_POST['idM'])) {
+                                        $msgErreur =  "Champs manquants.";
+                                    } else {
+
+                                            // Exécution de la requête d'insertion
+                                            $req->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                                            $req->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
+                                            $req->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
+                                            $req->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
+                                            $req->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                                            $req->execute();
+
+                                            //Permet de voir comment les requetes SQL agisse sur phpMyAdmin
+                                            //$req->debugDumpParams();
+
+                                            $msgErreur =  "La consultation a été ajoutée avec succès !";
+                                        }
+                                    }
+                                }
                             }
                         }   
                     } 
@@ -128,14 +200,14 @@ require('module/verificationUtilisateur.php');
                                             <select name="heure_debut" required>
                                                 <?php
                                                     $interval = new DateInterval('PT30M');
-                                                    $start_time = new DateTime('08:00');
-                                                    $end_time = new DateTime('17:00');
+                                                    $start_time = new DateTime('08:00:00');
+                                                    $end_time = new DateTime('17:00:00');
 
                                                     while ($start_time <= $end_time) {
-                                                        $formatted_time = $start_time->format('H:i');
+                                                        $formatted_time = $start_time->format('H:i:s');
 
                                                         // Exclure les créneaux entre 12h30 et 14h00
-                                                        if ($formatted_time !== '12:00' && $formatted_time !== '12:30' && $formatted_time !== '13:00' && $formatted_time !== '13:30') {
+                                                        if ($formatted_time !== '12:00:00' && $formatted_time !== '12:30:00' && $formatted_time !== '13:00:00' && $formatted_time !== '13:30:00') {
                                                             echo "<option value=\"$formatted_time\">$formatted_time</option>";
                                                         }
 

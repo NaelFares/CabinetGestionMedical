@@ -37,7 +37,7 @@ require('module/verificationUtilisateur.php');
             //////////////////////////////// Test de présence de consultation //////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            // Préparation de la requête de test de présence d'une consultation pour ce patient
+            // Préparation de la requête de test de présence d'une consultation pour ce medecin
             $reqExisteDeja = $linkpdo->prepare('SELECT COUNT(*) FROM consultation WHERE idM = :idM');
 
             //Test de la requete de présence d'une consultation => die si erreur
