@@ -75,116 +75,45 @@ require('module/verificationUtilisateur.php');
                             $msgErreur = "Cette consultation est déjà enregistrée.";
                         } else {
 
-                            // Préparation de la requête de test de chevauchement de consultation pour un medecin
-                            $reqChevauchementMedecin = $linkpdo->prepare('SELECT COUNT(*)
-                            FROM consultation
-                            WHERE idM = :idM
-                            AND date_consultation = :date_consultation
-                            AND (
-                                (:heure_debut BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
-                                OR (ADDTIME(:heure_debut, :duree) BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
-                                OR (heure_debut BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
-                                OR (ADDTIME(heure_debut, duree )BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
-                            )');
+                            // Préparation de la requête d'insertion
+                            // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
+                            $reqModification = $linkpdo->prepare('UPDATE consultation SET date_consultation = :nouvelleDate_consultation, heure_debut = :nouvelleHeure_debut, duree = :nouvelleDuree, idP = :nouveauIdP, idM = :nouveauIdM WHERE date_consultation = :date_consultation AND heure_debut = :heure_debut AND duree = :duree AND idP = :idP AND idM = :idM');
 
-                            // Préparation de la requête de test de chevauchement de consultation pour un patient
-                            $reqChevauchementPatient= $linkpdo->prepare('SELECT COUNT(*)
-                            FROM consultation
-                            WHERE idP = :idP
-                            AND date_consultation = :date_consultation
-                            AND (
-                                (:heure_debut BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
-                                OR (ADDTIME(:heure_debut, :duree) BETWEEN heure_debut AND ADDTIME(heure_debut, duree))
-                                OR (heure_debut BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
-                                OR (ADDTIME(heure_debut, duree )BETWEEN :heure_debut AND ADDTIME(:heure_debut, :duree))
-                            )');
-
-                            //Test de la requete de présence d'une consultation => die si erreur
-                            if($reqChevauchementMedecin == false || $reqChevauchementPatient == false) {
-                                die("Erreur de préparation de la requête de test de chevauchement d'une consultation.");
+                            if ($reqModification === false) {
+                                echo "Erreur de préparation de la requête.";
                             } else {
-                                
-                                // Liaison des paramètres
-                                //PDO::PARAM_STR : C'est le type de données que vous spécifiez pour le paramètre. 
-                                //Ici, on indique que :nom doit être traité comme une chaîne de caractères (string). 
-                                //Cela permet à PDO de s'assurer que la valeur est correctement échappée et protégée contre les injections SQL
-                                $reqChevauchementMedecin->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
-                                $reqChevauchementMedecin->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
-                                $reqChevauchementMedecin->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
-                                $reqChevauchementMedecin->bindParam(':idM', $_POST['idM'], PDO::PARAM_STR);
+                                $reqModification->bindParam(':nouvelleDate_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
+                                $reqModification->bindParam(':nouvelleHeure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
+                                $reqModification->bindParam(':nouvelleDuree', $_POST['duree'], PDO::PARAM_STR);                   
+                                $reqModification->bindParam(':nouveauIdM', $_POST['idM'], PDO::PARAM_INT);
+                                $reqModification->bindParam(':nouveauIdP', $_POST['idP'], PDO::PARAM_INT);
 
-                                // Liaison des paramètres pour la requête chevauchement patient
-                                $reqChevauchementPatient->bindParam(':date_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
-                                $reqChevauchementPatient->bindParam(':heure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
-                                $reqChevauchementPatient->bindParam(':duree', $_POST['duree'], PDO::PARAM_STR);
-                                $reqChevauchementPatient->bindParam(':idP', $_POST['idP'], PDO::PARAM_STR);
+
+                                // Paramètres du where
+                                $reqModification->bindParam(':date_consultation', $date_BD, PDO::PARAM_STR);
+                                $reqModification->bindParam(':heure_debut', $heure_debut, PDO::PARAM_STR);
+                                $reqModification->bindParam(':duree', $duree, PDO::PARAM_STR);
+                                $reqModification->bindParam(':idM', $idM, PDO::PARAM_STR);
+                                $reqModification->bindParam(':idP', $idP, PDO::PARAM_STR);
 
                                 // Exécution de la requête
-                                $reqChevauchementMedecin->execute();
+                                $reqModification->execute();
 
-                                // Exécution de la requête
-                                $reqChevauchementPatient->execute();
-
-                                //Vérification de la bonne exécution de la requete de test de chevauchement
-                                //Si non on arrete et on affiche une erreure
-                                //Si oui on execute la requete
-                                if($reqChevauchementMedecin == false || $reqChevauchementPatient == false) {
-                                    die("Erreur dans l'exécution de la requête de test de chevauchement de consultation.");
+                                if($reqModification == false) {
+                                    echo "Erreur dans l'exécution de la requête de modification.";
                                 } else {
+                                    // Afficher un message de succès
+                                    $msgErreur = "La consultation a été modifiée avec succès !";
 
-                                    // Récupération du résultat pour un medecin
-                                    $nbConsultationChevauchementMedecin = $reqChevauchementMedecin->fetchColumn();
-
-                                    // Récupération du résultat pour un patient
-                                    $nbConsultationChevauchementPatient = $reqChevauchementPatient->fetchColumn();
-
-                                    // Vérification de chevauchement de la consultation
-                                    if (($nbConsultationChevauchementMedecin > 0) || ($nbConsultationChevauchementPatient > 0)) {
-                                        $msgErreur = "Créneau déjà réservé.";
-                                    } else {
-
-                                        // Préparation de la requête d'insertion
-                                        // La prochaine fois utiliser + de paramètres dans le where pour éviter de modifier les infos d'un homonyme 
-                                        $reqModification = $linkpdo->prepare('UPDATE consultation SET date_consultation = :nouvelleDate_consultation, heure_debut = :nouvelleHeure_debut, duree = :nouvelleDuree, idP = :nouveauIdP, idM = :nouveauIdM WHERE date_consultation = :date_consultation AND heure_debut = :heure_debut AND duree = :duree AND idP = :idP AND idM = :idM');
-
-                                        if ($reqModification === false) {
-                                            echo "Erreur de préparation de la requête.";
-                                        } else {
-                                            $reqModification->bindParam(':nouvelleDate_consultation', $_POST['date_consultation'], PDO::PARAM_STR);
-                                            $reqModification->bindParam(':nouvelleHeure_debut', $_POST['heure_debut'], PDO::PARAM_STR);
-                                            $reqModification->bindParam(':nouvelleDuree', $_POST['duree'], PDO::PARAM_STR);                   
-                                            $reqModification->bindParam(':nouveauIdM', $_POST['idM'], PDO::PARAM_INT);
-                                            $reqModification->bindParam(':nouveauIdP', $_POST['idP'], PDO::PARAM_INT);
-
-
-                                            // Paramètres du where
-                                            $reqModification->bindParam(':date_consultation', $date_BD, PDO::PARAM_STR);
-                                            $reqModification->bindParam(':heure_debut', $heure_debut, PDO::PARAM_STR);
-                                            $reqModification->bindParam(':duree', $duree, PDO::PARAM_STR);
-                                            $reqModification->bindParam(':idM', $idM, PDO::PARAM_STR);
-                                            $reqModification->bindParam(':idP', $idP, PDO::PARAM_STR);
-
-                                            // Exécution de la requête
-                                            $reqModification->execute();
-
-                                            if($reqModification == false) {
-                                                echo "Erreur dans l'exécution de la requête de modification.";
-                                            } else {
-                                                // Afficher un message de succès
-                                                $msgErreur = "La consultation a été modifiée avec succès !";
-
-                                                // vider les valeurs dans les champs de saisie pour éviter les erreurs de récupération de champs vides par $_POST
-                                                $date_BD = null;
-                                                $heure_debut = null;
-                                                $duree = null;
-                                                $idM = null;
-                                                $idP = null;
-                                                $npMedecin = null;
-                                                $npPatient = null;
-                                            }
-                                        }
-                                    }
-                                }
+                                    // vider les valeurs dans les champs de saisie pour éviter les erreurs de récupération de champs vides par $_POST
+                                    $date_BD = null;
+                                    $heure_debut = null;
+                                    $duree = null;
+                                    $idM = null;
+                                    $idP = null;
+                                    $npMedecin = null;
+                                    $npPatient = null;
+                                }            
                             }
                         }
                     }
@@ -345,5 +274,3 @@ require('module/verificationUtilisateur.php');
 </body>
 
 </html>
-
-
