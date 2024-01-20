@@ -120,19 +120,13 @@ require('module/verificationUtilisateur.php');
                                 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                 // Préparation de la requête de suppression
-                                // La prochaine fois utiliser + de paramètres dans le where pour éviter de supprimer les infos d'un homonyme  
-                                $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE civilite = :civilite AND nom = :nom AND prenom = :prenom');
+                                $reqSuppression = $linkpdo->prepare('DELETE FROM medecin WHERE idM = :idM');
 
                                 if ($reqSuppression === false) {
                                     echo "Erreur de préparation de la requête.";
                                 } else {
                                     // Liaison des paramètres
-                                    $reqSuppression->bindParam(':civilite', $civilite, PDO::PARAM_STR);
-                                    $reqSuppression->bindParam(':nom', $nom, PDO::PARAM_STR);
-                                    $reqSuppression->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-
-                                    //debug
-                                    //echo "DELETE FROM patient WHERE civilite =" .  $civilite . " AND nom = " . $nom . " AND prenom = " . $prenom;
+                                    $reqSuppression->bindParam(':idM', $idM, PDO::PARAM_STR);
                                     
                                     // Exécution de la requête
                                     $reqSuppression->execute();
